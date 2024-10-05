@@ -1,0 +1,62 @@
+.rateAndReview {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.rateAndReview .noReviewTitle {
+    color: gray;
+    font-size: 18px;
+}
+
+.rateAndReview .noReviewSubtitle {
+    color: rgba(211, 211, 211, 0.8);
+    font-size: 35px;
+}
+
+.rateAndReview form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.rateAndReview form .labelContent {
+    color: gray;
+    font-size: 18px;
+}
+
+.rateAndReview form .textareaContent {
+    font-size: 18px;
+    background: #202124;
+    border: none;
+    padding: 15px;
+    color: rgba(211, 211, 211, 0.8);
+    resize: none;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.rateAndReview form .noReviewFlex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.rateAndReview form .noReviewFlexChild {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.rateAndReview form .noReviewButton {
+    width: fit-content;
+    padding: 15px 30px;
+    background: #94b1f2;
+    border-radius: 99px;
+    color: #202124;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all .3s;
+}
