@@ -48,9 +48,6 @@ function Administrator() {
                     <input id="password" type="password" name="password" placeholder="" onChange={(e) => setState({ password: e.target.value })} required />
                 </div>
                 <button type="submit">Đăng nhập</button>
-                {state.loading ? (
-                    <div className="loading">↻</div>
-                ) : null}
             </form>
         </div>
     )
