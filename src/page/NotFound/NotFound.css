@@ -64,7 +64,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(20, 20, 20, 1);
+    background: #2a2e37;
     color: #fff;
     font-size: 7rem;
 }
@@ -179,8 +179,8 @@
     position: absolute;
     width: 200px;
     height: 200px;
-    background: rgba(10, 10, 10, 0.8);
-    border: 1px solid rgba(250, 250, 250, 1);
+    background: rgba(37, 39, 44, 0.8);
+    border: 1px solid #94b1f2;
     box-sizing: border-box;
 }
 

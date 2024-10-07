@@ -32,30 +32,29 @@ app.use(cors());
 server.listen(3000);
 
 // Model
-const Movies = require("./models/Movies");                             // Movies
-const getMovies = mongoose.model("Movies");
-const Accounts = require("./models/Accounts");
-const getAccounts = mongoose.model("Accounts");                        // Accounts
+const Movies = require("./models/Movies");                                  // Movies
+const Accounts = require("./models/Accounts");                              // Accounts
 
 // Create first admin account
-getAccounts.findOne({ username: "admin" }).catch(async () => {
+Accounts.findOne({ username: "admin" }).catch(async () => {
     const hashPassword = await argon2.hash(process.env.REACT_APP_firstAdminPassword);
     const firstAdmin = new Accounts({
         username: "admin",
-        password: hashPassword
+        password: hashPassword,
+        role: 1
     })
     firstAdmin.save()
 })
 
 // Api
-app.post("/api/v1/adminLogin", async (req, res) => {
-    await getAccounts.findOne({ username: req.body.username }).then(async (res1) => {
+app.post("/api/v1/adminLogin", (req, res) => {
+    Accounts.findOne({ username: req.body.username }).then(async (res1) => {
         const verifyPassword = await argon2.verify(res1.password, req.body.password)
         if (verifyPassword) {
             const token = jwt.sign(
                 {
-                    id: res1._id,
-                    username: res1.username
+                    username: res1.username,
+                    role: res1.role
                 },
                 "RANDOM-TOKEN",
                 { expiresIn: "24h" }
@@ -69,5 +68,52 @@ app.post("/api/v1/adminLogin", async (req, res) => {
         }
     }).catch(() => {
         res.status(500).send({ message: "Tài khoản không tồn tại!" })
+    })
+})
+
+app.post("/api/v1/changePassword", (req, res) => {
+    Accounts.findOne({ username: req.body.username }).then(async (res1) => {
+        const verifyPassword = await argon2.verify(res1.password, req.body.oldPassword)
+        if (verifyPassword) {
+            const hashPassword = await argon2.hash(req.body.newPassword);
+            Accounts.updateOne({ username: req.body.username }, {
+                password: hashPassword
+            }).exec()
+            res.status(201).send({ message: "Đổi mật khẩu thành công!" })
+        } else {
+            res.status(500).send({ message: "Mật khẩu cũ không trùng khớp!" })
+        }
+    })
+})
+
+app.post("/api/v1/addAccount", (req, res) => {
+    Accounts.findOne({ username: req.body.username }).then(async (res1) => {
+        if (res1) {
+            res.status(500).send({ message: "Tài khoản đã tồn tại!" })
+        } else {
+            const hashPassword = await argon2.hash(req.body.password);
+            const addAdmin = new Accounts({
+                username: req.body.username,
+                password: hashPassword,
+                role: 2
+            })
+            addAdmin.save().then(() => {
+                res.status(201).send({ message: "Thêm admin thành công!" })
+            })
+        }
+    })
+})
+
+app.post("/api/v1/deleteAccount", (req, res) => {
+    Accounts.deleteOne({ username: req.body.username }).then(() => {
+        res.status(201).send({ message: "Xóa tài khoản thành công!" })
+    }).catch(() => {
+        res.status(500).send({ message: "Xóa tài khoản thất bại!" })
+    })
+})
+
+app.get("/api/v1/getAccounts", async (req, res) => {
+    await Accounts.find({ username: { $ne: "admin" } }).then((res1) => {
+        res.status(201).send(res1)
     })
 })

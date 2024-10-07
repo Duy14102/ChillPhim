@@ -1,0 +1,117 @@
+.adminPanel {
+    width: 100%;
+    min-height: 100vh;
+    background: #202124;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 150px;
+    background: #25272c;
+}
+
+header h1 {
+    color: rgba(211, 211, 211, 0.8);
+}
+
+header .options {
+    position: relative;
+    width: fit-content;
+}
+
+header .options .expandOptions {
+    width: 50px;
+    height: 50px;
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all .3s;
+}
+
+header .options .expandOptions svg {
+    width: 100%;
+    height: 100%;
+    fill: rgba(211, 211, 211, 0.8);
+    transition: all .3s;
+}
+
+header .options .expandOptions:hover {
+    background: gray;
+}
+
+header .options .expandOptions:active,
+header .options .collapseOptions .collapseOptionsChild:active {
+    scale: 0.9;
+}
+
+header .options .expandOptions:hover svg {
+    fill: #fff;
+}
+
+header .options .collapseOptions {
+    position: absolute;
+    top: 115%;
+    right: 0;
+    width: 300px;
+    height: auto;
+    background: #2a2e37;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-radius: 10px;
+    visibility: hidden;
+    opacity: 0;
+    transition: all .3s;
+}
+
+header .options .collapseOptionsActive {
+    visibility: visible !important;
+    opacity: 1 !important;
+    transition: all .3s;
+}
+
+header .options .collapseOptions .collapseOptionsChild {
+    width: 100%;
+    background: #202124;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    outline: 1px solid #202124;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all .3s;
+    cursor: pointer;
+    color: rgba(211, 211, 211, 0.8);
+    fill: rgba(211, 211, 211, 0.8);
+}
+
+header .options .collapseOptions .collapseOptionsChild svg {
+    width: 25px;
+    height: 25px;
+    fill: inherit;
+}
+
+header .options .collapseOptions .collapseOptionsChild p {
+    color: inherit;
+    font-size: 16px;
+}
+
+header .options .collapseOptions .collapseOptionsChild:hover {
+    outline-color: #94b1f2;
+    color: #fff;
+    fill: #fff;
+}
+
+.bodyPanel {
+    padding: 15px 150px;
+}
+
+.bodyPanel .upperBody{
+    
+}

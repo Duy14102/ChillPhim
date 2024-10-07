@@ -8,6 +8,10 @@ const AccountSchema = new mongoose.Schema({
 
     password: {
         type: String
+    },
+
+    role: {
+        type: Number
     }
 }, { timestamps: { createdAt: true, updatedAt: false } })
 

@@ -1,0 +1,258 @@
+.customModal {
+    background: #2a2e37;
+    width: 95%;
+    margin: 0;
+    border-radius: 10px;
+}
+
+.customClose {
+    fill: rgba(211, 211, 211, 0.8);
+    transition: fill .3s;
+}
+
+.customClose:hover,
+.changePassForm .coverAll .inputCover .eyesShow:hover svg,
+.coverInputAddNew .addNewPasswordCover button:hover svg {
+    fill: #fff;
+}
+
+
+
+/* Change password form */
+.changePassForm {
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.changePassForm .coverAll {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.changePassForm .coverAll label {
+    color: rgba(211, 211, 211, 0.8);
+    font-size: 18px;
+}
+
+.changePassForm .coverAll .inputCover {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    background: #202124;
+    padding: 15px;
+}
+
+.changePassForm .coverAll .inputCover input {
+    width: 95%;
+    background: inherit;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+}
+
+.changePassForm .coverAll .inputCover .eyesShow {
+    width: 25px;
+    height: 25px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    transition: scale .3s
+}
+
+.changePassForm .coverAll .inputCover .eyesShow svg {
+    width: 100%;
+    height: 100%;
+    fill: rgba(211, 211, 211, 0.8);
+    transition: fill .3s
+}
+
+.changePassForm .coverAll .inputCover .eyesShow:active,
+.changePassForm .formSubmit:active,
+.adminControl .upperControl .addNewButton:active,
+.coverInputAddNew .addNewPasswordCover button:active,
+.adminControl td .deleteAdminButton:active {
+    scale: 0.9;
+}
+
+.changePassForm .formSubmit {
+    width: fit-content;
+    background: #94b1f2;
+    color: #2a2e37;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 99px;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.changePassForm .formSubmit:hover {
+    color: #fff;
+}
+
+
+
+/* admin control */
+.adminControl {
+    padding: 15px 0;
+}
+
+.adminControl .upperControl {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.adminControl .upperControl input {
+    padding: 15px;
+    font-size: 16px;
+    background: #202124;
+    border-radius: 10px;
+    color: #fff;
+    width: 48%;
+    border: none;
+}
+
+.adminControl .upperControl .addNewButton {
+    width: 45px;
+    height: 45px;
+    padding: 10px;
+    border-radius: 6px;
+    background: #94b1f2;
+    border: none;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.adminControl .upperControl .addNewButton svg {
+    width: 100%;
+    height: 100%;
+    fill: #202124;
+    transition: fill .3s;
+}
+
+.adminControl .upperControl .addNewButton:hover svg {
+    fill: #fff;
+}
+
+.adminControl .addNewDiv {
+    margin-top: 15px;
+}
+
+.adminControl .addNewDiv .addNewDivChild {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.adminControl .addNewDiv .addNewDivChild .coverInputAddNew {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 48%;
+}
+
+.coverInputAddNew #usernameNew {
+    padding: 15px;
+    font-size: 16px;
+    background: #202124;
+    border-radius: 10px;
+    color: #fff;
+    width: 100%;
+    border: none;
+}
+
+.coverInputAddNew label {
+    color: rgba(211, 211, 211, 0.8);
+    font-size: 16px;
+}
+
+.coverInputAddNew .addNewPasswordCover {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px;
+    background: #202124;
+    border-radius: 10px;
+}
+
+.coverInputAddNew .addNewPasswordCover #passwordNew {
+    font-size: 16px;
+    width: 95%;
+    background: inherit;
+    border: none;
+    color: #fff;
+}
+
+.coverInputAddNew .addNewPasswordCover button {
+    width: 20px;
+    height: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    transition: scale .3s
+}
+
+.coverInputAddNew .addNewPasswordCover button svg {
+    width: 100%;
+    height: 100%;
+    fill: rgba(211, 211, 211, 0.8);
+    transition: fill .3s
+}
+
+.adminControl table {
+    width: 100%;
+    height: auto;
+    margin-top: 15px;
+}
+
+.adminControl table,
+.adminControl tr,
+.adminControl th,
+.adminControl td {
+    border-collapse: collapse;
+    border: 1px solid rgba(211, 211, 211, 0.2);
+    text-align: center;
+}
+
+.adminControl th {
+    background: #202124;
+    color: #fff;
+    font-size: 18px;
+    padding: 10px 0;
+}
+
+.adminControl td {
+    color: rgba(211, 211, 211, 0.8);
+    padding: 10px 0;
+    font-size: 16px;
+}
+
+.adminControl td .deleteAdminButton {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.adminControl td .deleteAdminButton .deleteSvg {
+    width: 100%;
+    height: 100%;
+    fill: rgba(255, 0, 0, 0.6);
+    transition: fill .3s;
+}
+
+.adminControl td .deleteAdminButton:hover .deleteSvg {
+    fill: rgba(255, 0, 0, 0.9);
+}

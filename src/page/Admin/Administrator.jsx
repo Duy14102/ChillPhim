@@ -7,6 +7,9 @@ import { toast } from "react-toastify"
 
 function Administrator() {
     const cookies = new Cookies();
+    if (cookies.get("TOKEN")) {
+        return window.location.href = '/404'
+    }
     const toastNow = useRef(null)
     const [state, setState] = useReducer((prev, next) => ({
         ...prev, ...next
@@ -30,7 +33,7 @@ function Administrator() {
             cookies.set("TOKEN", res.data.token, {
                 path: "/",
             });
-            window.location.href = "/AdminPanel"
+            window.location.href = "/"
         }).catch((err) => {
             ToastUpdate({ type: 2, message: err.response.data.message, refCur: toastNow.current })
         })
