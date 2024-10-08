@@ -20,6 +20,10 @@
     top: 0;
 }
 
+.streaming .videoStreaming iframe body #container {
+    background-color: #94b1f2 !important;
+}
+
 .streaming .buttonStreaming {
     display: flex;
     align-items: center;

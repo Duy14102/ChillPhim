@@ -75,7 +75,9 @@
 .changePassForm .formSubmit:active,
 .adminControl .upperControl .addNewButton:active,
 .coverInputAddNew .addNewPasswordCover button:active,
-.adminControl td .deleteAdminButton:active {
+.adminControl td .deleteAdminButton:active,
+.categoriesControl .toolCate button:active,
+.addEpsDiv button:active {
     scale: 0.9;
 }
 
@@ -124,7 +126,7 @@
     width: 45px;
     height: 45px;
     padding: 10px;
-    border-radius: 6px;
+    border-radius: 10px;
     background: #94b1f2;
     border: none;
     cursor: pointer;
@@ -210,35 +212,43 @@
     transition: fill .3s
 }
 
-.adminControl table {
+.adminControl table,
+.categoriesControl table {
     width: 100%;
     height: auto;
     margin-top: 15px;
 }
 
 .adminControl table,
+.categoriesControl table,
 .adminControl tr,
+.categoriesControl tr,
 .adminControl th,
-.adminControl td {
+.categoriesControl th,
+.adminControl td,
+.categoriesControl td {
     border-collapse: collapse;
     border: 1px solid rgba(211, 211, 211, 0.2);
     text-align: center;
 }
 
-.adminControl th {
+.adminControl th,
+.categoriesControl th {
     background: #202124;
     color: #fff;
     font-size: 18px;
     padding: 10px 0;
 }
 
-.adminControl td {
+.adminControl td,
+.categoriesControl td {
     color: rgba(211, 211, 211, 0.8);
     padding: 10px 0;
     font-size: 16px;
 }
 
-.adminControl td .deleteAdminButton {
+.adminControl td .deleteAdminButton,
+.categoriesControl td .deleteAdminButton {
     width: 20px;
     height: 20px;
     border: none;
@@ -246,13 +256,148 @@
     cursor: pointer;
 }
 
-.adminControl td .deleteAdminButton .deleteSvg {
+.adminControl td .deleteAdminButton .deleteSvg,
+.categoriesControl td .deleteAdminButton .deleteSvg {
     width: 100%;
     height: 100%;
     fill: rgba(255, 0, 0, 0.6);
     transition: fill .3s;
 }
 
-.adminControl td .deleteAdminButton:hover .deleteSvg {
+.adminControl td .deleteAdminButton:hover .deleteSvg,
+.categoriesControl td .deleteAdminButton:hover .deleteSvg {
     fill: rgba(255, 0, 0, 0.9);
+}
+
+
+
+/* Categories control */
+.categoriesControl {
+    padding: 15px 0;
+}
+
+.categoriesControl .toolCate {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.categoriesControl .toolCate input {
+    padding: 15px;
+    font-size: 16px;
+    background: #202124;
+    border-radius: 10px;
+    color: #fff;
+    width: 48%;
+    border: none;
+}
+
+.categoriesControl .toolCate button {
+    padding: 10px;
+    width: fit-content;
+    height: 45px;
+    border-radius: 10px;
+    background: #94b1f2;
+    border: none;
+    cursor: pointer;
+    transition: all .3s;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.categoriesControl .toolCate button:hover {
+    color: #fff;
+}
+
+.categoriesControl .toolCate button svg {
+    width: 100%;
+    height: 100%;
+    fill: #202124;
+    transition: fill .3s;
+}
+
+.categoriesControl .toolCate button:hover svg {
+    fill: #fff;
+}
+
+.categoriesControl .addNewCateDiv {
+    margin-top: 15px;
+}
+
+.categoriesControl .addNewCateDiv .addNewCateDivChild {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.categoriesControl .addNewCateDiv .addNewCateDivChild .coverInputAddNew {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 48%;
+}
+
+.categoriesControl .coverInputAddNew input {
+    padding: 15px;
+    font-size: 16px;
+    background: #202124;
+    border-radius: 10px;
+    color: #fff;
+    width: 100%;
+    border: none;
+}
+
+.categoriesControl .coverInputAddNew label {
+    color: rgba(211, 211, 211, 0.8);
+    font-size: 16px;
+}
+
+
+
+/* add new eps */
+.addEpsDiv {
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.addEpsDiv .addEpsDivChild {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.addEpsDiv .addEpsDivChild label {
+    color: rgba(211, 211, 211, 0.8);
+    font-size: 16px;
+}
+
+.addEpsDiv .addEpsDivChild input {
+    background: #202124;
+    border-radius: 6px;
+    padding: 15px;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+}
+
+.addEpsDiv button {
+    width: fit-content;
+    padding: 10px 20px;
+    color: #94b1f2;
+    border: 1px solid #94b1f2;
+    font-weight: bold;
+    background: inherit;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.addEpsDiv button:hover {
+    background: #94b1f2;
+    color: #fff;
 }

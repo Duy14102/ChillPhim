@@ -10,7 +10,7 @@ function Streaming() {
     return (
         <div className='streaming'>
             <div ref={videoDiv} className='videoStreaming'>
-                <iframe allowFullScreen src='https://vip.opstream14.com/share/86ff09548a5c6eff1ec764a28b6c8112'></iframe>
+                <iframe id='myFrame' allowFullScreen src='https://vip.opstream14.com/share/86ff09548a5c6eff1ec764a28b6c8112'></iframe>
             </div>
             <div className='buttonStreaming'>
                 <button className='buttonDefault buttonPrevNext' type='button'>◄ Tập trước</button>

@@ -44,7 +44,10 @@ header .options .expandOptions:hover {
 }
 
 header .options .expandOptions:active,
-header .options .collapseOptions .collapseOptionsChild:active {
+header .options .collapseOptions .collapseOptionsChild:active,
+.bodyPanel .upperBody .insideUpperBody button:active,
+.coverAddFilm .addEps button:active,
+.coverAddFilm .underAddFilmChild .chooseCateFilm button:active {
     scale: 0.9;
 }
 
@@ -112,6 +115,270 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     padding: 15px 150px;
 }
 
-.bodyPanel .upperBody{
-    
+.bodyPanel .upperBody {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bodyPanel .upperBody .insideUpperBody {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.bodyPanel .upperBody input {
+    background: #25272c;
+    border: none;
+    font-size: 18px;
+    color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    width: 300px;
+    border: 1px solid #94b1f2;
+}
+
+.bodyPanel .upperBody .insideUpperBody button {
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #202124;
+    background: #94b1f2;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.bodyPanel .upperBody .insideUpperBody button:hover {
+    color: #fff;
+}
+
+.bodyPanel .midBody {
+    border-radius: 10px;
+    background: #2a2e37;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.bodyPanel .midBody .coverAddFilm .coverAddFilmChild {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bodyPanel .midBody .coverAddFilm .titleAdd {
+    width: 100%;
+    position: relative;
+}
+
+.bodyPanel .midBody .coverAddFilm .titleAdd input {
+    background: #202124;
+    border-radius: 10px;
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    color: #fff;
+    border: none;
+}
+
+.coverAddFilm .underAddFilmChild {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.coverAddFilm .titleAdd .autoCompleteFilm {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    flex-wrap: wrap;
+    row-gap: 15px;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    height: 50vh;
+    overflow-y: scroll;
+    background: #25272c;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
+}
+
+.coverAddFilm .titleAdd .autoCompleteFilm::-webkit-scrollbar {
+    background: transparent;
+    width: 10px;
+}
+
+.coverAddFilm .titleAdd .autoCompleteFilm::-webkit-scrollbar-thumb {
+    background: #94b1f2;
+    border-radius: 99px;
+}
+
+.coverAddFilm .formMovieExists {
+    width: 49%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.coverAddFilm .filmChild {
+    padding: 15px;
+    border-radius: 10px;
+    background: #202124;
+    width: 49%;
+    display: flex;
+    gap: 30px;
+    outline: 1px solid transparent;
+    transition: all .3s;
+    position: relative;
+}
+
+.coverAddFilm .chooseCateFilm {
+    width: 49%;
+}
+
+.coverAddFilm .chooseCateFilmChild{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.coverAddFilm .chooseCateFilmChild p{
+    color: rgba(211, 211, 211, 0.8);
+    font-size: 16px;
+}
+
+.coverAddFilm .noteMovie {
+    height: 150px;
+    width: 49%;
+    resize: none;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 16px;
+    color: #fff;
+    background: #202124;
+    border: none;
+}
+
+.coverAddFilm .addEps {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.coverAddFilm .addEps button,
+.coverAddFilm .underAddFilmChild .chooseCateFilm button {
+    padding: 10px 20px;
+    color: #94b1f2;
+    background: #202124;
+    border: 1px solid #94b1f2;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all .3s;
+    position: relative;
+}
+
+.coverAddFilm .underAddFilmChild .chooseCateFilm button svg{
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #202124;
+    fill: #fff;
+    padding: 5px;
+}
+
+.coverAddFilm .addEps .addEpsMainButton {
+    background: #94b1f2;
+    color: #202124;
+}
+
+.coverAddFilm .addEps button:hover,
+.coverAddFilm .underAddFilmChild .chooseCateFilm button:hover {
+    background: #94b1f2;
+    color: #fff;
+}
+
+.coverAddFilm .formMovieExists .movieExistsInput {
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 16px;
+    color: #fff;
+    background: #202124;
+    border: none;
+    width: 100%;
+}
+
+.coverAddFilm .autoCompleteFilm .filmChild {
+    cursor: pointer;
+}
+
+.coverAddFilm .autoCompleteFilm .filmChild:hover {
+    outline-color: #94b1f2;
+}
+
+.coverAddFilm .filmChild .deleteFilm {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 25px;
+    height: 25px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.coverAddFilm .filmChild .deleteFilm:hover svg {
+    fill: rgba(255, 0, 0, 0.8);
+}
+
+.coverAddFilm .filmChild .deleteFilm svg {
+    transition: fill .3s;
+    fill: rgba(255, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+}
+
+.coverAddFilm .filmChild img {
+    width: 85px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.coverAddFilm .filmChild .filmChildIn4 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.coverAddFilm .filmChild .filmChildIn4 h3 {
+    color: #fff;
+    font-size: 23px;
+    letter-spacing: 0.5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    /* number of lines to show */
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.coverAddFilm .filmChild .filmChildIn4 p {
+    color: gray;
+    font-size: 16px;
+}
+
+.coverAddFilm .filmChild .filmChildIn4 .sideIn4 {
+    color: rgba(211, 211, 211, 0.8);
+    font-size: 18px;
 }

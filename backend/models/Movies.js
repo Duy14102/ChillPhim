@@ -5,6 +5,10 @@ const MovieSchema = new mongoose.Schema({
         type: String
     },
 
+    subtitle: {
+        type: String
+    },
+
     content: {
         type: String
     },
@@ -26,37 +30,40 @@ const MovieSchema = new mongoose.Schema({
         type: Array
     },
 
-    imdbScore: {
-        type: Number
-    },
-
     ageRate: {
         type: String
     },
 
-    time: {
-        hour: {
-            type: String
-        },
-        minute: {
-            type: String
-        }
+    note: {
+        type: Array
     },
 
     category: {
         type: Array
     },
 
-    directors: {
-        type: Array
+    imdbScore: {
+        type: Number
     },
 
-    stars: {
-        type: Array
+    time: {
+        type: Number
     },
 
-    screenWriters: {
-        type: Array
+    crew: {
+        directors: {
+            type: String
+        },
+        stars: {
+            type: Array
+        },
+        screenWriters: {
+            type: Array
+        },
+    },
+
+    view: {
+        type: Number
     },
 
     comments: {

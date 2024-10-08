@@ -1,13 +1,17 @@
-import Cookies from "universal-cookie"
 import "./AdminPanel.css"
+import Cookies from "universal-cookie"
+import axios from "axios"
 import { useReducer, useRef } from "react"
+import { toast } from "react-toastify"
 import { jwtDecode } from "jwt-decode"
 import ModalProps from "../../component/modal/ModalProps"
 import ChangePassword from "../../component/adminSide/ChangePassword"
 import ToastUpdate from "../../component/Toastify/ToastUpdate"
-import axios from "axios"
-import { toast } from "react-toastify"
 import AdminControl from "../../component/adminSide/AdminControl"
+import CategoriesControl from "../../component/adminSide/CategoriesControl"
+import AddFilm from "../../component/adminSide/AddFilm"
+import AddEps from "../../component/adminSide/AddEps"
+import UpdateEps from "../../component/adminSide/UpdateEps"
 
 function AdminPanel() {
     const cookies = new Cookies()
@@ -21,10 +25,24 @@ function AdminPanel() {
         // Change password state
         showOldpass: false, showNewpass: false, oldPassword: "", newPassword: "",
         // Admin control state
-        wantAddNewAdmin: false, newAdminUsername: "", newAdminPassword: "", newAdminShowPass: false, listAccounts: []
+        wantAddNewAdmin: false, newAdminUsername: "", newAdminPassword: "", newAdminShowPass: false, listAccounts: [],
+        // Categories control state
+        wantAddNewCate: false, newCateTitle: "", newCateContent: "", listCategories: [],
+        // Add film state
+        searchFilm: "", listAutoComplete: [], listCrew: null, movieData: null, newEps: [], epsTitle: "", epsUrl: "", epsIndex: null, movieTrailer: "", movieNote: "", movieAge: "", listCateMovie: []
     })
     const dateNow = new Date().getHours('vi-VN')
     const welcomeTime = dateNow >= 4 && dateNow < 11 ? "☀️ Chào buổi sáng" : dateNow >= 11 && dateNow < 13 ? "🌤️ Chào buổi trưa" : dateNow >= 13 && dateNow < 18 ? "🌅 Chào buổi chiều" : dateNow >= 18 && dateNow < 22 ? "🌙 Chào buổi tối" : "💤 Chào buổi đêm"
+
+    function callCategories() {
+        const configuration = {
+            method: "get",
+            url: "http://localhost:3000/api/v1/getCategories"
+        }
+        axios(configuration).then((res) => {
+            setState({ listCategories: res.data })
+        })
+    }
 
     function logout() {
         cookies.remove("TOKEN", { path: "/" });
@@ -60,14 +78,26 @@ function AdminPanel() {
             <div className="bodyPanel">
                 <div className="upperBody">
                     <input type="text" placeholder="Tìm kiếm phim..." />
-                    <button type="button" className="addFilmButton">+ 🎥</button>
+                    <div className="insideUpperBody">
+                        <button type="button">Thêm phim</button>
+                        <button onClick={() => setState({ modalState: true, modalStateOptions: 3 })} type="button">Quản lý danh mục</button>
+                    </div>
+                </div>
+                <div className="midBody">
+                    <AddFilm state={state} setState={setState} axios={axios} callCategories={callCategories}/>
                 </div>
             </div>
             <ModalProps state={state} setState={setState}>
                 {state?.modalStateOptions === 1 ? (
-                    <AdminControl state={state} setState={setState} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
-                ) : (
+                    <AdminControl state={state} setState={setState} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef}/>
+                ) : state?.modalStateOptions === 2 ? (
                     <ChangePassword state={state} setState={setState} decode={decode} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
+                ) : state?.modalStateOptions === 3 ? (
+                    <CategoriesControl state={state} setState={setState} toast={toast} axios={axios} ToastUpdate={ToastUpdate} useRef={useRef} callCategories={callCategories}/>
+                ) : state?.modalStateOptions === 4 ? (
+                    <AddEps state={state} setState={setState} />
+                ) : (
+                    <UpdateEps state={state} setState={setState} />
                 )}
             </ModalProps>
         </div>

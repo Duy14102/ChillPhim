@@ -34,6 +34,7 @@ server.listen(3000);
 // Model
 const Movies = require("./models/Movies");                                  // Movies
 const Accounts = require("./models/Accounts");                              // Accounts
+const Categories = require("./models/Categories");                          // Categories
 
 // Create first admin account
 Accounts.findOne({ username: "admin" }).catch(async () => {
@@ -47,6 +48,7 @@ Accounts.findOne({ username: "admin" }).catch(async () => {
 })
 
 // Api
+// Accounts Api
 app.post("/api/v1/adminLogin", (req, res) => {
     Accounts.findOne({ username: req.body.username }).then(async (res1) => {
         const verifyPassword = await argon2.verify(res1.password, req.body.password)
@@ -115,5 +117,38 @@ app.post("/api/v1/deleteAccount", (req, res) => {
 app.get("/api/v1/getAccounts", async (req, res) => {
     await Accounts.find({ username: { $ne: "admin" } }).then((res1) => {
         res.status(201).send(res1)
+    })
+})
+
+
+
+// Categories Api
+app.get("/api/v1/getCategories", async (req, res) => {
+    await Categories.find({}).then((res1) => {
+        res.status(201).send(res1)
+    })
+})
+
+app.post("/api/v1/addCategories", (req, res) => {
+    Categories.findOne({ title: req.body.title }).then(async (res1) => {
+        if (res1) {
+            res.status(500).send({ message: "Danh mục đã tồn tại!" })
+        } else {
+            const addCategories = new Categories({
+                title: req.body.title,
+                content: req.body.content
+            })
+            addCategories.save().then(() => {
+                res.status(201).send({ message: "Tạo danh mục thành công!" })
+            })
+        }
+    })
+})
+
+app.post("/api/v1/deleteCategories", (req, res) => {
+    Categories.deleteOne({ title: req.body.title }).then(() => {
+        res.status(201).send({ message: "Xóa danh mục thành công!" })
+    }).catch(() => {
+        res.status(500).send({ message: "Xóa danh mục thất bại!" })
     })
 })
