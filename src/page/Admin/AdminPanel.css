@@ -47,7 +47,9 @@ header .options .expandOptions:active,
 header .options .collapseOptions .collapseOptionsChild:active,
 .bodyPanel .upperBody .insideUpperBody button:active,
 .coverAddFilm .addEps button:active,
-.coverAddFilm .underAddFilmChild .chooseCateFilm button:active {
+.coverAddFilm .underAddFilmChild .chooseCateFilm button:active,
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .updateButton:active,
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .deleteButton:active {
     scale: 0.9;
 }
 
@@ -159,6 +161,19 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     background: #2a2e37;
     padding: 15px;
     margin-top: 15px;
+    animation: appearMidBody .3s linear forwards;
+}
+
+@keyframes appearMidBody {
+    from {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    to {
+        opacity: 1;
+        visibility: visible;
+    }
 }
 
 .bodyPanel .midBody .coverAddFilm .coverAddFilmChild {
@@ -203,6 +218,7 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
+    z-index: 10;
 }
 
 .coverAddFilm .titleAdd .autoCompleteFilm::-webkit-scrollbar {
@@ -238,14 +254,14 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     width: 49%;
 }
 
-.coverAddFilm .chooseCateFilmChild{
+.coverAddFilm .chooseCateFilmChild {
     display: flex;
     align-items: center;
     gap: 15px;
     flex-wrap: wrap;
 }
 
-.coverAddFilm .chooseCateFilmChild p{
+.coverAddFilm .chooseCateFilmChild p {
     color: rgba(211, 211, 211, 0.8);
     font-size: 16px;
 }
@@ -284,7 +300,7 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     position: relative;
 }
 
-.coverAddFilm .underAddFilmChild .chooseCateFilm button svg{
+.coverAddFilm .underAddFilmChild .chooseCateFilm button svg {
     position: absolute;
     top: -10px;
     right: -10px;
@@ -381,4 +397,132 @@ header .options .collapseOptions .collapseOptionsChild:hover {
 .coverAddFilm .filmChild .filmChildIn4 .sideIn4 {
     color: rgba(211, 211, 211, 0.8);
     font-size: 18px;
+}
+
+.bodyPanel .bottomBody {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 15px;
+    background: #2a2e37;
+    border-radius: 10px;
+    width: 100%;
+    height: auto;
+    row-gap: 15px;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild {
+    display: flex;
+    gap: 15px;
+    width: 49%;
+    background: #202124;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild img {
+    width: 15%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildIn4 {
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildIn4 .movieTitle {
+    color: #fff;
+    font-size: 22px;
+    word-break: break-all;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildIn4 .movieSubtitle {
+    color: gray;
+    font-size: 16px;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildIn4 .movieYearsRating {
+    color: rgba(211, 211, 211, 0.8);
+    font-size: 18px;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildIn4 .movieCategory {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildIn4 .movieCategory .plusCategory {
+    cursor: pointer;
+    color: gray;
+    font-weight: bold;
+    font-size: 18px;
+    transition: color .3s;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildIn4 .movieCategory .plusCategory:hover {
+    color: rgba(211, 211, 211, 0.8);
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildIn4 .movieCategory .movieCategoryChild {
+    padding: 5px 10px;
+    border-radius: 99px;
+    color: #94b1f2;
+    border: 1px solid #94b1f2;
+    font-size: 16px;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide {
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .sideChild {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 49%;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .sideChild svg {
+    width: 25px;
+    height: 25px;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .sideChild p {
+    color: #fff;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .updateButton,
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .deleteButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .deleteButton svg {
+    transition: fill .3s;
+    fill: rgba(255, 0, 0, 0.6);
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .deleteButton:hover svg {
+    fill: rgba(255, 0, 0, 0.8);
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .updateButton svg {
+    transition: fill .3s;
+    fill: #94b1f2;
+}
+
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .updateButton:hover svg {
+    fill: rgba(148, 177, 242, 0.8);
 }

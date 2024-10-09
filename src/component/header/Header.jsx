@@ -5,8 +5,8 @@ function Header() {
     useEffect(() => {
         const header = document.querySelector("header");
         window.addEventListener('scroll', e => {
-            header.style.background = window.scrollY > 88 ? '#25272C' : '#202124';
-            header.style.position = window.scrollY > 88 ? 'fixed' : "absolute";
+            header.style.background = window.scrollY > 150 ? '#25272C' : '#202124';
+            header.style.position = window.scrollY > 150 ? 'fixed' : "absolute";
         });
     }, [])
     return (

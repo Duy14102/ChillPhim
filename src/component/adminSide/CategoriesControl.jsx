@@ -1,6 +1,4 @@
-import { useEffect } from "react"
-
-function CategoriesControl({ state, setState, axios, toast, ToastUpdate, useRef,callCategories }) {
+function CategoriesControl({ state, setState, axios, toast, ToastUpdate, useRef,callCategories,useEffect }) {
     const toastNow = useRef(null)
 
     useEffect(() => {

@@ -152,3 +152,97 @@ app.post("/api/v1/deleteCategories", (req, res) => {
         res.status(500).send({ message: "Xóa danh mục thất bại!" })
     })
 })
+
+
+
+// Movies Api
+app.post("/api/v1/addMovies", (req, res) => {
+    const newMovies = new Movies({
+        title: req.body.movie.title,
+        subtitle: req.body.movie.original_title,
+        content: req.body.movie.overview,
+        "banner.vertical": `https://image.tmdb.org/t/p/original${req.body.movie.poster_path}`,
+        "banner.horizontal": `https://image.tmdb.org/t/p/original${req.body.movie.backdrop_path}`,
+        imdbScore: req.body.movie.vote_average.toFixed(1),
+        time: req.body.movie.runtime,
+        timeProduce: req.body.movie.release_date,
+        "crew.directors": req.body.crew.director,
+        "crew.stars": req.body.crew.stars,
+        "crew.screenWriters": req.body.crew.screenWriters,
+        trailerSource: req.body.trailerSource,
+        filmSources: req.body.filmSources,
+        ageRate: req.body.ageRate,
+        note: req.body.note,
+        category: req.body.category
+    })
+    newMovies.save().then(() => {
+        res.status(201).send({ message: "Thêm phim thành công!" })
+    }).catch(() => {
+        res.status(500).send({ message: "Thêm phim thất bại!" })
+    })
+})
+
+app.get("/api/v1/getMovies", async (req, res) => {
+    const res1 = await Movies.find(req.query.search && req.query.search !== "" ? { title: new RegExp(req.query.search, 'i') } : {}).sort({ createdAt: -1 })
+    const page = parseInt(req.query.page)
+    const limit = parseInt(req.query.limit)
+
+    const start = (page - 1) * limit
+    const end = page * limit
+
+    const results = {}
+    results.total = res1.length
+    results.pageCount = Math.ceil(res1.length / limit)
+
+    if (end < res1.length) {
+        results.next = {
+            page: page + 1
+        }
+    }
+    if (start > 0) {
+        results.prev = {
+            page: page - 1
+        }
+    }
+
+    results.result = res1.slice(start, end)
+    res.status(201).send({ results });
+})
+
+app.get("/api/v1/getMoviesHomepage", async (req, res) => {
+    const heroBanner = await Movies.find({}).sort({ _id: -1 }).limit(6)
+    const newFilm = await Movies.find({}).sort({ createdAt: -1 }).limit(10)
+    const mostViewFilm = await Movies.find({}).sort({ view: -1 }).limit(10)
+    const animeFilm = await Movies.find({ category: "Anime" }).limit(10)
+    const tvShowFilm = await Movies.find({ category: "TV Show" }).limit(10)
+    const upcomingFilm = await Movies.find({ category: "Upcoming" }).limit(10)
+    res.status(201).send({ heroBanner, newFilm, mostViewFilm, animeFilm, tvShowFilm, upcomingFilm })
+})
+
+app.get("/api/v1/getMoviesIn4", async (req, res) => {
+    const movies = await Movies.findOne({ subtitle: req.query.subtitle })
+    const similarMovies = await Movies.find({ category: { $in: movies.category } }).limit(10)
+    res.status(201).send({ movies, similarMovies })
+})
+
+app.post("/api/v1/deleteMovies", (req, res) => {
+    Movies.deleteOne({ title: req.body.title }).then(() => {
+        res.status(201).send({ message: "Xóa phim thành công!" })
+    }).catch(() => {
+        res.status(500).send({ message: "Xóa phim thất bại!" })
+    })
+})
+
+app.post("/api/v1/updateMovies", (req, res) => {
+    Movies.updateOne({ title: req.body.update.title }, {
+        trailerSource: req.body.update.trailerSource,
+        filmSources: req.body.update.filmSources,
+        ageRate: req.body.update.ageRate,
+        note: req.body.update.note,
+        category: req.body.update.category
+    }).then(() => {
+        res.status(201).send({ message: "Cập nhật phim thành công!" })
+    }).catch(() => {
+        res.status(500).send({ message: "Cập nhật phim thất bại!" })
+    })
+})

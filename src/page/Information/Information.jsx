@@ -1,65 +1,101 @@
-import { useReducer } from 'react'
+import { useReducer, useEffect } from 'react'
 import './Information.css'
 import LandingMovie from '../../component/landing-movie/LandingMovie';
 import NoReview from '../../component/no-review/NoReview';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+
 function Information() {
+    const params = useParams()
     const [state, setState] = useReducer((prev, next) => ({
         ...prev, ...next
     }), {
-        toolsBar: 1
+        toolsBar: 1,
+        movies: null,
+        similarMovies: null
     })
     const toolsArray = [{ content: "Danh sách tập", stateClass: 1 }, { content: "Bình luận", stateClass: 3 }, { content: "Trailer", stateClass: 2 }]
 
     const toolsBarClass = (e) => {
         return state.toolsBar === e ? "titleActive" : "toolsBarTitle"
     }
+
+    useEffect(() => {
+        const configuration = {
+            method: "get",
+            url: "http://localhost:3000/api/v1/getMoviesIn4",
+            params: {
+                subtitle: params.Name
+            }
+        }
+        axios(configuration).then((res) => {
+            setState({ movies: res.data.movies, similarMovies: res.data.similarMovies })
+        })
+    }, [])
+
+    function toHoursAndMinutes(totalMinutes) {
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        return `${hours}h ${minutes}p`;
+    }
     return (
         <div className='information'>
             <div className='movieIn4'>
-                <img src="https://i.ebayimg.com/00/s/MTYwMFgxMTE5/z/8H8AAOSwUH5jya0l/$_57.JPG?set_id=8800005007" />
+                <img alt={state.movies?.title} src={state.movies?.banner.vertical} />
                 <div className='coverTextIn4'>
-                    <h1 className='movieName'>Avatar: The Way Of Water</h1>
+                    <h1 className='movieName'>{state.movies?.title}</h1>
                     <div className='movieSideIn4'>
                         <div className='leftSideIn4'>
                             <div className='categoryIn4'>
-                                <a href='/' className='mainCategory'>Huyền bí</a>
-                                <a href='/' className='mainCategory'>Hành động</a>
-                                <a href='/' className='mainCategory'>Phiêu lưu</a>
-                                <a href='/' className='mainCategory'>Viễn tưởng</a>
+                                {state.movies?.category.map((c) => {
+                                    return (
+                                        <a key={c} href='/' className='mainCategory'>{c}</a>
+                                    )
+                                })}
                             </div>
                             <div className='ratingIn4'>
                                 <div className='ratingChild'>
                                     <div className='brandRate brandImdb'>IMDb</div>
-                                    <div style={{ letterSpacing: 1 }} className='rateScore'>7.6<span style={{ color: "gray" }}>/10</span></div>
+                                    <div style={{ letterSpacing: 1 }} className='rateScore'>{state.movies?.imdbScore}<span style={{ color: "gray" }}>/10</span></div>
                                 </div>
                                 <div className='ratingChild'>
-                                    <div className='brandRate brandAge'>PG</div>
-                                    <div className='rateScore'>13 (18+)</div>
+                                    <div className='brandRate brandAge'>{state.movies?.ageRate}</div>
+                                    <div className='rateScore'>{state.movies?.ageRate === "G" ? "(Mọi lứa tuổi)" : state.movies?.ageRate === "PG" ? "(Cân nhắc cho trẻ nhỏ)" : state.movies?.ageRate === "PG-13" ? "(13+)" : state.movies?.ageRate === "R" ? "(18+)" : "(XXX)"}</div>
                                 </div>
                                 <div className='ratingChild'>
                                     <div className='brandRate brandTime'>⌛</div>
-                                    <div className='rateScore'>3h 12m</div>
+                                    <div className='rateScore'>{toHoursAndMinutes(state.movies?.time)}</div>
                                 </div>
                             </div>
-                            <div className='contentIn4'>
-                                Avatar 2 là bữa tiệc về kỹ xảo hình ảnh 3D. Đầu phim, James Cameron gợi ký ức người xem khi tái hiện hành tinh Pandora. Những sinh vật kỳ bí tiếp tục được khắc họa, như cảnh loài rồng núi Banshee bay lượn giữa dãy Hallelujah hùng vĩ, báo Thanator rình rập rừng sâu... Người Navi - các sinh vật với làn da xanh biếc, đôi mắt màu hổ phách - có tạo hình sắc nét, lối biểu cảm, trò chuyện sinh động hơn phần một.
-                            </div>
+                            <div className='contentIn4'>{state.movies?.content}</div>
                             <div className='buttonIn4'>
-                                <a href={`/Streaming/Avatar-The-Way-Of-Water/Full`} className='playButton'>Xem phim<span style={{ marginLeft: 10 }}>▶</span></a>
+                                <a href={`/Streaming/${state.movies?.subtitle}/${state.movies?.filmSources[0].title}`} className='playButton'>Xem phim<span style={{ marginLeft: 10 }}>▶</span></a>
                             </div>
                         </div>
                         <div className='rightSideIn4'>
                             <div className='quiteIn4'>
                                 <span className='quiteName'>Đạo diễn</span>
-                                <p className='quiteContent'><a href='/'>James Cameron</a></p>
+                                <p className='quiteContent'><a href='/'>{state.movies?.crew.directors}</a></p>
                             </div>
                             <div className='quiteIn4'>
                                 <span className='quiteName'>Diễn viên</span>
-                                <p className='quiteContent'><a href='/'>Rick Jaffa</a>, <a href='/'>Amanda Silver</a></p>
+                                <p className='quiteContent'>
+                                    {state.movies?.crew.stars.map((s, indexS) => {
+                                        return (
+                                            <a key={indexS} href='/'>{s.name}, </a>
+                                        )
+                                    })}
+                                </p>
                             </div>
                             <div className='quiteIn4'>
                                 <span className='quiteName'>Biên kịch</span>
-                                <p className='quiteContent'>Rick Jaffa, Amanada Silver</p>
+                                <div className='quiteContent'>
+                                    {state.movies?.crew.screenWriters.map((s, indexS) => {
+                                        return (
+                                            <div key={indexS} href='/'>{s.name}, </div>
+                                        )
+                                    })}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -75,20 +111,21 @@ function Information() {
                 </div>
                 {state.toolsBar === 1 ? (
                     <div className='epsCover'>
-                        <a href='/' className='epsTool'>Tập Full</a>
-                        <a href='/' className='epsTool'>Tập Full</a>
-                        <a href='/' className='epsTool'>Tập Full</a>
-                        <a href='/' className='epsTool'>Tập Full</a>
+                        {state.movies?.filmSources.map((f, indexF) => {
+                            return (
+                                <a key={indexF} href={`/Streaming/${state.movies?.subtitle}/${f.title}`} className='epsTool'>{f.title}</a>
+                            )
+                        })}
                     </div>
                 ) : state.toolsBar === 2 ? (
-                    <iframe allowFullScreen src='https://www.youtube.com/embed/d9MyW72ELq0'></iframe>
+                    <iframe allowFullScreen src={state.movies?.trailerSource}></iframe>
                 ) : (
                     <div className='rateCover'>
-                        <NoReview />
+                        <NoReview comments={state.movies?.comments} name={state.movies?.title}/>
                     </div>
                 )}
             </div>
-            <LandingMovie Title={"Phim tương tự"} MarginTop={100} />
+            <LandingMovie Title={"Phim tương tự"} MarginTop={100} movie={state?.similarMovies}/>
         </div>
     )
 }

@@ -1,17 +1,21 @@
 import "./AdminPanel.css"
 import Cookies from "universal-cookie"
 import axios from "axios"
-import { useReducer, useRef } from "react"
+import { lazy, useReducer, useRef, useEffect } from "react"
 import { toast } from "react-toastify"
 import { jwtDecode } from "jwt-decode"
-import ModalProps from "../../component/modal/ModalProps"
-import ChangePassword from "../../component/adminSide/ChangePassword"
 import ToastUpdate from "../../component/Toastify/ToastUpdate"
-import AdminControl from "../../component/adminSide/AdminControl"
-import CategoriesControl from "../../component/adminSide/CategoriesControl"
-import AddFilm from "../../component/adminSide/AddFilm"
-import AddEps from "../../component/adminSide/AddEps"
-import UpdateEps from "../../component/adminSide/UpdateEps"
+const ModalProps = lazy(() => import('../../component/modal/ModalProps'))
+const ChangePassword = lazy(() => import('../../component/adminSide/ChangePassword'))
+const AdminControl = lazy(() => import('../../component/adminSide/AdminControl'))
+const CategoriesControl = lazy(() => import('../../component/adminSide/CategoriesControl'))
+import AddFilm from '../../component/adminSide/AddFilm'
+import AddEps from '../../component/adminSide/AddEps'
+import UpdateEps from '../../component/adminSide/UpdateEps'
+import FilmControl from "../../component/adminSide/FilmControl"
+import DeleteMovie from "../../component/adminSide/DeleteMovie"
+import UpdateFilm from "../../component/adminSide/UpdateFilm"
+import SearchMainFilm from "../../component/adminSide/SearchMainFilm"
 
 function AdminPanel() {
     const cookies = new Cookies()
@@ -19,7 +23,7 @@ function AdminPanel() {
     const [state, setState] = useReducer((prev, next) => ({
         ...prev, ...next
     }), {
-        optionsCollapse: false,
+        optionsCollapse: false, searchMain: "",
         modalState: false,
         modalStateOptions: null,
         // Change password state
@@ -29,8 +33,13 @@ function AdminPanel() {
         // Categories control state
         wantAddNewCate: false, newCateTitle: "", newCateContent: "", listCategories: [],
         // Add film state
-        searchFilm: "", listAutoComplete: [], listCrew: null, movieData: null, newEps: [], epsTitle: "", epsUrl: "", epsIndex: null, movieTrailer: "", movieNote: "", movieAge: "", listCateMovie: []
+        wantAddFilm: false, searchFilm: "", listAutoComplete: [], listCrew: null, movieData: null, newEps: [], epsTitle: "", epsUrl: "", epsIndex: null, movieTrailer: "", movieNote: "", movieAge: "", listCateMovie: [],
+        // Film control state
+        listMovies: [], viewMoreCate: false, indexMovie: null, deleteMovieTitle: null, movieKeysUpdate: null, wantUpdatePrevEps: false, wantUpdateOldEps: false,
+        // Paginate
+        pageCount: 6, currentPage: 1
     })
+    const limit = 10
     const dateNow = new Date().getHours('vi-VN')
     const welcomeTime = dateNow >= 4 && dateNow < 11 ? "☀️ Chào buổi sáng" : dateNow >= 11 && dateNow < 13 ? "🌤️ Chào buổi trưa" : dateNow >= 13 && dateNow < 18 ? "🌅 Chào buổi chiều" : dateNow >= 18 && dateNow < 22 ? "🌙 Chào buổi tối" : "💤 Chào buổi đêm"
 
@@ -44,11 +53,26 @@ function AdminPanel() {
         })
     }
 
+    function callMovies(s) {
+        const configuration = {
+            method: "get",
+            url: "http://localhost:3000/api/v1/getMovies",
+            params: {
+                search: s,
+                page: state.currentPage,
+                limit: limit,
+            }
+        }
+        axios(configuration).then((res) => {
+            setState({ listMovies: res.data.results.result, pageCount: res.data.results.pageCount })
+            console.log(res.data.results)
+        })
+    }
+
     function logout() {
         cookies.remove("TOKEN", { path: "/" });
         window.location.href = "/";
     }
-
     return (
         <div className="adminPanel">
             <header>
@@ -77,27 +101,41 @@ function AdminPanel() {
             </header>
             <div className="bodyPanel">
                 <div className="upperBody">
-                    <input type="text" placeholder="Tìm kiếm phim..." />
+                    <SearchMainFilm state={state} setState={setState} callMovies={callMovies} useEffect={useEffect} />
                     <div className="insideUpperBody">
-                        <button type="button">Thêm phim</button>
+                        {state.wantAddFilm ? (
+                            <>
+                                <button onClick={() => setState({ wantAddFilm: true })} type="submit" form="formMovieExists">✔</button>
+                                <button onClick={() => setState({ wantAddFilm: false })} type="button">X</button>
+                            </>
+                        ) : (
+                            <button onClick={() => setState({ wantAddFilm: true })} type="button">Thêm phim</button>
+                        )}
                         <button onClick={() => setState({ modalState: true, modalStateOptions: 3 })} type="button">Quản lý danh mục</button>
                     </div>
                 </div>
-                <div className="midBody">
-                    <AddFilm state={state} setState={setState} axios={axios} callCategories={callCategories}/>
-                </div>
+                {state.wantAddFilm ? (
+                    <div className="midBody">
+                        <AddFilm useEffect={useEffect} state={state} setState={setState} axios={axios} callCategories={callCategories} callMovies={callMovies} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
+                    </div>
+                ) : null}
+                <FilmControl useEffect={useEffect} state={state} setState={setState} callMovies={callMovies} />
             </div>
             <ModalProps state={state} setState={setState}>
                 {state?.modalStateOptions === 1 ? (
-                    <AdminControl state={state} setState={setState} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef}/>
+                    <AdminControl state={state} setState={setState} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} useEffect={useEffect} />
                 ) : state?.modalStateOptions === 2 ? (
                     <ChangePassword state={state} setState={setState} decode={decode} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
                 ) : state?.modalStateOptions === 3 ? (
-                    <CategoriesControl state={state} setState={setState} toast={toast} axios={axios} ToastUpdate={ToastUpdate} useRef={useRef} callCategories={callCategories}/>
+                    <CategoriesControl state={state} setState={setState} toast={toast} axios={axios} ToastUpdate={ToastUpdate} useRef={useRef} callCategories={callCategories} useEffect={useEffect} />
                 ) : state?.modalStateOptions === 4 ? (
                     <AddEps state={state} setState={setState} />
-                ) : (
+                ) : state?.modalStateOptions === 5 ? (
                     <UpdateEps state={state} setState={setState} />
+                ) : state?.modalStateOptions === 6 ? (
+                    <DeleteMovie state={state} setState={setState} axios={axios} callMovies={callMovies} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
+                ) : (
+                    <UpdateFilm useEffect={useEffect} state={state} setState={setState} callCategories={callCategories} callMovies={callMovies} AddEps={AddEps} UpdateEps={UpdateEps} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
                 )}
             </ModalProps>
         </div>

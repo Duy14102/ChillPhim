@@ -27,7 +27,7 @@
 
 .information .movieIn4 .coverTextIn4 .movieName {
     color: #fff;
-    font-size: 3vw;
+    font-size: 2.5vw;
     letter-spacing: 1px;
     word-break: break-all;
 }
@@ -194,6 +194,14 @@
     font-size: 18px;
     color: rgba(211, 211, 211, 0.8);
     text-decoration: none;
+}
+
+.quiteIn4 .quiteContent{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    row-gap: 5px;
+    flex-wrap: wrap;
 }
 
 .quiteIn4 .quiteContent a:hover {

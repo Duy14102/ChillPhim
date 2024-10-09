@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+function AddFilm({ state, setState, axios, callCategories, callMovies, toast, ToastUpdate, useRef,useEffect }) {
+    const toastNow = useRef(null)
 
-function AddFilm({ state, setState, axios, callCategories }) {
     useEffect(() => {
         callCategories()
     }, [])
+
     useEffect(() => {
         if (state.searchFilm !== "") {
             const debounceResult = setTimeout(() => {
@@ -29,6 +30,7 @@ function AddFilm({ state, setState, axios, callCategories }) {
     }, [state.searchFilm])
 
     function getFilmDetail(id) {
+        toastNow.current = toast.loading("Chờ một chút...")
         const filmConfiguration = {
             method: 'get',
             url: `https://api.themoviedb.org/3/movie/${id}?language=vi-VN`,
@@ -53,6 +55,7 @@ function AddFilm({ state, setState, axios, callCategories }) {
                     screenWriters: res2.data.crew.filter((a) => a.known_for_department === "Writing" && a.job === "Screenplay")
                 }
                 setState({ listCrew: dataFetch, movieData: res.data })
+                ToastUpdate({ type: 1, message: `Đã chọn ${res.data.title}`, refCur: toastNow.current })
             })
         })
     }
@@ -62,8 +65,43 @@ function AddFilm({ state, setState, axios, callCategories }) {
         data.includes(title) ? data.splice(data.indexOf(title), 1) : data.push(title)
         setState({ listCateMovie: data })
     }
+
+    function getSrcYoutube(url) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
+        const match = url.match(regExp)
+        const ID = (match && match[2].length === 11) ? match[2] : null
+        return 'https://www.youtube.com/embed/' + ID
+    }
+
+    function addMovies(e) {
+        e.preventDefault()
+        toastNow.current = toast.loading("Chờ một chút...")
+        if (state.listCateMovie.length === 0) {
+            return ToastUpdate({ type: 2, message: "Danh mục bị trống!", refCur: toastNow.current })
+        }
+        const configuration = {
+            method: "post",
+            url: "http://localhost:3000/api/v1/addMovies",
+            data: {
+                movie: state.movieData,
+                crew: state.listCrew,
+                trailerSource: getSrcYoutube(state.movieTrailer),
+                ageRate: state.movieAge,
+                note: state.movieNote,
+                category: state.listCateMovie,
+                filmSources: state.newEps
+            }
+        }
+        axios(configuration).then((res) => {
+            ToastUpdate({ type: 1, message: res.data.message, refCur: toastNow.current })
+            setState({ wantAddFilm: false, searchFilm: "", listAutoComplete: [], listCrew: null, movieData: null, newEps: [], epsTitle: "", epsUrl: "", epsIndex: null, movieTrailer: "", movieNote: "", movieAge: "", listCateMovie: [] })
+            callMovies("")
+        }).catch((err) => {
+            ToastUpdate({ type: 2, message: err.response.data.message, refCur: toastNow.current })
+        })
+    }
     return (
-        <form id="formMovieExists" className="coverAddFilm">
+        <form onSubmit={(e) => addMovies(e)} id="formMovieExists" className="coverAddFilm">
             {state.movieData ? (
                 <>
                     <div className="coverAddFilmChild">

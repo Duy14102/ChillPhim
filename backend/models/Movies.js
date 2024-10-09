@@ -35,7 +35,7 @@ const MovieSchema = new mongoose.Schema({
     },
 
     note: {
-        type: Array
+        type: String
     },
 
     category: {
@@ -48,6 +48,10 @@ const MovieSchema = new mongoose.Schema({
 
     time: {
         type: Number
+    },
+
+    timeProduce: {
+        type: String
     },
 
     crew: {

@@ -77,7 +77,10 @@
 .coverInputAddNew .addNewPasswordCover button:active,
 .adminControl td .deleteAdminButton:active,
 .categoriesControl .toolCate button:active,
-.addEpsDiv button:active {
+.addEpsDiv button:active,
+.deleteFilmProps span button:active,
+.updateMovies .fieldCategory button:active,
+.updateMovies .updateFilmSubmitButton:active {
     scale: 0.9;
 }
 
@@ -399,5 +402,129 @@
 
 .addEpsDiv button:hover {
     background: #94b1f2;
+    color: #fff;
+}
+
+.deleteFilmProps {
+    padding: 10px 0;
+}
+
+.deleteFilmProps h3 {
+    color: rgba(211, 211, 211, 0.8);
+    text-align: center;
+}
+
+.deleteFilmProps span {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 15px;
+}
+
+.deleteFilmProps span button {
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    transition: all .3s;
+    cursor: pointer;
+}
+
+.deleteFilmProps span button:first-child {
+    background: #94b1f2;
+    border: none;
+    color: #202124;
+}
+
+.deleteFilmProps span button:first-child:hover {
+    color: #fff;
+}
+
+.deleteFilmProps span button:last-child {
+    border: 1px solid #94b1f2;
+    background: #202124;
+    color: #94b1f2;
+}
+
+.deleteFilmProps span button:last-child:hover {
+    color: #fff;
+    background: #94b1f2;
+}
+
+.updateMovies {
+    margin-top: 15px;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.updateMovies .fieldUpdate {
+    background: #202124;
+    border-radius: 10px;
+    padding: 15px;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    resize: none;
+}
+
+.updateMovies .fieldCategory {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.updateMovies .fieldCategory .cateFieldButton,
+.updateMovies .updateFilmSubmitButton {
+    cursor: pointer;
+    position: relative;
+    padding: 10px 20px;
+    background: #202124;
+    color: #94b1f2;
+    font-size: 16px;
+    border: 1px solid #94b1f2;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: all .3s;
+}
+
+.updateMovies .updateFilmSubmitButton {
+    font-size: 18px;
+}
+
+.updateMovies .fieldCategory .cateFieldButton:hover,
+.updateMovies .updateFilmSubmitButton:hover {
+    background: #94b1f2;
+    color: #fff;
+}
+
+.updateMovies .fieldCategory .cateFieldButton svg {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    padding: 5px;
+    background: #202124;
+    fill: #fff;
+    border-radius: 50%;
+    top: -10px;
+    right: -10px;
+}
+
+.updateMovies .fieldCategory .epsFieldButton {
+    cursor: pointer;
+    position: relative;
+    padding: 10px 20px;
+    background: #94b1f2;
+    color: #202124;
+    font-size: 16px;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: all .3s;
+    border: none;
+}
+
+.updateMovies .fieldCategory .epsFieldButton:hover {
     color: #fff;
 }
