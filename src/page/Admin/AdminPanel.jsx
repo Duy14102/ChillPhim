@@ -23,7 +23,7 @@ function AdminPanel() {
     const [state, setState] = useReducer((prev, next) => ({
         ...prev, ...next
     }), {
-        optionsCollapse: false, searchMain: "",
+        optionsCollapse: false, searchMain: "", searchCateMain: "", searchAccMain: "",
         modalState: false,
         modalStateOptions: null,
         // Change password state
@@ -33,23 +33,31 @@ function AdminPanel() {
         // Categories control state
         wantAddNewCate: false, newCateTitle: "", newCateContent: "", listCategories: [],
         // Add film state
-        wantAddFilm: false, searchFilm: "", listAutoComplete: [], listCrew: null, movieData: null, newEps: [], epsTitle: "", epsUrl: "", epsIndex: null, movieTrailer: "", movieNote: "", movieAge: "", listCateMovie: [],
+        wantAddFilm: false, searchFilm: "", listAutoComplete: [], listCrew: null, movieData: null, newEps: [], epsTitle: "", epsUrl: "", epsIndex: null, movieTrailer: "", movieNote: "", movieAge: "", listCateMovie: [], servers: [], listAllCate: [],
         // Film control state
         listMovies: [], viewMoreCate: false, indexMovie: null, deleteMovieTitle: null, movieKeysUpdate: null, wantUpdatePrevEps: false, wantUpdateOldEps: false,
         // Paginate
-        pageCount: 6, currentPage: 1
+        pageCount1: 6, pageCount2: 6, pageCount3: 6
     })
     const limit = 10
+    const currentPage1 = useRef(1)
+    const currentPage2 = useRef(1)
+    const currentPage3 = useRef(1)
     const dateNow = new Date().getHours('vi-VN')
     const welcomeTime = dateNow >= 4 && dateNow < 11 ? "☀️ Chào buổi sáng" : dateNow >= 11 && dateNow < 13 ? "🌤️ Chào buổi trưa" : dateNow >= 13 && dateNow < 18 ? "🌅 Chào buổi chiều" : dateNow >= 18 && dateNow < 22 ? "🌙 Chào buổi tối" : "💤 Chào buổi đêm"
 
-    function callCategories() {
+    function callCategories(s) {
         const configuration = {
             method: "get",
-            url: "http://localhost:3000/api/v1/getCategories"
+            url: "http://localhost:3000/api/v1/getCategories",
+            params: {
+                search: s,
+                page: currentPage2.current,
+                limit: limit,
+            }
         }
         axios(configuration).then((res) => {
-            setState({ listCategories: res.data })
+            setState({ listCategories: res.data.results.result, pageCount2: res.data.results.pageCount })
         })
     }
 
@@ -59,13 +67,12 @@ function AdminPanel() {
             url: "http://localhost:3000/api/v1/getMovies",
             params: {
                 search: s,
-                page: state.currentPage,
+                page: currentPage1.current,
                 limit: limit,
             }
         }
         axios(configuration).then((res) => {
-            setState({ listMovies: res.data.results.result, pageCount: res.data.results.pageCount })
-            console.log(res.data.results)
+            setState({ listMovies: res.data.results.result, pageCount1: res.data.results.pageCount })
         })
     }
 
@@ -101,7 +108,7 @@ function AdminPanel() {
             </header>
             <div className="bodyPanel">
                 <div className="upperBody">
-                    <SearchMainFilm state={state} setState={setState} callMovies={callMovies} useEffect={useEffect} />
+                    <SearchMainFilm type={1} search={state.searchMain} setState={setState} callBacks={callMovies} useEffect={useEffect} />
                     <div className="insideUpperBody">
                         {state.wantAddFilm ? (
                             <>
@@ -116,18 +123,18 @@ function AdminPanel() {
                 </div>
                 {state.wantAddFilm ? (
                     <div className="midBody">
-                        <AddFilm useEffect={useEffect} state={state} setState={setState} axios={axios} callCategories={callCategories} callMovies={callMovies} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
+                        <AddFilm useEffect={useEffect} state={state} setState={setState} axios={axios} callMovies={callMovies} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
                     </div>
                 ) : null}
-                <FilmControl useEffect={useEffect} state={state} setState={setState} callMovies={callMovies} />
+                <FilmControl currentPage1={currentPage1} useEffect={useEffect} state={state} setState={setState} callMovies={callMovies} />
             </div>
             <ModalProps state={state} setState={setState}>
                 {state?.modalStateOptions === 1 ? (
-                    <AdminControl state={state} setState={setState} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} useEffect={useEffect} />
+                    <AdminControl SearchMainFilm={SearchMainFilm} currentPage3={currentPage3} state={state} setState={setState} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} useEffect={useEffect} />
                 ) : state?.modalStateOptions === 2 ? (
                     <ChangePassword state={state} setState={setState} decode={decode} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
                 ) : state?.modalStateOptions === 3 ? (
-                    <CategoriesControl state={state} setState={setState} toast={toast} axios={axios} ToastUpdate={ToastUpdate} useRef={useRef} callCategories={callCategories} useEffect={useEffect} />
+                    <CategoriesControl currentPage2={currentPage2} SearchMainFilm={SearchMainFilm} state={state} setState={setState} toast={toast} axios={axios} ToastUpdate={ToastUpdate} useRef={useRef} callCategories={callCategories} useEffect={useEffect} />
                 ) : state?.modalStateOptions === 4 ? (
                     <AddEps state={state} setState={setState} />
                 ) : state?.modalStateOptions === 5 ? (

@@ -67,7 +67,8 @@ const MovieSchema = new mongoose.Schema({
     },
 
     view: {
-        type: Number
+        type: Number,
+        default: 0
     },
 
     comments: {

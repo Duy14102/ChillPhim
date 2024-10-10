@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 // Connect to MongoDB
 const mongoose = require('mongoose');
 require('dotenv').config({ path: "../.env" })
-mongoose.connect(process.env.REACT_APP_mongoCompass).then(() => console.log('Connected To MongoDB')).catch((err) => { console.error(err); });
+mongoose.connect(process.env.REACT_APP_mongoAtlas).then(() => console.log('Connected To MongoDB')).catch((err) => { console.error(err); });
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
@@ -37,14 +37,16 @@ const Accounts = require("./models/Accounts");                              // A
 const Categories = require("./models/Categories");                          // Categories
 
 // Create first admin account
-Accounts.findOne({ username: "admin" }).catch(async () => {
-    const hashPassword = await argon2.hash(process.env.REACT_APP_firstAdminPassword);
-    const firstAdmin = new Accounts({
-        username: "admin",
-        password: hashPassword,
-        role: 1
-    })
-    firstAdmin.save()
+Accounts.findOne({ username: "admin" }).then(async (res1) => {
+    if (!res1) {
+        const hashPassword = await argon2.hash(process.env.REACT_APP_firstAdminPassword);
+        const firstAdmin = new Accounts({
+            username: "admin",
+            password: hashPassword,
+            role: 1
+        })
+        firstAdmin.save()
+    }
 })
 
 // Api
@@ -115,15 +117,63 @@ app.post("/api/v1/deleteAccount", (req, res) => {
 })
 
 app.get("/api/v1/getAccounts", async (req, res) => {
-    await Accounts.find({ username: { $ne: "admin" } }).then((res1) => {
-        res.status(201).send(res1)
-    })
+    const res1 = await Accounts.find(req.query.search && req.query.search !== "" ? { username: { $in: new RegExp(req.query.search, 'i') } } : {}).sort({ createdAt: -1 })
+    const page = parseInt(req.query.page)
+    const limit = parseInt(req.query.limit)
+
+    const start = (page - 1) * limit
+    const end = page * limit
+
+    const results = {}
+    results.total = res1.length
+    results.pageCount = Math.ceil(res1.length / limit)
+
+    if (end < res1.length) {
+        results.next = {
+            page: page + 1
+        }
+    }
+    if (start > 0) {
+        results.prev = {
+            page: page - 1
+        }
+    }
+
+    results.result = res1.slice(start, end)
+    res.status(201).send({ results });
 })
 
 
 
 // Categories Api
 app.get("/api/v1/getCategories", async (req, res) => {
+    const res1 = await Categories.find(req.query.search && req.query.search !== "" ? { title: new RegExp(req.query.search, 'i') } : {}).sort({ createdAt: -1 })
+    const page = parseInt(req.query.page)
+    const limit = parseInt(req.query.limit)
+
+    const start = (page - 1) * limit
+    const end = page * limit
+
+    const results = {}
+    results.total = res1.length
+    results.pageCount = Math.ceil(res1.length / limit)
+
+    if (end < res1.length) {
+        results.next = {
+            page: page + 1
+        }
+    }
+    if (start > 0) {
+        results.prev = {
+            page: page - 1
+        }
+    }
+
+    results.result = res1.slice(start, end)
+    res.status(201).send({ results });
+})
+
+app.get("/api/v1/getAllCategories", async (req, res) => {
     await Categories.find({}).then((res1) => {
         res.status(201).send(res1)
     })

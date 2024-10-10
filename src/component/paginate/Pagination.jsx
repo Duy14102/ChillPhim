@@ -1,31 +1,31 @@
 import "./Pagination.css"
 
-function Pagination({ state, setState, callBack }) {
+function Pagination({ currentPage, pageCount, callBack, searchEnale }) {
     function HandlePageClick(e) {
-        state.currentPage = e + 1
-        callBack();
+        currentPage.current = e + 1
+        callBack(searchEnale !== "" ? searchEnale : null);
     }
 
     function pagePrev() {
-        if (state.currentPage <= 1) {
+        if (currentPage.current <= 1) {
             return false
         }
-        state.currentPage = state.currentPage - 1
-        callBack()
+        currentPage.current = currentPage.current - 1
+        callBack(searchEnale !== "" ? searchEnale : null)
     }
     function pageNext() {
-        if (state.currentPage >= state.pageCount) {
+        if (currentPage.current >= pageCount) {
             return false
         }
-        state.currentPage = state.currentPage + 1
-        callBack()
+        currentPage.current = currentPage.current + 1
+        callBack(searchEnale !== "" ? searchEnale : null)
     }
     return (
         <div className="pagination">
             <button onClick={() => pagePrev()} type="button" className="page-item">{"<"}</button>
-            {Array.from(Array(state.pageCount), (e, i) => {
+            {Array.from(Array(pageCount), (e, i) => {
                 return (
-                    <button style={i + 1 === state.currentPage ? { background: "#94b1f2", color: "#fff" } : null} onClick={() => HandlePageClick(i)} key={i} type="button" className="page-item">{i + 1}</button>
+                    <button style={i + 1 === currentPage.current ? { background: "#94b1f2", color: "#fff" } : null} onClick={() => HandlePageClick(i)} key={i} type="button" className="page-item">{i + 1}</button>
                 )
             })}
             <button onClick={() => pageNext()} type="button" className="page-item">{">"}</button>

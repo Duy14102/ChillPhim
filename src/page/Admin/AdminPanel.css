@@ -267,7 +267,7 @@ header .options .collapseOptions .collapseOptionsChild:hover {
 }
 
 .coverAddFilm .noteMovie {
-    height: 150px;
+    height: auto;
     width: 49%;
     resize: none;
     border-radius: 10px;

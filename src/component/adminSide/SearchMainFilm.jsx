@@ -1,19 +1,19 @@
-function SearchMainFilm({ state, setState, callMovies, useEffect }) {
+function SearchMainFilm({ search, setState, callBacks, useEffect, type }) {
     useEffect(() => {
-        if (state.searchMain !== "") {
+        if (search !== "") {
             const debounceResult = setTimeout(() => {
-                callMovies(state.searchMain)
+                callBacks(search)
             }, 1000);
             return () => clearTimeout(debounceResult)
             // eslint-disable-next-line react-hooks/exhaustive-deps
         } else {
             setTimeout(() => {
-                callMovies("")
+                callBacks("")
             }, 1000);
         }
-    }, [state.searchMain])
+    }, [search])
     return (
-        <input value={state.searchMain} onChange={(e) => setState({ searchMain: e.target.value })} type="text" placeholder="Tìm kiếm phim..." />
+        <input value={search} onChange={(e) => setState(type === 1 ? { searchMain: e.target.value } : type === 2 ? { searchCateMain: e.target.value } : { searchAccMain: e.target.value })} type="text" placeholder={type === 1 ? "Tìm kiếm phim..." : type === 2 ? "Tìm kiếm danh mục..." : "Tìm kiếm tài khoản..."} />
     )
 }
 export default SearchMainFilm

@@ -1,8 +1,14 @@
-function AddFilm({ state, setState, axios, callCategories, callMovies, toast, ToastUpdate, useRef,useEffect }) {
+function AddFilm({ state, setState, axios, callMovies, toast, ToastUpdate, useRef, useEffect }) {
     const toastNow = useRef(null)
 
     useEffect(() => {
-        callCategories()
+        const configuration = {
+            method: "get",
+            url: "http://localhost:3000/api/v1/getAllCategories"
+        }
+        axios(configuration).then((res) => {
+            setState({ listAllCate: res.data })
+        })
     }, [])
 
     useEffect(() => {
@@ -94,7 +100,7 @@ function AddFilm({ state, setState, axios, callCategories, callMovies, toast, To
         }
         axios(configuration).then((res) => {
             ToastUpdate({ type: 1, message: res.data.message, refCur: toastNow.current })
-            setState({ wantAddFilm: false, searchFilm: "", listAutoComplete: [], listCrew: null, movieData: null, newEps: [], epsTitle: "", epsUrl: "", epsIndex: null, movieTrailer: "", movieNote: "", movieAge: "", listCateMovie: [] })
+            setState({ wantAddFilm: false, searchFilm: "", listAutoComplete: [], listCrew: null, movieData: null, newEps: [], epsTitle: "", servers: [], epsIndex: null, movieTrailer: "", movieNote: "", movieAge: "", listCateMovie: [] })
             callMovies("")
         }).catch((err) => {
             ToastUpdate({ type: 2, message: err.response.data.message, refCur: toastNow.current })
@@ -135,7 +141,7 @@ function AddFilm({ state, setState, axios, callCategories, callMovies, toast, To
                         <div className="chooseCateFilm">
                             <div className="chooseCateFilmChild">
                                 <p>Chọn danh mục :</p>
-                                {state.listCategories.map((c) => {
+                                {state.listAllCate.map((c) => {
                                     return (
                                         <button onClick={() => updateCate(c.title)} key={c.title} type="button">{c.title}
                                             <svg style={{ opacity: state.listCateMovie.includes(c.title) ? 1 : 0 }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
@@ -149,7 +155,7 @@ function AddFilm({ state, setState, axios, callCategories, callMovies, toast, To
                         <button className="addEpsMainButton" onClick={() => setState({ modalState: true, modalStateOptions: 4 })} type="button">Thêm tập</button>
                         {state.newEps.map((e, indexE) => {
                             return (
-                                <button key={indexE} onClick={() => setState({ modalState: true, modalStateOptions: 5, epsTitle: e.title, epsUrl: e.url, epsIndex: indexE })} type="button">{e.title}</button>
+                                <button key={indexE} onClick={() => setState({ modalState: true, modalStateOptions: 5, epsTitle: e.title, servers: e.servers, epsIndex: indexE })} type="button">{e.title}</button>
                             )
                         })}
                     </div>

@@ -13,7 +13,9 @@ function Streaming() {
     }), {
         movies: null,
         similarMovies: null,
-        light: false
+        light: false,
+        servers: 0,
+        wantChangeServer: false
     })
 
     useEffect(() => {
@@ -57,13 +59,30 @@ function Streaming() {
     return (
         <div style={{ background: state.light ? "black" : null }} className='streaming'>
             <div ref={videoDiv} className='videoStreaming'>
-                <iframe id='myFrame' allowFullScreen src={state.movies?.filmSources.filter((item) => item.title === params.Ep)[0].url}></iframe>
+                {state.movies?.filmSources.filter((item) => item.title === params.Ep)[0].servers[state.servers].includes("m3u8") ? (
+                    <video controls>
+                        <source src={state.movies?.filmSources.filter((item) => item.title === params.Ep)[0].servers[state.servers]} type="application/x-mpegURL"></source>
+                    </video>
+                ) : (
+                    <iframe id='myFrame' allowFullScreen src={state.movies?.filmSources.filter((item) => item.title === params.Ep)[0].servers[state.servers]}></iframe>
+                )}
             </div>
             <div style={{ background: state.light ? "black" : null }} className='buttonStreaming'>
+                <a className='buttonDefault buttonPrevNext buttonIn4' href={`/Information/${params.Name}`}>ℹ️</a>
                 <a href={`/Streaming/${params.Name}/${prevEps()}`} className='buttonDefault buttonPrevNext' type='button'>◄ Tập trước</a>
                 <a href={`/Streaming/${params.Name}/${nextEps()}`} className='buttonDefault buttonPrevNext' type='button'>Tập tiếp ►</a>
+                <button onClick={() => setState({ wantChangeServer: state.wantChangeServer ? false : true })} style={{ position: "relative", borderRadius: state.wantChangeServer ? "99px 99px 0 0" : 99 }} className='buttonDefault buttonPrevNext' type='button'>Đổi server
+                    {state.wantChangeServer ? (
+                        <div className='serverDropdown'>
+                            {state.movies?.filmSources.filter((item) => item.title === params.Ep)[0].servers.map((s, indexS) => {
+                                return (
+                                    <button key={indexS} onClick={() => setState({ servers: indexS })} type='button' className='serverButton'>Server {indexS + 1}</button>
+                                )
+                            })}
+                        </div>
+                    ) : null}
+                </button>
                 <button onClick={() => setState({ light: state.light ? false : true })} className='buttonDefault buttonLight' type='button'>{state.light ? "Bật đèn" : "Tắt đèn"}</button>
-                <a className='buttonDefault buttonPrevNext buttonIn4' href={`/Information/${params.Name}`}>ℹ️</a>
             </div>
             <div style={{ opacity: state.light ? 0 : null }} className='episodeStreaming'>
                 <h2>Danh sách tập</h2>

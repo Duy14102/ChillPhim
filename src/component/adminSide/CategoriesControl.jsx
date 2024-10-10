@@ -1,8 +1,10 @@
-function CategoriesControl({ state, setState, axios, toast, ToastUpdate, useRef,callCategories,useEffect }) {
+import Pagination from "../paginate/Pagination"
+
+function CategoriesControl({ currentPage2, SearchMainFilm, state, setState, axios, toast, ToastUpdate, useRef, callCategories, useEffect }) {
     const toastNow = useRef(null)
 
     useEffect(() => {
-        callCategories()
+        callCategories(state.searchCateMain ? state.searchCateMain : null)
     }, [])
 
     function addCategories(e) {
@@ -19,7 +21,7 @@ function CategoriesControl({ state, setState, axios, toast, ToastUpdate, useRef,
         axios(configuration).then((res) => {
             ToastUpdate({ type: 1, message: res.data.message, refCur: toastNow.current })
             setState({ newCateTitle: "", newCateContent: "", wantAddNewCate: false })
-            callCategories()
+            callCategories(state.searchCateMain ? state.searchCateMain : null)
         }).catch((err) => {
             ToastUpdate({ type: 2, message: err.response.data.message, refCur: toastNow.current })
         })
@@ -36,7 +38,7 @@ function CategoriesControl({ state, setState, axios, toast, ToastUpdate, useRef,
         }
         axios(configuration).then((res) => {
             ToastUpdate({ type: 1, message: res.data.message, refCur: toastNow.current })
-            callCategories()
+            callCategories(state.searchCateMain ? state.searchCateMain : null)
         }).catch((err) => {
             ToastUpdate({ type: 2, message: err.response.data.message, refCur: toastNow.current })
         })
@@ -44,7 +46,7 @@ function CategoriesControl({ state, setState, axios, toast, ToastUpdate, useRef,
     return (
         <div className="categoriesControl">
             <div className="toolCate">
-                <input type="text" placeholder="Tìm kiếm danh mục..." />
+                <SearchMainFilm search={state.searchCateMain} setState={setState} callBacks={callCategories} useEffect={useEffect} type={2} />
                 {state.wantAddNewCate ? (
                     <>
                         <button type="submit" form="addNewCateDiv">
@@ -104,6 +106,9 @@ function CategoriesControl({ state, setState, axios, toast, ToastUpdate, useRef,
                     )}
                 </tbody>
             </table>
+            {state.listCategories.length > 0 ? (
+                <Pagination searchEnale={state.searchCateMain} state={state} currentPage={currentPage2} pageCount={state.pageCount2} callBack={callCategories} />
+            ) : null}
         </div>
     )
 }

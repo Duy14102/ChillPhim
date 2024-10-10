@@ -32,7 +32,7 @@ function UpdateFilm({ state, setState, axios, callCategories, callMovies, AddEps
         }
         axios(configuration).then((res) => {
             ToastUpdate({ type: 1, message: res.data.message, refCur: toastNow.current })
-            setState({ epsTitle: "", epsUrl: "", epsIndex: null, wantUpdatePrevEps: false, wantUpdateOldEps: false })
+            setState({ epsTitle: "", servers: [], epsIndex: null, wantUpdatePrevEps: false, wantUpdateOldEps: false })
             callMovies()
         }).catch((err) => {
             ToastUpdate({ type: 2, message: err.response.data.message, refCur: toastNow.current })
@@ -69,7 +69,7 @@ function UpdateFilm({ state, setState, axios, callCategories, callMovies, AddEps
                 <button className="epsFieldButton" onClick={() => setState({ wantUpdatePrevEps: true })} type="button">Thêm tập</button>
                 {state.movieKeysUpdate?.filmSources.map((f, indexF) => {
                     return (
-                        <button key={indexF} onClick={() => setState({ wantUpdateOldEps: true, epsTitle: f.title, epsUrl: f.url, epsIndex: indexF })} className="epsFieldButton" type="button">{f.title}</button>
+                        <button key={indexF} onClick={() => setState({ wantUpdateOldEps: true, epsTitle: f.title, servers: f.servers, epsIndex: indexF })} className="epsFieldButton" type="button">{f.title}</button>
                     )
                 })}
             </div>
