@@ -306,3 +306,12 @@ app.post("/api/v1/countMoviesView", (req, res) => {
         res.status(201).send({ message: "View + 1" })
     })
 })
+
+app.get("/api/v1/checkMoviesExists", async (req, res) => {
+    const res1 = await Movies.findOne({ subtitle: req.query.subtitle })
+    if (res1) {
+        res.status(500).send("")
+    } else {
+        res.status(201).send("")
+    }
+})

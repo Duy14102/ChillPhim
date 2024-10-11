@@ -46,22 +46,33 @@ function AddFilm({ state, setState, axios, callMovies, toast, ToastUpdate, useRe
             }
         }
         axios(filmConfiguration).then((res) => {
-            const creditConfiguration = {
+            const checkFilmConfiguration = {
                 method: 'get',
-                url: `https://api.themoviedb.org/3/movie/${id}/credits?language=vi-VN`,
-                headers: {
-                    accept: 'application/json',
-                    Authorization: `Bearer ${process.env.REACT_APP_themoviedbApikey}`
+                url: "http://localhost:3000/api/v1/checkMoviesExists",
+                params: {
+                    subtitle: res.data.original_title
                 }
             }
-            axios(creditConfiguration).then((res2) => {
-                const dataFetch = {
-                    director: res2.data.crew.filter((a) => a.job === "Director")[0].name,
-                    stars: res2.data.cast.slice(0, 3),
-                    screenWriters: res2.data.crew.filter((a) => a.known_for_department === "Writing" && a.job === "Screenplay")
+            axios(checkFilmConfiguration).then(() => {
+                const creditConfiguration = {
+                    method: 'get',
+                    url: `https://api.themoviedb.org/3/movie/${id}/credits?language=vi-VN`,
+                    headers: {
+                        accept: 'application/json',
+                        Authorization: `Bearer ${process.env.REACT_APP_themoviedbApikey}`
+                    }
                 }
-                setState({ listCrew: dataFetch, movieData: res.data })
-                ToastUpdate({ type: 1, message: `Đã chọn ${res.data.title}`, refCur: toastNow.current })
+                axios(creditConfiguration).then((res2) => {
+                    const dataFetch = {
+                        director: res2.data.crew.filter((a) => a.job === "Director")[0].name,
+                        stars: res2.data.cast.slice(0, 3),
+                        screenWriters: res2.data.crew.filter((a) => a.known_for_department === "Writing" && a.job === "Screenplay")
+                    }
+                    setState({ listCrew: dataFetch, movieData: res.data })
+                    ToastUpdate({ type: 1, message: `Đã chọn ${res.data.title}`, refCur: toastNow.current })
+                })
+            }).catch(() => {
+                ToastUpdate({ type: 2, message: "Phim đã tồn tại!", refCur: toastNow.current })
             })
         })
     }
@@ -113,7 +124,7 @@ function AddFilm({ state, setState, axios, callMovies, toast, ToastUpdate, useRe
                 <>
                     <div className="coverAddFilmChild">
                         <div className="filmChild">
-                            <img alt={""} src={"https://image.tmdb.org/t/p/original" + state.movieData.poster_path} />
+                            <img alt={""} src={`https://image.tmdb.org/t/p/original/${window.innerWidth <= 991 ? state.movieData.backdrop_path : state.movieData.poster_path}`} />
                             <div className="filmChildIn4">
                                 <h3>{state.movieData.title}</h3>
                                 <p>{state.movieData.original_title}</p>
@@ -171,7 +182,7 @@ function AddFilm({ state, setState, axios, callMovies, toast, ToastUpdate, useRe
                             {state.listAutoComplete.map((i) => {
                                 return (
                                     <div onClick={() => getFilmDetail(i.id)} key={i.id} className="filmChild">
-                                        <img alt={i.title} src={"https://image.tmdb.org/t/p/original" + i.poster_path} />
+                                        <img alt={i.title} src={`https://image.tmdb.org/t/p/original/${window.innerWidth <= 991 ? i.backdrop_path : i.poster_path}`} />
                                         <div className="filmChildIn4">
                                             <h3>{i.title}</h3>
                                             <p>{i.original_title}</p>

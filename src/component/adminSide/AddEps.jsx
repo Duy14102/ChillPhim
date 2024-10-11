@@ -59,10 +59,11 @@ function AddEps({ state, setState }) {
             })}
             <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
                 <button type="button" onClick={() => addServers()}>+ Servers</button>
-                <button type="submit">Xong</button>
                 {state.movieKeysUpdate ? (
                     <button onClick={() => setState({ epsTitle: "", servers: [], wantUpdatePrevEps: false })} type="button">Hủy</button>
-                ) : null}
+                ) : (
+                    <button type="submit">Xong</button>
+                )}
             </div>
         </form>
     )

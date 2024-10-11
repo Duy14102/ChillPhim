@@ -33,7 +33,7 @@ function FilmControl({ currentPage1, state, setState, callMovies, useEffect }) {
                     {state.listMovies.map((i, indexI) => {
                         return (
                             <div key={i._id} className="bottomBodyChild">
-                                <img alt={i.title} src={i.banner.vertical} />
+                                <img alt={i.title} src={window.innerWidth <= 991 ? i.banner.horizontal : i.banner.vertical} />
                                 <div className="bottomBodyChildIn4">
                                     <h3 className="movieTitle">{i.title}</h3>
                                     <span className="movieSubtitle">{i.subtitle}</span>
@@ -61,10 +61,6 @@ function FilmControl({ currentPage1, state, setState, callMovies, useEffect }) {
                                     <div className="sideChild">
                                         <svg style={{ fill: "#5DC3B3" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 0a256 256 0 1 1 0 512A256 256 0 1 1 256 0zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z" /></svg>
                                         <p>{toHoursAndMinutes(i.time)}</p>
-                                    </div>
-                                    <div className="sideChild">
-                                        <svg style={{ fill: "#FBAC19" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M96 32l0 32L48 64C21.5 64 0 85.5 0 112l0 48 448 0 0-48c0-26.5-21.5-48-48-48l-48 0 0-32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 32L160 64l0-32c0-17.7-14.3-32-32-32S96 14.3 96 32zM448 192L0 192 0 464c0 26.5 21.5 48 48 48l352 0c26.5 0 48-21.5 48-48l0-272zM224 248c13.3 0 24 10.7 24 24l0 56 56 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-56 0 0 56c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-56-56 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l56 0 0-56c0-13.3 10.7-24 24-24z" /></svg>
-                                        <p>{new Date(i.createdAt).toLocaleDateString('vi-VN')}</p>
                                     </div>
                                     <div className="sideChild">
                                         <button onClick={() => setState({ modalState: true, modalStateOptions: 7, movieKeysUpdate: i })} title="Cập nhật" type="button" className="updateButton">
