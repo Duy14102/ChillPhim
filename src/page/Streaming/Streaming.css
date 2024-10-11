@@ -17,8 +17,7 @@
     fill: #fff;
 }
 
-.streaming .videoStreaming iframe,
-.streaming .videoStreaming video {
+.streaming .videoStreaming iframe {
     width: 100%;
     height: 100%;
     border: none;
@@ -143,6 +142,8 @@
     background: #2a2e37;
     padding: 15px;
     border-radius: 10px;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .streaming .episodeStreaming .episodeCover .buttonEp {

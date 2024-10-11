@@ -22,7 +22,8 @@ function HeroBanner({ movie }) {
                     grabCursor={true}
                     autoplay={{
                         delay: 3000,
-                        disableOnInteraction: true
+                        disableOnInteraction: true,
+                        pauseOnMouseEnter: true
                     }}
                     loop={true}
                     navigation={true}

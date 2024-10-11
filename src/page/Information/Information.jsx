@@ -12,7 +12,8 @@ function Information() {
     }), {
         toolsBar: 1,
         movies: null,
-        similarMovies: null
+        similarMovies: null,
+        viewMoreCate: false,
     })
     const toolsArray = [{ content: "Danh sách tập", stateClass: 1 }, { content: "Bình luận", stateClass: 3 }, { content: "Trailer", stateClass: 2 }]
 
@@ -47,11 +48,12 @@ function Information() {
                     <div className='movieSideIn4'>
                         <div className='leftSideIn4'>
                             <div className='categoryIn4'>
-                                {state.movies?.category.map((c) => {
+                                {state.movies?.category.slice(0, state.viewMoreCate ? state.movies?.category.length : 3).map((c) => {
                                     return (
                                         <a key={c} href='/' className='mainCategory'>{c}</a>
                                     )
                                 })}
+                                <div onClick={() => setState({ viewMoreCate: state.viewMoreCate ? false : true })} className='plusCateIn4'>{state.viewMoreCate ? "Thu gọn" : `+ ${state.movies?.category.length - 3}`}</div>
                             </div>
                             <div className='ratingIn4'>
                                 <div className='ratingChild'>
@@ -121,11 +123,11 @@ function Information() {
                     <iframe allowFullScreen src={state.movies?.trailerSource}></iframe>
                 ) : (
                     <div className='rateCover'>
-                        <NoReview comments={state.movies?.comments} name={state.movies?.title}/>
+                        <NoReview comments={state.movies?.comments} name={state.movies?.title} />
                     </div>
                 )}
             </div>
-            <LandingMovie Title={"Phim tương tự"} MarginTop={100} movie={state?.similarMovies}/>
+            <LandingMovie Title={"Phim tương tự"} MarginTop={100} movie={state?.similarMovies} />
         </div>
     )
 }

@@ -35,7 +35,7 @@ function AdminPanel() {
         // Add film state
         wantAddFilm: false, searchFilm: "", listAutoComplete: [], listCrew: null, movieData: null, newEps: [], epsTitle: "", epsUrl: "", epsIndex: null, movieTrailer: "", movieNote: "", movieAge: "", listCateMovie: [], servers: [], listAllCate: [],
         // Film control state
-        listMovies: [], viewMoreCate: false, indexMovie: null, deleteMovieTitle: null, movieKeysUpdate: null, wantUpdatePrevEps: false, wantUpdateOldEps: false,
+        listMovies: [], viewMoreCate: false, indexMovie: null, deleteMovieTitle: null, movieKeysUpdate: null, wantUpdatePrevEps: false, wantUpdateOldEps: false, totalEps: 1,
         // Paginate
         pageCount1: 6, pageCount2: 6, pageCount3: 6
     })

@@ -32,6 +32,7 @@ function LandingMovie({ Title, MarginTop, movie }) {
                                     <p className="titleSwiper"><span>{i.title}</span></p>
                                     <span className="playButtonSwiper">▶</span>
                                 </a>
+                                <div className="filmTotal">{i.totalEps === 1 ? "Tập Full" : `${i.filmSources.length + 1}/${i.totalEps}`}</div>
                             </SwiperSlide>
                         )
                     })}

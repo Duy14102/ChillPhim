@@ -30,6 +30,10 @@ const MovieSchema = new mongoose.Schema({
         type: Array
     },
 
+    totalEps: {
+        type: Number
+    },
+
     ageRate: {
         type: String
     },

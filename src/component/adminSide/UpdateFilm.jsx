@@ -46,7 +46,7 @@ function UpdateFilm({ state, setState, axios, callCategories, callMovies, AddEps
     }
     return (
         <form onSubmit={(e) => updateMovies(e)} className="updateMovies">
-            <input type="text" defaultValue={state.movieKeysUpdate?.trailerSource} onChange={(e) => updateField("trailerSource", e)} className="fieldUpdate" required />
+            <input type="text" defaultValue={state.movieKeysUpdate?.trailerSource} onChange={(e) => updateField("trailerSource", e)} className="fieldUpdate" required  placeholder="Trailer url..."/>
             <select onChange={(e) => updateField("ageRate", e)} defaultValue={state.movieKeysUpdate?.ageRate} required className="fieldUpdate">
                 {selectsAge.map((s, indexS) => {
                     return (
@@ -54,7 +54,8 @@ function UpdateFilm({ state, setState, axios, callCategories, callMovies, AddEps
                     )
                 })}
             </select>
-            <textarea style={{ height: 150 }} defaultValue={state.movieKeysUpdate?.note} onChange={(e) => updateField("note", e)} className="fieldUpdate"></textarea>
+            <input type="number" defaultValue={state.movieKeysUpdate?.totalEps} onChange={(e) => updateField("totalEps", e)} className="fieldUpdate" required placeholder="Tổng số tập..."/>
+            <textarea style={{ height: 150 }} defaultValue={state.movieKeysUpdate?.note} onChange={(e) => updateField("note", e)} className="fieldUpdate" placeholder="Ghi chú..."></textarea>
             <div className="fieldCategory">
                 <p style={{ color: "rgba(211,211,211,0.8)", fontSize: 16 }}>Chọn danh mục: </p>
                 {state.listCategories.map((c) => {

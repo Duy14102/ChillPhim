@@ -57,7 +57,7 @@ function UpdateEps({ state, setState }) {
 
     }
     return (
-        <form onSubmit={(e) => updateEpsFunc(e)} className="addEpsDiv">
+        <form id="addEpsDivStrict" onSubmit={(e) => updateEpsFunc(e)} className="addEpsDiv">
             <div className="addEpsDivChild">
                 <label htmlFor="titleEps">Tiêu đề</label>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
@@ -82,10 +82,11 @@ function UpdateEps({ state, setState }) {
             })}
             <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
                 <button type="button" onClick={() => addServers()}>+ Servers</button>
-                <button type="submit">Cập nhật</button>
                 {state.movieKeysUpdate ? (
                     <button onClick={() => setState({ epsTitle: "", servers: [], epsIndex: null, wantUpdateOldEps: false })} type="button">Hủy</button>
-                ) : null}
+                ) : (
+                    <button type="submit" form="addEpsDivStrict">Cập nhật</button>
+                )}
             </div>
         </form>
     )

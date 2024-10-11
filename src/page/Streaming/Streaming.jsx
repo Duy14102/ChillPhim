@@ -18,6 +18,19 @@ function Streaming() {
         wantChangeServer: false
     })
 
+    function countView() {
+        const configuration = {
+            method: "post",
+            url: "http://localhost:3000/api/v1/countMoviesView",
+            data: {
+                subtitle: params.Name
+            }
+        }
+        axios(configuration).then((res) => {
+            console.log(res.data.message)
+        })
+    }
+
     useEffect(() => {
         videoDiv.current.scrollIntoView({ behavior: "smooth" })
         const configuration = {
@@ -30,6 +43,30 @@ function Streaming() {
         }
         axios(configuration).then((res) => {
             setState({ movies: res.data.movies, similarMovies: res.data.similarMovies })
+            const checkMoviesPass = JSON.parse(localStorage.getItem("Movies"))
+            if (!checkMoviesPass) {
+                var movies = [];
+                var moviesChild = { title: params.Name, time: Date.now() };
+                movies.push(moviesChild);
+                localStorage.setItem("Movies", JSON.stringify(movies));
+                countView()
+            } else {
+                if (checkMoviesPass.filter((item) => item.title === params.Name).length === 0) {
+                    var moviesChild = { title: params.Name, time: Date.now() };
+                    checkMoviesPass.push(moviesChild);
+                    localStorage.setItem("Movies", JSON.stringify(checkMoviesPass));
+                    countView()
+                } else {
+                    checkMoviesPass.filter((item) => item.title === params.Name).map((m) => {
+                        if (new Date(m.time).getFullYear() < new Date(Date.now()).getFullYear()) {
+                            m.time = Date.now()
+                            localStorage.setItem("Movies", JSON.stringify(checkMoviesPass));
+                            countView()
+                        }
+                        return null
+                    })
+                }
+            }
         })
     }, [])
 
@@ -59,13 +96,7 @@ function Streaming() {
     return (
         <div style={{ background: state.light ? "black" : null }} className='streaming'>
             <div ref={videoDiv} className='videoStreaming'>
-                {state.movies?.filmSources.filter((item) => item.title === params.Ep)[0].servers[state.servers].includes("m3u8") ? (
-                    <video controls>
-                        <source src={state.movies?.filmSources.filter((item) => item.title === params.Ep)[0].servers[state.servers]} type="application/x-mpegURL"></source>
-                    </video>
-                ) : (
-                    <iframe id='myFrame' allowFullScreen src={state.movies?.filmSources.filter((item) => item.title === params.Ep)[0].servers[state.servers]}></iframe>
-                )}
+                <iframe id='myFrame' allowFullScreen src={state.movies?.filmSources.filter((item) => item.title === params.Ep)[0].servers[state.servers]}></iframe>
             </div>
             <div style={{ background: state.light ? "black" : null }} className='buttonStreaming'>
                 <a className='buttonDefault buttonPrevNext buttonIn4' href={`/Information/${params.Name}`}>ℹ️</a>

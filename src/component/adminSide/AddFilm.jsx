@@ -95,12 +95,13 @@ function AddFilm({ state, setState, axios, callMovies, toast, ToastUpdate, useRe
                 ageRate: state.movieAge,
                 note: state.movieNote,
                 category: state.listCateMovie,
-                filmSources: state.newEps
+                filmSources: state.newEps,
+                totalEps: state.totalEps
             }
         }
         axios(configuration).then((res) => {
             ToastUpdate({ type: 1, message: res.data.message, refCur: toastNow.current })
-            setState({ wantAddFilm: false, searchFilm: "", listAutoComplete: [], listCrew: null, movieData: null, newEps: [], epsTitle: "", servers: [], epsIndex: null, movieTrailer: "", movieNote: "", movieAge: "", listCateMovie: [] })
+            setState({ wantAddFilm: false, searchFilm: "", listAutoComplete: [], listCrew: null, movieData: null, newEps: [], epsTitle: "", totalEps: 1, servers: [], epsIndex: null, movieTrailer: "", movieNote: "", movieAge: "", listCateMovie: [] })
             callMovies("")
         }).catch((err) => {
             ToastUpdate({ type: 2, message: err.response.data.message, refCur: toastNow.current })
@@ -116,16 +117,18 @@ function AddFilm({ state, setState, axios, callMovies, toast, ToastUpdate, useRe
                             <div className="filmChildIn4">
                                 <h3>{state.movieData.title}</h3>
                                 <p>{state.movieData.original_title}</p>
+                                <p className="contentFilmChildIn4">{state.movieData.overview}</p>
                                 <div className="sideIn4">
                                     Năm sản xuất: <span style={{ color: "#fff" }}>{state.movieData.release_date.slice(0, 4)}</span> - Rating: <span style={{ color: "#fff" }}>{state.movieData.vote_average.toFixed(1)}</span>/10
                                 </div>
                             </div>
-                            <button onClick={() => setState({ listCrew: null, movieData: null, newEps: [], movieTrailer: "", movieNote: "", movieAge: "", listCateMovie: [] })} type="button" className="deleteFilm">
+                            <button onClick={() => setState({ listCrew: null, movieData: null, newEps: [], movieTrailer: "", movieNote: "", movieAge: "", totalEps: 1, listCateMovie: [] })} type="button" className="deleteFilm">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z" /></svg>
                             </button>
                         </div>
                         <div className="formMovieExists">
                             <input value={state.movieTrailer} onChange={(e) => setState({ movieTrailer: e.target.value })} type="text" placeholder="Url trailer..." className="movieExistsInput" required />
+                            <input value={state.totalEps} onChange={(e) => setState({ totalEps: e.target.value })} type="number" placeholder="Tổng số tập..." className="movieExistsInput" required />
                             <select onChange={(e) => setState({ movieAge: e.target.value })} className="movieExistsInput" required>
                                 <option hidden value={""}>Nhãn tuổi...</option>
                                 <option value={"G"}>G (Tất cả tuổi)</option>
@@ -172,6 +175,7 @@ function AddFilm({ state, setState, axios, callMovies, toast, ToastUpdate, useRe
                                         <div className="filmChildIn4">
                                             <h3>{i.title}</h3>
                                             <p>{i.original_title}</p>
+                                            <p className="contentFilmChildIn4">{i.overview}</p>
                                             <div className="sideIn4">
                                                 Năm sản xuất: <span style={{ color: "#fff" }}>{i.release_date.slice(0, 4)}</span> - Rating: <span style={{ color: "#fff" }}>{i.vote_average.toFixed(1)}</span>/10
                                             </div>

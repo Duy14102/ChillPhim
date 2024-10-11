@@ -221,6 +221,7 @@ app.post("/api/v1/addMovies", (req, res) => {
         "crew.screenWriters": req.body.crew.screenWriters,
         trailerSource: req.body.trailerSource,
         filmSources: req.body.filmSources,
+        totalEps: req.body.totalEps,
         ageRate: req.body.ageRate,
         note: req.body.note,
         category: req.body.category
@@ -287,6 +288,7 @@ app.post("/api/v1/updateMovies", (req, res) => {
     Movies.updateOne({ title: req.body.update.title }, {
         trailerSource: req.body.update.trailerSource,
         filmSources: req.body.update.filmSources,
+        totalEps: req.body.update.totalEps,
         ageRate: req.body.update.ageRate,
         note: req.body.update.note,
         category: req.body.update.category
@@ -294,5 +296,13 @@ app.post("/api/v1/updateMovies", (req, res) => {
         res.status(201).send({ message: "Cập nhật phim thành công!" })
     }).catch(() => {
         res.status(500).send({ message: "Cập nhật phim thất bại!" })
+    })
+})
+
+app.post("/api/v1/countMoviesView", (req, res) => {
+    Movies.updateOne({ subtitle: req.body.subtitle }, {
+        $inc: { view: 1 }
+    }).then(() => {
+        res.status(201).send({ message: "View + 1" })
     })
 })

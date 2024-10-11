@@ -57,6 +57,18 @@
     gap: 15px;
 }
 
+.information .movieIn4 .coverTextIn4 .categoryIn4 .plusCateIn4 {
+    color: gray;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color .3s;
+    cursor: pointer;
+}
+
+.information .movieIn4 .coverTextIn4 .categoryIn4 .plusCateIn4:hover {
+    color: rgba(211, 211, 211, 0.8);
+}
+
 .information .movieIn4 .coverTextIn4 .ratingIn4 {
     display: flex;
     align-items: center;
@@ -196,7 +208,7 @@
     text-decoration: none;
 }
 
-.quiteIn4 .quiteContent{
+.quiteIn4 .quiteContent {
     display: flex;
     align-items: center;
     gap: 10px;
