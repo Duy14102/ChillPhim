@@ -1,8 +1,7 @@
 import ToastError from "../Toastify/ToastError"
 
 function AddEps({ state, setState }) {
-    function addNewEps(e) {
-        e.preventDefault()
+    function addNewEps() {
         if (state.servers.includes("") || state.servers.length === 0) {
             return ToastError({ message: "Url server bị trống!" })
         }
@@ -39,7 +38,7 @@ function AddEps({ state, setState }) {
         setState({ servers: data })
     }
     return (
-        <form onSubmit={(e) => addNewEps(e)} className="addEpsDiv">
+        <div className="addEpsDiv">
             <div className="addEpsDivChild">
                 <label htmlFor="titleEps">Tiêu đề</label>
                 <input id="titleEps" type="text" value={state.epsTitle} onChange={(e) => setState({ epsTitle: e.target.value })} required />
@@ -59,13 +58,12 @@ function AddEps({ state, setState }) {
             })}
             <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
                 <button type="button" onClick={() => addServers()}>+ Servers</button>
+                <button type="button" onClick={() => addNewEps()}>Xong</button>
                 {state.movieKeysUpdate ? (
                     <button onClick={() => setState({ epsTitle: "", servers: [], wantUpdatePrevEps: false })} type="button">Hủy</button>
-                ) : (
-                    <button type="submit">Xong</button>
-                )}
+                ) : null}
             </div>
-        </form>
+        </div>
     )
 }
 export default AddEps

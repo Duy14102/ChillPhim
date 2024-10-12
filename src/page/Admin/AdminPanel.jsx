@@ -33,16 +33,17 @@ function AdminPanel() {
         // Categories control state
         wantAddNewCate: false, newCateTitle: "", newCateContent: "", listCategories: [],
         // Add film state
-        wantAddFilm: false, searchFilm: "", listAutoComplete: [], listCrew: null, movieData: null, newEps: [], epsTitle: "", epsUrl: "", epsIndex: null, movieTrailer: "", movieNote: "", movieAge: "", listCateMovie: [], servers: [], listAllCate: [],
+        wantAddFilm: false, searchFilm: "", listAutoComplete: [], listCrew: null, movieData: null, newEps: [], epsTitle: "", epsUrl: "", epsIndex: null, movieTrailer: "", movieNote: "", movieAge: "", listCateMovie: [], servers: [], listAllCate: [], chooseTypeMovies: 1,
         // Film control state
-        listMovies: [], viewMoreCate: false, indexMovie: null, deleteMovieTitle: null, movieKeysUpdate: null, wantUpdatePrevEps: false, wantUpdateOldEps: false, totalEps: 1,
+        listMovies: [], viewMoreCate: false, indexMovie: null, deleteMovieTitle: null, movieKeysUpdate: null, wantUpdatePrevEps: false, wantUpdateOldEps: false, totalEps: null, movieSeason: "",
         // Paginate
-        pageCount1: 6, pageCount2: 6, pageCount3: 6
+        pageCount1: 6, pageCount2: 6, pageCount3: 6, pageCount4: 6
     })
     const limit = 10
     const currentPage1 = useRef(1)
     const currentPage2 = useRef(1)
     const currentPage3 = useRef(1)
+    const currentPage4 = useRef(1)
     const dateNow = new Date().getHours('vi-VN')
     const welcomeTime = dateNow >= 4 && dateNow < 11 ? "☀️ Chào buổi sáng" : dateNow >= 11 && dateNow < 13 ? "🌤️ Chào buổi trưa" : dateNow >= 13 && dateNow < 18 ? "🌅 Chào buổi chiều" : dateNow >= 18 && dateNow < 22 ? "🌙 Chào buổi tối" : "💤 Chào buổi đêm"
 
@@ -123,7 +124,7 @@ function AdminPanel() {
                 </div>
                 {state.wantAddFilm ? (
                     <div className="midBody">
-                        <AddFilm useEffect={useEffect} state={state} setState={setState} axios={axios} callMovies={callMovies} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
+                        <AddFilm currentPage4={currentPage4} useEffect={useEffect} state={state} setState={setState} axios={axios} callMovies={callMovies} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
                     </div>
                 ) : null}
                 <FilmControl currentPage1={currentPage1} useEffect={useEffect} state={state} setState={setState} callMovies={callMovies} />
@@ -142,7 +143,7 @@ function AdminPanel() {
                 ) : state?.modalStateOptions === 6 ? (
                     <DeleteMovie state={state} setState={setState} axios={axios} callMovies={callMovies} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
                 ) : (
-                    <UpdateFilm useEffect={useEffect} state={state} setState={setState} callCategories={callCategories} callMovies={callMovies} AddEps={AddEps} UpdateEps={UpdateEps} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
+                    <UpdateFilm useEffect={useEffect} state={state} setState={setState} callMovies={callMovies} AddEps={AddEps} UpdateEps={UpdateEps} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
                 )}
             </ModalProps>
         </div>

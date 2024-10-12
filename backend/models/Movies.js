@@ -34,6 +34,10 @@ const MovieSchema = new mongoose.Schema({
         type: Number
     },
 
+    national: {
+        type: Object
+    },
+
     ageRate: {
         type: String
     },

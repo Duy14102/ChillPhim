@@ -9,30 +9,46 @@ import 'swiper/css/navigation';
 // import required modules
 import { Navigation } from 'swiper/modules';
 function LandingMovie({ Title, MarginTop, movie }) {
+    const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
     return (
         movie && movie.length > 0 ? (
             <div style={{ marginTop: MarginTop }} className="landingMovieChild">
                 <div className="landingMovieChildTop">
                     <p className="landingMovieChildTitle">{Title}</p>
-                    <a href="/" className="landingMovieChildViewAll">Xem tất cả</a>
+                    {Title !== "Phim tương tự" ? (
+                        <a href={`/List/All/All/${Title}/${Title === "Phim xem nhiều" ? "MV" : "NF"}`} className="landingMovieChildViewAll">Xem tất cả</a>
+                    ) : null}
                 </div>
                 <Swiper
-                    slidesPerView={5}
-                    spaceBetween={30}
                     navigation={true}
+                    breakpoints={{
+                        0: {
+                            slidesPerView: 2
+                        },
+                        991: {
+                            slidesPerView: 3
+                        },
+                        1300: {
+                            slidesPerView: 4
+                        },
+                        1600: {
+                            slidesPerView: 5
+                        }
+                    }}
+                    spaceBetween={30}
                     modules={[Navigation]}
                     className="swiperLandingMovie">
-                    {movie.map((i) => {
+                    {shuffle(movie).map((i) => {
                         return (
                             <SwiperSlide key={i._id}>
                                 <a href={`/Information/${i.subtitle}`}>
                                     <div className='imgSwiper'>
-                                        <img alt={i.title} src={i.banner.vertical} />
+                                        <img loading="lazy" alt={i.title} src={i.banner.vertical} />
                                     </div>
                                     <p className="titleSwiper"><span>{i.title}</span></p>
                                     <span className="playButtonSwiper">▶</span>
                                 </a>
-                                <div className="filmTotal">{i.totalEps === 1 ? "Tập Full" : `${i.filmSources.length + 1}/${i.totalEps}`}</div>
+                                <div className="filmTotal">{!i.totalEps ? `${i.filmSources.length + 1}/??` : i.totalEps === 1 ? "Tập Full" : `Tập ${i.filmSources.length}/${i.totalEps}`}</div>
                             </SwiperSlide>
                         )
                     })}

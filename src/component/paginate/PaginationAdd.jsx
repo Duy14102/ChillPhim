@@ -1,8 +1,8 @@
 import "./Pagination.css"
 
-function Pagination({ currentPage, pageCount, callBack, searchEnale }) {
+function PaginationAdd({ currentPage, pageCount, callBack, searchEnale }) {
     function HandlePageClick(e) {
-        currentPage.current = e
+        currentPage.current = e + 1
         callBack(searchEnale !== "" ? searchEnale : null);
     }
 
@@ -23,25 +23,19 @@ function Pagination({ currentPage, pageCount, callBack, searchEnale }) {
 
     function pageNumbers(count, current) {
         var result = [];
-        if (current === 1 && count === 1) {
+        if (current >= 1 && count === 1) {
             result.push(current)
         }
-        if (current === 1 && count === 2) {
+        if (current >= 1 && count === 2) {
             result.push(current, count)
         }
-        if (current === 2 && count === 2) {
-            result.push(current - 1, current)
-        }
-        if (current === 1 && count === 3) {
+        if (current >= 1 && count === 3) {
             result.push(current, count - 1, count)
-        }
-        if (current === 1 && count > 3) {
-            result.push(current, current + 1, current + 2)
         }
         if (current > 1 && count > 3) {
             result.push(current - 1, current, current + 1)
         }
-        if (current === count && count >= 3) {
+        if (current === count && count > 3) {
             result.push(current - 2, current - 1, current)
         }
         return result
@@ -58,4 +52,4 @@ function Pagination({ currentPage, pageCount, callBack, searchEnale }) {
         </div>
     )
 }
-export default Pagination
+export default PaginationAdd

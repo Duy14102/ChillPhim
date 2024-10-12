@@ -209,3 +209,9 @@
     padding: 75px 150px;
     background: #202124;
 }
+
+@media (max-width:991px) {
+    .landingMovie {
+        padding: 75px 15px;
+    }
+}

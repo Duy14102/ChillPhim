@@ -57,7 +57,7 @@ header .headerBrand .headerBrandSlogan span {
 header .headerGate {
     display: flex;
     align-items: center;
-    gap: 50px;
+    gap: 35px;
     flex-wrap: wrap;
 }
 

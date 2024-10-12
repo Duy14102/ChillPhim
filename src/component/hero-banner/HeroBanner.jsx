@@ -42,7 +42,7 @@ function HeroBanner({ movie }) {
                         return (
                             <SwiperSlide key={i._id}>
                                 <div className='imgSwiper'>
-                                    <img alt={i.title} src={i.banner.horizontal} />
+                                    <img loading='lazy' alt={i.title} src={i.banner.horizontal} />
                                 </div>
                                 <div className='in4Swiper'>
                                     <h1>{i.title}</h1>

@@ -55,9 +55,9 @@
 
 .swiperLandingMovie .swiper-slide .titleSwiper {
     position: absolute;
-    bottom: 5px;
+    bottom: 10px;
     left: 50%;
-    transform: translate(-50%, -20%);
+    transform: translate(-50%, 0);
     width: 90%;
     text-align: center;
     padding: 10px 18px;
@@ -98,7 +98,7 @@
 }
 
 .swiperLandingMovie .swiper-slide:hover .titleSwiper {
-    bottom: -15px;
+    bottom: 0;
 }
 
 .swiperLandingMovie .swiper-slide:hover {

@@ -1,13 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import './Header.css'
 
 function Header() {
+    const [state, setState] = useState()
     useEffect(() => {
         const header = document.querySelector("header");
         window.addEventListener('scroll', e => {
             header.style.background = window.scrollY > 150 ? '#25272C' : '#202124';
             header.style.position = window.scrollY > 150 ? 'fixed' : "absolute";
         });
+        fetch("http://localhost:3000/api/v1/getAllCategories").then((resa) => resa.json().then((res) => {
+            setState(res)
+        })).catch(() => console.log("Categories empty!"))
     }, [])
     return (
         <header>
@@ -26,28 +30,30 @@ function Header() {
             <div className="headerGate">
                 <a href="/" className="headerGateChild aloneGate">Trang chủ</a>
                 <div className="headerGateChild genresGate">Thể loại ▼
-                    <div className="genresGateChild">
-                        <a href="/">Phiêu lưu</a>
-                        <a href="/">Viễn tưởng</a>
-                        <a href="/">Hành động</a>
-                        <a href="/">Huyền bí</a>
+                    <div className="genresGateChild" style={{ left: 0 }}>
+                        {state?.filter((item) => item.title !== "Anime" && item.title !== "TV Show").map((i) => {
+                            return (
+                                <a key={i.title} href={`/List/Genres/${i.title}/${i.title}/NF`}>{i.title}</a>
+                            )
+                        })}
                     </div>
                 </div>
                 <div className="headerGateChild nationGate">Quốc gia ▼
                     <div className="nationGateChild">
-                        <a href="/">US/UK</a>
-                        <a href="/">Thái lan</a>
-                        <a href="/">Trung Quốc</a>
-                        <a href="/">Hàn Quốc</a>
-                        <a href="/">Nhật Bản</a>
-                        <a href="/">Việt Nam</a>
-                        <a href="/">Ấn Độ</a>
+                        <a href="/List/National/VN/Việt Nam/NF">Việt Nam</a>
+                        <a href="/List/National/US UK/Âu - Mỹ/NF">Âu - Mỹ</a>
+                        <a href="/List/National/TH/Thái Lan/NF">Thái Lan</a>
+                        <a href="/List/National/CN/Trung Quốc/NF">Trung Quốc</a>
+                        <a href="/List/National/KR/Hàn Quốc/NF">Hàn Quốc</a>
+                        <a href="/List/National/JP/Nhật Bản/NF">Nhật Bản</a>
+                        <a href="/List/National/IN/Ấn Độ/NF">Ấn Độ</a>
+                        <a href="/List/National/FR/Pháp/NF">Pháp</a>
+                        <a href="/List/National/All/Khác/NF">Khác</a>
                     </div>
                 </div>
-                <a href="/" className="headerGateChild aloneGate">Phim bộ</a>
-                <a href="/" className="headerGateChild aloneGate">Phim lẻ</a>
-                <a href="/" className="headerGateChild aloneGate">Anime</a>
-                <a href="/" className="headerGateChild aloneGate">TV Show</a>
+                <a href="/List/Type/Series/Phim Bộ/NF" className="headerGateChild aloneGate">Phim bộ</a>
+                <a href="/List/Type/Single/Phim lẻ/NF" className="headerGateChild aloneGate">Phim lẻ</a>
+                <a href="/List/Genres/Anime/Anime/NF" className="headerGateChild aloneGate">Anime</a>
             </div>
         </header>
     )

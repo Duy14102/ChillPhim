@@ -43,26 +43,29 @@ function Streaming() {
         }
         axios(configuration).then((res) => {
             setState({ movies: res.data.movies, similarMovies: res.data.similarMovies })
-            const checkMoviesPass = JSON.parse(localStorage.getItem("Movies"))
+            const checkMoviesPass = JSON.parse(localStorage.getItem("MovieStorage"))
             if (!checkMoviesPass) {
                 var movies = [];
-                var moviesChild = { title: params.Name, time: Date.now() };
+                var moviesChild = { title: params.Name, eps: params.Ep, time: Date.now() };
                 movies.push(moviesChild);
-                localStorage.setItem("Movies", JSON.stringify(movies));
+                localStorage.setItem("MovieStorage", JSON.stringify(movies));
                 countView()
             } else {
                 if (checkMoviesPass.filter((item) => item.title === params.Name).length === 0) {
-                    var moviesChild = { title: params.Name, time: Date.now() };
+                    var moviesChild = { title: params.Name, eps: params.Ep, time: Date.now() };
                     checkMoviesPass.push(moviesChild);
-                    localStorage.setItem("Movies", JSON.stringify(checkMoviesPass));
+                    localStorage.setItem("MovieStorage", JSON.stringify(checkMoviesPass));
                     countView()
                 } else {
                     checkMoviesPass.filter((item) => item.title === params.Name).map((m) => {
                         if (new Date(m.time).getFullYear() < new Date(Date.now()).getFullYear()) {
-                            m.time = Date.now()
-                            localStorage.setItem("Movies", JSON.stringify(checkMoviesPass));
                             countView()
                         }
+                        if (m.eps !== params.Ep) {
+                            m.eps = params.Ep
+                        }
+                        m.time = Date.now()
+                        localStorage.setItem("MovieStorage", JSON.stringify(checkMoviesPass));
                         return null
                     })
                 }
@@ -77,7 +80,7 @@ function Streaming() {
             if (parseInt(params.Ep.match(/\d/g).join("")) === 1) {
                 return params.Ep
             } else {
-                return parseInt(params.Ep.match(/\d/g).join("")) - 1
+                return `Tập ${parseInt(params.Ep.match(/\d/g).join("")) - 1}`
             }
         }
     }
@@ -89,7 +92,7 @@ function Streaming() {
             if (parseInt(params.Ep.match(/\d/g).join("")) >= state.movies?.filmSources.length) {
                 return params.Ep
             } else {
-                return parseInt(params.Ep.match(/\d/g).join("")) + 1
+                return `Tập ${parseInt(params.Ep.match(/\d/g).join("")) + 1}`
             }
         }
     }
@@ -100,8 +103,8 @@ function Streaming() {
             </div>
             <div style={{ background: state.light ? "black" : null }} className='buttonStreaming'>
                 <a className='buttonDefault buttonPrevNext buttonIn4' href={`/Information/${params.Name}`}>ℹ️</a>
-                <a href={`/Streaming/${params.Name}/${prevEps()}`} className='buttonDefault buttonPrevNext' type='button'>◄ Tập trước</a>
-                <a href={`/Streaming/${params.Name}/${nextEps()}`} className='buttonDefault buttonPrevNext' type='button'>Tập tiếp ►</a>
+                <a style={{ pointerEvents: prevEps() === params.Ep ? "none" : null }} href={`/Streaming/${params.Name}/${prevEps()}`} className='buttonDefault buttonPrevNext' type='button'>◄ Tập trước</a>
+                <a style={{ pointerEvents: nextEps() === params.Ep ? "none" : null }} href={`/Streaming/${params.Name}/${nextEps()}`} className='buttonDefault buttonPrevNext' type='button'>Tập tiếp ►</a>
                 <button onClick={() => setState({ wantChangeServer: state.wantChangeServer ? false : true })} style={{ position: "relative", borderRadius: state.wantChangeServer ? "99px 99px 0 0" : 99 }} className='buttonDefault buttonPrevNext' type='button'>Đổi server
                     {state.wantChangeServer ? (
                         <div className='serverDropdown'>
@@ -120,7 +123,7 @@ function Streaming() {
                 <div className='episodeCover'>
                     {state.movies?.filmSources.map((e) => {
                         return (
-                            <a key={e.title} href={`/Streaming/${params.Name}/${e.title}`} className='buttonEp'>{e.title}</a>
+                            <a style={e.title === params.Ep ? { color: "#fff", background: "#94b1f2" } : null} key={e.title} href={`/Streaming/${params.Name}/${e.title}`} className='buttonEp'>{e.title}</a>
                         )
                     })}
                 </div>

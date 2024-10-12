@@ -207,15 +207,17 @@ app.post("/api/v1/deleteCategories", (req, res) => {
 
 // Movies Api
 app.post("/api/v1/addMovies", (req, res) => {
+    const seriesName = req.body.season && req.body.season !== "" && req.body.season !== "0" && req.body.season !== "1" ? `${req.body.movie.name} (Phần ${req.body.season})  ` : req.body.movie.name
     const newMovies = new Movies({
-        title: req.body.movie.title,
-        subtitle: req.body.movie.original_title,
+        title: req.body.movie.title ? req.body.movie.title : seriesName,
+        subtitle: req.body.movie.original_title ? req.body.movie.original_title : req.body.movie.original_name,
         content: req.body.movie.overview,
         "banner.vertical": `https://image.tmdb.org/t/p/original${req.body.movie.poster_path}`,
         "banner.horizontal": `https://image.tmdb.org/t/p/original${req.body.movie.backdrop_path}`,
+        national: req.body.movie.production_countries,
         imdbScore: req.body.movie.vote_average.toFixed(1),
-        time: req.body.movie.runtime,
-        timeProduce: req.body.movie.release_date,
+        time: req.body.movie.runtime ? req.body.movie.runtime : req.body.movie.last_episode_to_air.runtime,
+        timeProduce: req.body.movie.release_date ? req.body.movie.release_date : req.body.movie.first_air_date,
         "crew.directors": req.body.crew.director,
         "crew.stars": req.body.crew.stars,
         "crew.screenWriters": req.body.crew.screenWriters,
@@ -272,7 +274,7 @@ app.get("/api/v1/getMoviesHomepage", async (req, res) => {
 
 app.get("/api/v1/getMoviesIn4", async (req, res) => {
     const movies = await Movies.findOne({ subtitle: req.query.subtitle })
-    const similarMovies = await Movies.find({ category: { $in: movies.category } }).limit(10)
+    const similarMovies = await Movies.find({ category: { $in: movies.category }, subtitle: { $ne: req.query.subtitle }, totalEps: movies.totalEps === 1 ? 1 : { $gt: 1 } }).limit(10)
     res.status(201).send({ movies, similarMovies })
 })
 
@@ -285,7 +287,9 @@ app.post("/api/v1/deleteMovies", (req, res) => {
 })
 
 app.post("/api/v1/updateMovies", (req, res) => {
+    const seriesName = req.body.season && req.body.season !== "" && req.body.season !== "0" && req.body.season !== "1" ? `${req.body.update.title} (Phần ${req.body.season})  ` : req.body.update.title.replace(/ *\([^)]*\) */g, "")
     Movies.updateOne({ title: req.body.update.title }, {
+        title: seriesName,
         trailerSource: req.body.update.trailerSource,
         filmSources: req.body.update.filmSources,
         totalEps: req.body.update.totalEps,
@@ -314,4 +318,54 @@ app.get("/api/v1/checkMoviesExists", async (req, res) => {
     } else {
         res.status(201).send("")
     }
+})
+
+app.get("/api/v1/getMoviesList", async (req, res) => {
+    var findChild = null
+    switch (req.query.order) {
+        case "Genres":
+            findChild = { category: req.query.type }
+            break;
+        case "National":
+            findChild = { "national.iso_3166_1": req.query.type === "All" ? { $nin: ["US", "UK", "TH", "VN", "FR", "IN", "KR", "CN"] } : { $in: req.query.type.match(/(\b[^\s]+\b)/g) } }
+            break;
+        case "Type":
+            findChild = { totalEps: req.query.type === "Single" ? 1 : { $gt: 1 } }
+            break;
+        default:
+            findChild = {}
+            break;
+    }
+    const res1 = await Movies.find(findChild).sort(req.query.sortMovie === "MV" ? { view: -1 } : req.query.sortMovie === "OF" ? { createdAt: 1 } : req.query.sortMovie === "AZ" ? { title: 1 } : { createdAt: -1 })
+    const page = parseInt(req.query.page)
+    const limit = parseInt(req.query.limit)
+
+    const start = (page - 1) * limit
+    const end = page * limit
+
+    const results = {}
+    results.total = res1.length
+    results.pageCount = Math.ceil(res1.length / limit)
+
+    if (end < res1.length) {
+        results.next = {
+            page: page + 1
+        }
+    }
+    if (start > 0) {
+        results.prev = {
+            page: page - 1
+        }
+    }
+
+    results.result = res1.slice(start, end)
+    res.status(201).send({ results });
+})
+
+app.get("/api/v1/getMoviesSeen", async (req, res) => {
+    const dataFind = []
+    req.query.movies.reduce((acc, curr) => { dataFind.push(curr.title) }, 0)
+    await Movies.find({ subtitle: { $in: dataFind } }).then((res1) => {
+        res.status(201).send(res1)
+    })
 })

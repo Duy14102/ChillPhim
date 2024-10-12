@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Cookies from "universal-cookie"
 const Layout = lazy(() => import('./Layout.jsx'))
 const Home = lazy(() => import('./page/Home/App.jsx'))
+const List = lazy(() => import('./page/List/List.jsx'))
 const Information = lazy(() => import('./page/Information/Information.jsx'))
 const Streaming = lazy(() => import('./page/Streaming/Streaming.jsx'))
 const Administrator = lazy(() => import('./page/Admin/Administrator.jsx'))
@@ -21,6 +22,7 @@ function CheckRoutes() {
                 ) : (
                     <Route path="/" element={<Layout />}>
                         <Route index element={<Home />} />
+                        <Route path='/List/:Order/:Type/:Calling/:Sort' element={<List />} />
                         <Route path='/Information/:Name' element={<Information />} />
                         <Route path='/Streaming/:Name/:Ep' element={<Streaming />} />
                     </Route>

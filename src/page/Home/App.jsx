@@ -3,6 +3,7 @@ import HeroBanner from '../../component/hero-banner/HeroBanner'
 import LandingMovie from '../../component/landing-movie/LandingMovie';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import SeenMovies from '../../component/seenMovies/SeenMovies';
 
 function App() {
   const [movie, setMovie] = useState()
@@ -19,7 +20,11 @@ function App() {
     <>
       <HeroBanner movie={movie?.heroBanner} />
       <div className="landingMovie">
-        <LandingMovie Title={"Phim mới"} MarginTop={0} movie={movie?.newFilm} />
+        {localStorage.getItem("MovieStorage") ? (
+          <SeenMovies Title={"Phim vừa xem"} MarginTop={0} useEffect={useEffect} useState={useState} axios={axios} />
+        ) : null}
+
+        <LandingMovie Title={"Phim mới"} MarginTop={localStorage.getItem("MovieStorage") ? 100 : 0} movie={movie?.newFilm} />
 
         <LandingMovie Title={"Phim xem nhiều"} MarginTop={100} movie={movie?.mostViewFilm} />
 

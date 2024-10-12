@@ -42,7 +42,7 @@ function Information() {
     return (
         <div className='information'>
             <div className='movieIn4'>
-                <img alt={state.movies?.title} src={state.movies?.banner.vertical} />
+                <img loading='lazy' alt={state.movies?.title} src={state.movies?.banner.vertical} />
                 <div className='coverTextIn4'>
                     <h1 className='movieName'>{state.movies?.title}</h1>
                     <div className='movieSideIn4'>
@@ -127,6 +127,12 @@ function Information() {
                     </div>
                 )}
             </div>
+            {state.movies?.note ? (
+                <div className='noteIn4'>
+                    <h3>Ghi chú: </h3>
+                    <p>{state.movies?.note}</p>
+                </div>
+            ) : null}
             <LandingMovie Title={"Phim tương tự"} MarginTop={100} movie={state?.similarMovies} />
         </div>
     )

@@ -50,7 +50,8 @@ header .options .collapseOptions .collapseOptionsChild:active,
 .coverAddFilm .addEps button:active,
 .coverAddFilm .underAddFilmChild .chooseCateFilm button:active,
 .bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .updateButton:active,
-.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .deleteButton:active {
+.bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .deleteButton:active,
+.bodyPanel .midBody .coverAddFilm .titleAdd .chooseTypeFilm button:active {
     scale: 0.9;
 }
 
@@ -187,6 +188,26 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     position: relative;
 }
 
+.bodyPanel .midBody .coverAddFilm .titleAdd .chooseTypeFilm {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.bodyPanel .midBody .coverAddFilm .titleAdd .chooseTypeFilm button{
+    padding: 10px 20px;
+    color: #94b1f2;
+    background: #202124;
+    border: 1px solid #94b1f2;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all .3s;
+    position: relative;
+    margin-bottom: 15px;
+}
+
 .bodyPanel .midBody .coverAddFilm .titleAdd input {
     background: #202124;
     border-radius: 10px;
@@ -213,7 +234,7 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     left: 0;
     top: 100%;
     width: 100%;
-    height: 50vh;
+    max-height: 50vh;
     overflow-y: scroll;
     background: #25272c;
     padding: 15px;
@@ -284,7 +305,16 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     align-items: center;
     gap: 15px;
     flex-wrap: wrap;
-    margin-top: 15px;
+}
+
+.coverAddFilm .addSeason {
+    width: 49%;
+    padding: 15px;
+    background: #202124;
+    font-size: 16px;
+    color: #fff;
+    border-radius: 10px;
+    border: none;
 }
 
 .coverAddFilm .addEps button,
@@ -301,7 +331,8 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     position: relative;
 }
 
-.coverAddFilm .underAddFilmChild .chooseCateFilm button svg {
+.coverAddFilm .underAddFilmChild .chooseCateFilm button svg,
+.bodyPanel .midBody .coverAddFilm .titleAdd .chooseTypeFilm button svg {
     position: absolute;
     top: -10px;
     right: -10px;
@@ -319,7 +350,8 @@ header .options .collapseOptions .collapseOptionsChild:hover {
 }
 
 .coverAddFilm .addEps button:hover,
-.coverAddFilm .underAddFilmChild .chooseCateFilm button:hover {
+.coverAddFilm .underAddFilmChild .chooseCateFilm button:hover,
+.bodyPanel .midBody .coverAddFilm .titleAdd .chooseTypeFilm button:hover {
     background: #94b1f2;
     color: #fff;
 }
@@ -443,7 +475,7 @@ header .options .collapseOptions .collapseOptionsChild:hover {
 }
 
 .bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildIn4 {
-    width: 65%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -506,7 +538,7 @@ header .options .collapseOptions .collapseOptionsChild:hover {
 }
 
 .bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide {
-    width: 20%;
+    width: 25%;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -588,6 +620,7 @@ header .options .collapseOptions .collapseOptionsChild:hover {
 
     .bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .sideChild {
         width: calc(100%/3);
+        justify-content: center;
     }
 
     .bodyPanel .upperBody input {
@@ -637,7 +670,8 @@ header .options .collapseOptions .collapseOptionsChild:hover {
         width: 100%;
     }
 
-    .coverAddFilm .chooseCateFilm {
+    .coverAddFilm .chooseCateFilm,
+    .coverAddFilm .addSeason {
         width: 100%;
     }
 
@@ -645,5 +679,9 @@ header .options .collapseOptions .collapseOptionsChild:hover {
         top: 90%;
         right: 5px;
         transform: none;
+    }
+
+    .coverAddFilm .addEps{
+        width: 100% !important;
     }
 }
