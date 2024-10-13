@@ -560,3 +560,10 @@
     color: #fff !important;
     background: #94b1f2 !important;
 }
+
+iframe {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border: none;
+    margin: 25px 0 0 0;
+}

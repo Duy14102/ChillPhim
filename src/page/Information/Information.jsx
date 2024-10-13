@@ -21,6 +21,10 @@ function Information() {
         return state.toolsBar === e ? "titleActive" : "toolsBarTitle"
     }
 
+    const shuffle = (arr) => {
+        return arr ? arr.sort(() => Math.random() - 0.5) : []
+    }
+
     useEffect(() => {
         const configuration = {
             method: "get",
@@ -37,14 +41,18 @@ function Information() {
     function toHoursAndMinutes(totalMinutes) {
         const hours = Math.floor(totalMinutes / 60);
         const minutes = totalMinutes % 60;
-        return `${hours}h ${minutes}p`;
+        if (hours) {
+            return `${hours}h ${minutes}p`;
+        } else {
+            return `${minutes}p`;
+        }
     }
     return (
         <div className='information'>
             <div className='movieIn4'>
                 <img loading='lazy' alt={state.movies?.title} src={state.movies?.banner.vertical} />
                 <div className='coverTextIn4'>
-                    <h1 className='movieName'>{state.movies?.title}</h1>
+                    <h1 className='movieName'>{state.movies?.movieSeason && state.movies?.movieSeason !== "" ? `${state.movies?.title} (Phần ${state.movies?.movieSeason})` : state.movies?.title}</h1>
                     <div className='movieSideIn4'>
                         <div className='leftSideIn4'>
                             <div className='categoryIn4'>
@@ -77,14 +85,14 @@ function Information() {
                         <div className='rightSideIn4'>
                             <div className='quiteIn4'>
                                 <span className='quiteName'>Đạo diễn</span>
-                                <p className='quiteContent'><a href='/'>{state.movies?.crew.directors}</a></p>
+                                <p className='quiteContent'><a href={`/List/Directors/${state.movies?.crew.directors}/Đạo diễn/NF`}>{state.movies?.crew.directors}</a></p>
                             </div>
                             <div className='quiteIn4'>
                                 <span className='quiteName'>Diễn viên</span>
                                 <p className='quiteContent'>
                                     {state.movies?.crew.stars.map((s, indexS) => {
                                         return (
-                                            <a key={indexS} href='/'>{s.name}, </a>
+                                            <a key={indexS} href={`/List/Stars/${s.name}/Diễn viên/NF`}>{s.name}, </a>
                                         )
                                     })}
                                 </p>
@@ -94,7 +102,7 @@ function Information() {
                                 <div className='quiteContent'>
                                     {state.movies?.crew.screenWriters.map((s, indexS) => {
                                         return (
-                                            <div key={indexS} href='/'>{s.name}, </div>
+                                            <div key={indexS}>{s.name}, </div>
                                         )
                                     })}
                                 </div>
@@ -133,7 +141,7 @@ function Information() {
                     <p>{state.movies?.note}</p>
                 </div>
             ) : null}
-            <LandingMovie Title={"Phim tương tự"} MarginTop={100} movie={state?.similarMovies} />
+            <LandingMovie Title={"Phim tương tự"} MarginTop={100} movie={shuffle(state?.similarMovies)} />
         </div>
     )
 }

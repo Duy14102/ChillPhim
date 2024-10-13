@@ -30,6 +30,14 @@ const MovieSchema = new mongoose.Schema({
         type: Array
     },
 
+    mainGenres: {
+        type: String
+    },
+
+    movieSeason: {
+        type: String
+    },
+
     totalEps: {
         type: Number
     },

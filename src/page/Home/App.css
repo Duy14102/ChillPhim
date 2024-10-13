@@ -184,6 +184,11 @@
     scale: 0.9;
 }
 
+.swiperHeroBanner .swiper-slide-prev,
+.swiperHeroBanner .swiper-slide-next {
+    pointer-events: none;
+}
+
 .swiperHeroBanner .swiper-button-prev {
     margin-left: 15px;
 }

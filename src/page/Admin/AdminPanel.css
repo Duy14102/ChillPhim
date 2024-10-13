@@ -243,16 +243,6 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     z-index: 10;
 }
 
-.coverAddFilm .titleAdd .autoCompleteFilm::-webkit-scrollbar {
-    background: transparent;
-    width: 10px;
-}
-
-.coverAddFilm .titleAdd .autoCompleteFilm::-webkit-scrollbar-thumb {
-    background: #94b1f2;
-    border-radius: 99px;
-}
-
 .coverAddFilm .formMovieExists {
     width: 49%;
     display: flex;

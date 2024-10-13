@@ -206,32 +206,48 @@ app.post("/api/v1/deleteCategories", (req, res) => {
 
 
 // Movies Api
-app.post("/api/v1/addMovies", (req, res) => {
-    const seriesName = req.body.season && req.body.season !== "" && req.body.season !== "0" && req.body.season !== "1" ? `${req.body.movie.name} (Phần ${req.body.season})  ` : req.body.movie.name
-    const newMovies = new Movies({
-        title: req.body.movie.title ? req.body.movie.title : seriesName,
-        subtitle: req.body.movie.original_title ? req.body.movie.original_title : req.body.movie.original_name,
-        content: req.body.movie.overview,
-        "banner.vertical": `https://image.tmdb.org/t/p/original${req.body.movie.poster_path}`,
-        "banner.horizontal": `https://image.tmdb.org/t/p/original${req.body.movie.backdrop_path}`,
-        national: req.body.movie.production_countries,
-        imdbScore: req.body.movie.vote_average.toFixed(1),
-        time: req.body.movie.runtime ? req.body.movie.runtime : req.body.movie.last_episode_to_air.runtime,
-        timeProduce: req.body.movie.release_date ? req.body.movie.release_date : req.body.movie.first_air_date,
-        "crew.directors": req.body.crew.director,
-        "crew.stars": req.body.crew.stars,
-        "crew.screenWriters": req.body.crew.screenWriters,
-        trailerSource: req.body.trailerSource,
-        filmSources: req.body.filmSources,
-        totalEps: req.body.totalEps,
-        ageRate: req.body.ageRate,
-        note: req.body.note,
-        category: req.body.category
-    })
-    newMovies.save().then(() => {
-        res.status(201).send({ message: "Thêm phim thành công!" })
-    }).catch(() => {
-        res.status(500).send({ message: "Thêm phim thất bại!" })
+app.post("/api/v1/addMovies", async (req, res) => {
+    await Movies.findOne({ subtitle: req.body.movie.original_title ? req.body.movie.original_title : req.body.movie.original_name }).then((res1) => {
+        if (res1 && res1.movieSeason && res1.movieSeason !== "" && req.body.season && req.body.season !== "") {
+            if (res1.movieSeason === req.body.season) {
+                res.status(500).send({ message: "Phim bị trùng lặp!" })
+            }
+        }
+        if (res1 && !res1.movieSeason && !req.body.season) {
+            res.status(500).send({ message: "Phim bị trùng lặp!" })
+        }
+        if (res1 && res1.movieSeason && !req.body.season) {
+            res.status(500).send({ message: "Phần phim thiếu!" })
+        }
+        if (!res1 || (res1 && res1.movieSeason && res1.movieSeason !== "" && req.body.season && req.body.season !== "" && res1.movieSeason !== req.body.season) || (res1 && !res1.movieSeason && req.body.season)) {
+            const newMovies = new Movies({
+                title: req.body.movie.title ? req.body.movie.title : req.body.movie.name,
+                subtitle: req.body.movie.original_title ? req.body.movie.original_title : req.body.movie.original_name,
+                content: req.body.movie.overview,
+                "banner.vertical": `https://image.tmdb.org/t/p/original${req.body.movie.poster_path}`,
+                "banner.horizontal": `https://image.tmdb.org/t/p/original${req.body.movie.backdrop_path}`,
+                national: req.body.movie.production_countries,
+                imdbScore: req.body.movie.vote_average.toFixed(1),
+                time: req.body.movie.runtime ? req.body.movie.runtime : req.body.movie.last_episode_to_air.runtime,
+                timeProduce: req.body.movie.release_date ? req.body.movie.release_date : req.body.movie.first_air_date,
+                "crew.directors": req.body.crew.director,
+                "crew.stars": req.body.crew.stars,
+                "crew.screenWriters": req.body.crew.screenWriters,
+                trailerSource: req.body.trailerSource,
+                filmSources: req.body.filmSources,
+                totalEps: req.body.totalEps,
+                ageRate: req.body.ageRate,
+                note: req.body.note,
+                category: req.body.category,
+                mainGenres: req.body.mainGenres === 1 ? "Phim lẻ" : "Phim bộ",
+                movieSeason: req.body.season
+            })
+            newMovies.save().then(() => {
+                res.status(201).send({ message: "Thêm phim thành công!" })
+            }).catch(() => {
+                res.status(500).send({ message: "Thêm phim thất bại!" })
+            })
+        }
     })
 })
 
@@ -274,12 +290,12 @@ app.get("/api/v1/getMoviesHomepage", async (req, res) => {
 
 app.get("/api/v1/getMoviesIn4", async (req, res) => {
     const movies = await Movies.findOne({ subtitle: req.query.subtitle })
-    const similarMovies = await Movies.find({ category: { $in: movies.category }, subtitle: { $ne: req.query.subtitle }, totalEps: movies.totalEps === 1 ? 1 : { $gt: 1 } }).limit(10)
+    const similarMovies = await Movies.find({ category: { $in: movies.category }, subtitle: { $ne: req.query.subtitle }, mainGenres: movies.mainGenres }).limit(10)
     res.status(201).send({ movies, similarMovies })
 })
 
 app.post("/api/v1/deleteMovies", (req, res) => {
-    Movies.deleteOne({ title: req.body.title }).then(() => {
+    Movies.deleteOne({ _id: req.body.id }).then(() => {
         res.status(201).send({ message: "Xóa phim thành công!" })
     }).catch(() => {
         res.status(500).send({ message: "Xóa phim thất bại!" })
@@ -287,15 +303,15 @@ app.post("/api/v1/deleteMovies", (req, res) => {
 })
 
 app.post("/api/v1/updateMovies", (req, res) => {
-    const seriesName = req.body.season && req.body.season !== "" && req.body.season !== "0" && req.body.season !== "1" ? `${req.body.update.title} (Phần ${req.body.season})  ` : req.body.update.title.replace(/ *\([^)]*\) */g, "")
     Movies.updateOne({ title: req.body.update.title }, {
-        title: seriesName,
         trailerSource: req.body.update.trailerSource,
         filmSources: req.body.update.filmSources,
         totalEps: req.body.update.totalEps,
         ageRate: req.body.update.ageRate,
         note: req.body.update.note,
-        category: req.body.update.category
+        category: req.body.update.category,
+        movieSeason: req.body.update.movieSeason,
+        mainGenres: req.body.update.mainGenres
     }).then(() => {
         res.status(201).send({ message: "Cập nhật phim thành công!" })
     }).catch(() => {
@@ -311,15 +327,6 @@ app.post("/api/v1/countMoviesView", (req, res) => {
     })
 })
 
-app.get("/api/v1/checkMoviesExists", async (req, res) => {
-    const res1 = await Movies.findOne({ subtitle: req.query.subtitle })
-    if (res1) {
-        res.status(500).send("")
-    } else {
-        res.status(201).send("")
-    }
-})
-
 app.get("/api/v1/getMoviesList", async (req, res) => {
     var findChild = null
     switch (req.query.order) {
@@ -330,7 +337,13 @@ app.get("/api/v1/getMoviesList", async (req, res) => {
             findChild = { "national.iso_3166_1": req.query.type === "All" ? { $nin: ["US", "UK", "TH", "VN", "FR", "IN", "KR", "CN"] } : { $in: req.query.type.match(/(\b[^\s]+\b)/g) } }
             break;
         case "Type":
-            findChild = { totalEps: req.query.type === "Single" ? 1 : { $gt: 1 } }
+            findChild = { mainGenres: req.query.type === "Series" ? "Phim bộ" : "Phim lẻ" }
+            break;
+        case "Directors":
+            findChild = { "crew.directors": req.query.type }
+            break;
+        case "Stars":
+            findChild = { "crew.stars.name": req.query.type }
             break;
         default:
             findChild = {}
@@ -366,6 +379,13 @@ app.get("/api/v1/getMoviesSeen", async (req, res) => {
     const dataFind = []
     req.query.movies.reduce((acc, curr) => { dataFind.push(curr.title) }, 0)
     await Movies.find({ subtitle: { $in: dataFind } }).then((res1) => {
+        res.status(201).send(res1)
+    })
+})
+
+app.get("/api/v1/headerAutoComplete", async (req, res) => {
+    const regExpSearch = new RegExp(req.query.search, 'i')
+    await Movies.find({ $or: [{ title: regExpSearch }, { subtitle: regExpSearch }] }).then((res1) => {
         res.status(201).send(res1)
     })
 })

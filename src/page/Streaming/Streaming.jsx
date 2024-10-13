@@ -18,6 +18,10 @@ function Streaming() {
         wantChangeServer: false
     })
 
+    const shuffle = (arr) => {
+        return arr ? arr.sort(() => Math.random() - 0.5) : []
+    }
+
     function countView() {
         const configuration = {
             method: "post",
@@ -131,11 +135,11 @@ function Streaming() {
             <div style={{ opacity: state.light ? 0 : null }} className='rateStreaming'>
                 <h2>💬 Bình luận <span style={{ color: "#fff" }}>({state.movies?.comments.length})</span></h2>
                 <div className='rateCover'>
-                    <NoReview comments={state.movies?.comments} name={state.movies?.title} />
+                    <NoReview comments={state.movies?.comments} name={state.movies?.movieSeason && state.movies?.movieSeason !== "" ? `${state.movies?.title} (Phần ${state.movies?.movieSeason})` : state.movies?.title} />
                 </div>
             </div>
             <div style={{ opacity: state.light ? 0 : null }}>
-                <LandingMovie Title={"Phim tương tự"} MarginTop={100} movie={state?.similarMovies} />
+                <LandingMovie Title={"Phim tương tự"} MarginTop={100} movie={shuffle(state?.similarMovies)} />
             </div>
         </div>
     )

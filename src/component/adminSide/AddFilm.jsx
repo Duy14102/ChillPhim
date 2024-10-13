@@ -52,35 +52,24 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
             }
         }
         axios(filmConfiguration).then((res) => {
-            const checkFilmConfiguration = {
+            const creditConfiguration = {
                 method: 'get',
-                url: "http://localhost:3000/api/v1/checkMoviesExists",
-                params: {
-                    subtitle: res.data.original_title
+                url: `https://api.themoviedb.org/3/${state.chooseTypeMovies === 1 ? "movie" : "tv"}/${id}/credits?language=vi-VN`,
+                headers: {
+                    accept: 'application/json',
+                    Authorization: `Bearer ${process.env.REACT_APP_themoviedbApikey}`
                 }
             }
-            axios(checkFilmConfiguration).then(() => {
-                const creditConfiguration = {
-                    method: 'get',
-                    url: `https://api.themoviedb.org/3/${state.chooseTypeMovies === 1 ? "movie" : "tv"}/${id}/credits?language=vi-VN`,
-                    headers: {
-                        accept: 'application/json',
-                        Authorization: `Bearer ${process.env.REACT_APP_themoviedbApikey}`
-                    }
+            axios(creditConfiguration).then((res2) => {
+                const dataFetch = res2.data.crew ? {
+                    director: res2.data.crew.filter((a) => a.job === "Director" || a.known_for_department === "Directing")[0].name,
+                    stars: res2.data.cast.slice(0, 3),
+                    screenWriters: res2.data.crew.filter((a) => a.known_for_department === "Writing" && a.job === "Screenplay")
+                } : {
+                    director: "", stars: [], screenWriters: []
                 }
-                axios(creditConfiguration).then((res2) => {
-                    const dataFetch = res2.data.crew ? {
-                        director: res2.data.crew.filter((a) => a.job === "Director" || a.known_for_department === "Directing")[0].name,
-                        stars: res2.data.cast.slice(0, 3),
-                        screenWriters: res2.data.crew.filter((a) => a.known_for_department === "Writing" && a.job === "Screenplay")
-                    } : {
-                        director: "", stars: [], screenWriters: []
-                    }
-                    setState({ listCrew: dataFetch, movieData: res.data })
-                    ToastUpdate({ type: 1, message: `Đã chọn ${res.data.title ? res.data.title : res.data.name}`, refCur: toastNow.current })
-                })
-            }).catch(() => {
-                ToastUpdate({ type: 2, message: "Phim đã tồn tại!", refCur: toastNow.current })
+                setState({ listCrew: dataFetch, movieData: res.data })
+                ToastUpdate({ type: 1, message: `Đã chọn ${res.data.title ? res.data.title : res.data.name}`, refCur: toastNow.current })
             })
         })
     }
@@ -116,7 +105,8 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
                 category: state.listCateMovie,
                 filmSources: state.newEps,
                 totalEps: state.totalEps,
-                season: state.movieSeason
+                season: state.movieSeason,
+                mainGenres: state.chooseTypeMovies
             }
         }
         axios(configuration).then((res) => {
@@ -160,7 +150,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
                         </div>
                     </div>
                     <div className="underAddFilmChild">
-                        <textarea value={state.movieNote} onChange={(e) => setState({ movieNote: e.target.value })} className="noteMovie" placeholder="Ghi chú cho phim..."></textarea>
+                        <textarea value={state.movieNote} onChange={(e) => setState({ movieNote: e.target.value })} className="noteMovie" placeholder="Ghi chú cho phim...(Có thể để trống)"></textarea>
                         <div className="chooseCateFilm">
                             <div className="chooseCateFilmChild">
                                 <p>Chọn danh mục :</p>
@@ -184,9 +174,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
                                 )
                             })}
                         </div>
-                        {state.chooseTypeMovies === 2 ? (
-                            <input placeholder="Mùa phim..." type="number" className="addSeason" value={state.movieSeason} onChange={(e) => setState({ movieSeason: e.target.value })} />
-                        ) : null}
+                        <input placeholder="Phần phim...(Có thể để trống)" type="text" className="addSeason" value={state.movieSeason} onChange={(e) => setState({ movieSeason: e.target.value })} />
                     </div>
                 </>
             ) : (
@@ -202,7 +190,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
                     <input type="text" placeholder="Tên phim..." value={state.searchFilm} onChange={(e) => setState({ searchFilm: e.target.value })} required />
                     {state.listAutoComplete.length === 0 ? null : (
                         <div className="autoCompleteFilm">
-                            {state.listAutoComplete.map((i) => {
+                            {state.listAutoComplete?.map((i) => {
                                 return (
                                     <div onClick={() => getFilmDetail(i.id)} key={i.id} className="filmChild">
                                         <img loading="lazy" alt={i.title} src={`https://image.tmdb.org/t/p/original/${window.innerWidth <= 991 ? i.backdrop_path : i.poster_path}`} />
@@ -211,7 +199,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
                                             <p>{state.chooseTypeMovies === 1 ? i.original_title : i.original_name}</p>
                                             <p className="contentFilmChildIn4">{i.overview}</p>
                                             <div className="sideIn4">
-                                                Năm sản xuất: <span style={{ color: "#fff" }}>{i.release_date ? i.release_date.slice(0, 4) : i.first_air_date.slice(0, 4)}</span> - Rating: <span style={{ color: "#fff" }}>{i.vote_average.toFixed(1)}</span>/10
+                                                Năm sản xuất: <span style={{ color: "#fff" }}>{i.release_date ? i.release_date?.slice(0, 4) : i.first_air_date?.slice(0, 4)}</span> - Rating: <span style={{ color: "#fff" }}>{i.vote_average.toFixed(1)}</span>/10
                                             </div>
                                         </div>
                                     </div>

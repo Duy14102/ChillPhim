@@ -9,7 +9,6 @@ import 'swiper/css/navigation';
 // import required modules
 import { Navigation } from 'swiper/modules';
 function LandingMovie({ Title, MarginTop, movie }) {
-    const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
     return (
         movie && movie.length > 0 ? (
             <div style={{ marginTop: MarginTop }} className="landingMovieChild">
@@ -38,17 +37,17 @@ function LandingMovie({ Title, MarginTop, movie }) {
                     spaceBetween={30}
                     modules={[Navigation]}
                     className="swiperLandingMovie">
-                    {shuffle(movie).map((i) => {
+                    {movie.map((i) => {
                         return (
                             <SwiperSlide key={i._id}>
                                 <a href={`/Information/${i.subtitle}`}>
                                     <div className='imgSwiper'>
                                         <img loading="lazy" alt={i.title} src={i.banner.vertical} />
                                     </div>
-                                    <p className="titleSwiper"><span>{i.title}</span></p>
+                                    <p className="titleSwiper"><span>{i.movieSeason && i.movieSeason !== "" ? `${i.title} (Phần ${i.movieSeason})` : i.title}</span></p>
                                     <span className="playButtonSwiper">▶</span>
                                 </a>
-                                <div className="filmTotal">{!i.totalEps ? `${i.filmSources.length + 1}/??` : i.totalEps === 1 ? "Tập Full" : `Tập ${i.filmSources.length}/${i.totalEps}`}</div>
+                                <div className="filmTotal">{!i.totalEps ? `${i.filmSources.length}/??` : i.totalEps === 1 ? "Tập Full" : `Tập ${i.filmSources.length}/${i.totalEps}`}</div>
                             </SwiperSlide>
                         )
                     })}

@@ -270,9 +270,12 @@
 .toolsBar .epsCover {
     padding: 15px;
     border-radius: 10px;
+    max-height: 250px;
+    overflow-y: auto;
     background: #2a2e37;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 15px;
 }
 

@@ -12,3 +12,21 @@ textarea:focus,
 select:focus {
     outline: none;
 }
+
+textarea {
+    vertical-align: top;
+}
+
+::-webkit-scrollbar {
+    background: transparent;
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #94b1f2;
+    border-radius: 99px;
+}
+
+body::-webkit-scrollbar {
+    background: #202124;
+}

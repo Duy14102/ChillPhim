@@ -7,7 +7,7 @@ function DeleteMovie({ state, setState, axios, callMovies, toast, ToastUpdate, u
             method: "post",
             url: "http://localhost:3000/api/v1/deleteMovies",
             data: {
-                title: state.deleteMovieTitle
+                title: state.deleteMovieId
             }
         }
         axios(configuration).then((res) => {

@@ -49,13 +49,14 @@ function SeenMovies({ Title, MarginTop, useState, useEffect, axios }) {
                     modules={[Navigation]}
                     className="swiperLandingMovie">
                     {movieStorage.sort((a, b) => b.time - a.time).map((i) => {
+                        const compareEqual = movie?.filter((item) => item.subtitle === i.title)[0]
                         return (
                             <SwiperSlide key={i.title}>
                                 <a href={`/Streaming/${i.title}/${i.eps}`}>
                                     <div style={{ height: 200 }} className='imgSwiper'>
-                                        <img loading="lazy" alt={i.title} src={movie?.filter((item) => item.subtitle === i.title)[0].banner.horizontal} />
+                                        <img loading="lazy" alt={i.title} src={compareEqual?.banner.horizontal} />
                                     </div>
-                                    <p className="titleSwiper"><span>{movie?.filter((item) => item.subtitle === i.title)[0].title}</span></p>
+                                    <p className="titleSwiper"><span>{compareEqual?.movieSeason && compareEqual?.movieSeason !== "" ? `${compareEqual?.title} (Phần ${compareEqual?.movieSeason})` : compareEqual?.title}</span></p>
                                     <span className="playButtonSwiper">▶</span>
                                 </a>
                                 <div className="filmTotal">{i.eps}</div>

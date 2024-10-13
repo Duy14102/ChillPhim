@@ -7,12 +7,24 @@ import 'swiper/css/navigation';
 
 // import required modules
 import { EffectCoverflow, Navigation, Autoplay } from 'swiper/modules';
+import ModalProps from '../modal/ModalProps';
+import { useReducer } from 'react';
 
 function HeroBanner({ movie }) {
+    const [state, setState] = useReducer((prev, next) => ({
+        ...prev, ...next
+    }), {
+        modalState: false,
+        trailerData: null
+    })
     function toHoursAndMinutes(totalMinutes) {
         const hours = Math.floor(totalMinutes / 60);
         const minutes = totalMinutes % 60;
-        return `${hours}h ${minutes}p`;
+        if (hours) {
+            return `${hours}h ${minutes}p`;
+        } else {
+            return `${minutes}p`;
+        }
     }
     return (
         <div className='heroBanner'>
@@ -45,11 +57,11 @@ function HeroBanner({ movie }) {
                                     <img loading='lazy' alt={i.title} src={i.banner.horizontal} />
                                 </div>
                                 <div className='in4Swiper'>
-                                    <h1>{i.title}</h1>
+                                    <h1>{i.movieSeason && i.movieSeason !== "" ? `${i.title} (Phần ${i.movieSeason})` : i.title}</h1>
                                     <div className='categoryIn4'>
                                         {i.category.map((c, indexC) => {
                                             return (
-                                                <a key={indexC} href='/' className='mainCategory'>{c}</a>
+                                                <a key={indexC} href={`/List/Genres/${c}/${c}/NF`} className='mainCategory'>{c}</a>
                                             )
                                         })}
                                     </div>
@@ -70,7 +82,7 @@ function HeroBanner({ movie }) {
                                     <div className='contentIn4'>{i.content}</div>
                                     <div className='buttonIn4'>
                                         <a href={`/Streaming/${i.subtitle}/${i.filmSources[0].title}`} className='playButton'>Xem ngay <span style={{ marginLeft: 10 }}>▶</span></a>
-                                        <button className='trailerButton'>Xem trailer</button>
+                                        <button type='button' onClick={() => setState({ modalState: true, trailerData: i.trailerSource })} className='trailerButton'>Xem trailer</button>
                                     </div>
                                 </div>
                             </SwiperSlide>
@@ -78,6 +90,9 @@ function HeroBanner({ movie }) {
                     })}
                 </Swiper>
             ) : null}
+            <ModalProps state={state} setState={setState}>
+                <iframe allowFullScreen src={state.trailerData}></iframe>
+            </ModalProps>
         </div>
     )
 }

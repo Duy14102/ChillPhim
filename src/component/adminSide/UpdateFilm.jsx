@@ -33,8 +33,7 @@ function UpdateFilm({ state, setState, axios, callMovies, AddEps, UpdateEps, toa
             method: "post",
             url: "http://localhost:3000/api/v1/updateMovies",
             data: {
-                update: state.movieKeysUpdate,
-                season: state.movieSeason
+                update: state.movieKeysUpdate
             }
         }
         axios(configuration).then((res) => {
@@ -63,7 +62,7 @@ function UpdateFilm({ state, setState, axios, callMovies, AddEps, UpdateEps, toa
                 })}
             </select>
             <input type="number" defaultValue={state.movieKeysUpdate?.totalEps} onChange={(e) => updateField("totalEps", e)} className="fieldUpdate" placeholder="Tổng số tập..." />
-            <textarea style={{ height: 150 }} defaultValue={state.movieKeysUpdate?.note} onChange={(e) => updateField("note", e)} className="fieldUpdate" placeholder="Ghi chú..."></textarea>
+            <textarea style={{ height: 150 }} defaultValue={state.movieKeysUpdate?.note} onChange={(e) => updateField("note", e)} className="fieldUpdate" placeholder="Ghi chú...(Có thể để trống)"></textarea>
             <div className="fieldCategory">
                 <p style={{ color: "rgba(211,211,211,0.8)", fontSize: 16 }}>Chọn danh mục: </p>
                 {state.listAllCate.map((c) => {
@@ -75,7 +74,14 @@ function UpdateFilm({ state, setState, axios, callMovies, AddEps, UpdateEps, toa
                 })}
             </div>
             <hr className="hrClassGray" />
-            <input type="number" className="fieldUpdate" defaultValue={/[()]/.test(state.movieKeysUpdate?.title) ? state.movieKeysUpdate?.title.match(/\((.*)\)/)[1].replace(/^\D+/g, '') : state.movieSeason} onChange={(e) => setState({ movieSeason: e.target.value })} placeholder="Mùa phim..." />
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <input style={{ width: "49%" }} type="text" className="fieldUpdate" defaultValue={state.movieKeysUpdate?.movieSeason} onChange={(e) => updateField("movieSeason", e)} placeholder="Phần phim...(Có thể để trống)" />
+                <select style={{ width: "49%" }} defaultValue={state.movieKeysUpdate?.mainGenres} onChange={(e) => updateField("mainGenres", e)} className="fieldUpdate" required>
+                    <option hidden value={""}>Chọn thể loại...</option>
+                    <option value={"Phim lẻ"}>Phim lẻ</option>
+                    <option value={"Phim bộ"}>Phim bộ</option>
+                </select>
+            </div>
             <div className="fieldCategory">
                 <button style={{ background: "#202124", color: "#94b1f2", border: "1px solid #94b1f2" }} className="epsFieldButton" onClick={() => setState({ wantUpdatePrevEps: true })} type="button">Thêm tập</button>
                 {state.movieKeysUpdate?.filmSources.map((f, indexF) => {
