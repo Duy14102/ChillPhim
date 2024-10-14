@@ -35,17 +35,17 @@ function SeenMovies({ Title, MarginTop, useState, useEffect, axios }) {
                         0: {
                             slidesPerView: 2
                         },
-                        991: {
+                        700: {
                             slidesPerView: 3
                         },
-                        1300: {
+                        991: {
                             slidesPerView: 4
                         },
-                        1600: {
+                        1550: {
                             slidesPerView: 5
                         }
                     }}
-                    spaceBetween={30}
+                    spaceBetween={15}
                     modules={[Navigation]}
                     className="swiperLandingMovie">
                     {movieStorage.sort((a, b) => b.time - a.time).map((i) => {

@@ -123,7 +123,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
                 <>
                     <div className="coverAddFilmChild">
                         <div className="filmChild">
-                            <img loading="lazy" alt={state.movieData.title} src={`https://image.tmdb.org/t/p/original/${window.innerWidth <= 991 ? state.movieData.backdrop_path : state.movieData.poster_path}`} />
+                            <img loading="lazy" alt={state.movieData.title} src={`https://image.tmdb.org/t/p/original/${window.innerWidth <= 700 ? state.movieData.backdrop_path : state.movieData.poster_path}`} />
                             <div className="filmChildIn4">
                                 <h3>{state.movieData.title ? state.movieData.title : state.movieData.name}</h3>
                                 <p>{state.movieData.original_title ? state.movieData.original_title : state.movieData.original_name}</p>
@@ -193,7 +193,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
                             {state.listAutoComplete?.map((i) => {
                                 return (
                                     <div onClick={() => getFilmDetail(i.id)} key={i.id} className="filmChild">
-                                        <img loading="lazy" alt={i.title} src={`https://image.tmdb.org/t/p/original/${window.innerWidth <= 991 ? i.backdrop_path : i.poster_path}`} />
+                                        <img loading="lazy" alt={i.title} src={`https://image.tmdb.org/t/p/original/${window.innerWidth <= 700 ? i.backdrop_path : i.poster_path}`} />
                                         <div className="filmChildIn4">
                                             <h3>{state.chooseTypeMovies === 1 ? i.title : i.name}</h3>
                                             <p>{state.chooseTypeMovies === 1 ? i.original_title : i.original_name}</p>

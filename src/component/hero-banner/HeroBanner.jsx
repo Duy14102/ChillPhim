@@ -15,7 +15,9 @@ function HeroBanner({ movie }) {
         ...prev, ...next
     }), {
         modalState: false,
-        trailerData: null
+        trailerData: null,
+        viewMoreCate: false,
+        viewMoreCateIndex: null
     })
     function toHoursAndMinutes(totalMinutes) {
         const hours = Math.floor(totalMinutes / 60);
@@ -32,11 +34,11 @@ function HeroBanner({ movie }) {
                 <Swiper
                     effect={'coverflow'}
                     grabCursor={true}
-                    autoplay={{
-                        delay: 3000,
-                        disableOnInteraction: true,
-                        pauseOnMouseEnter: true
-                    }}
+                    // autoplay={{
+                    //     delay: 3000,
+                    //     disableOnInteraction: true,
+                    //     pauseOnMouseEnter: true
+                    // }}
                     loop={true}
                     navigation={true}
                     centeredSlides={true}
@@ -50,7 +52,7 @@ function HeroBanner({ movie }) {
                     }}
                     modules={[EffectCoverflow, Navigation, Autoplay]}
                     className="swiperHeroBanner">
-                    {movie.map((i) => {
+                    {movie.map((i, indexI) => {
                         return (
                             <SwiperSlide key={i._id}>
                                 <div className='imgSwiper'>
@@ -59,11 +61,14 @@ function HeroBanner({ movie }) {
                                 <div className='in4Swiper'>
                                     <h1>{i.movieSeason && i.movieSeason !== "" ? `${i.title} (Phần ${i.movieSeason})` : i.title}</h1>
                                     <div className='categoryIn4'>
-                                        {i.category.map((c, indexC) => {
+                                        {i.category.slice(0, state.viewMoreCate && state.viewMoreCateIndex === indexI ? i.category.length : 5).map((c, indexC) => {
                                             return (
                                                 <a key={indexC} href={`/List/Genres/${c}/${c}/NF`} className='mainCategory'>{c}</a>
                                             )
                                         })}
+                                        {i.category.length > 5 ? (
+                                            <span onClick={() => setState({ viewMoreCate: state.viewMoreCate ? false : true, viewMoreCateIndex: state.viewMoreCateIndex ? null : indexI })} className='plusCategoryIn4'>{state.viewMoreCate && state.viewMoreCateIndex === indexI ? "Thu gọn" : `+ ${i.category.length - 5}`}</span>
+                                        ) : null}
                                     </div>
                                     <div className='ratingIn4'>
                                         <div className='ratingChild'>
@@ -91,7 +96,7 @@ function HeroBanner({ movie }) {
                 </Swiper>
             ) : null}
             <ModalProps state={state} setState={setState}>
-                <iframe allowFullScreen src={state.trailerData}></iframe>
+                <iframe style={{ marginTop: 25 }} allowFullScreen src={state.trailerData}></iframe>
             </ModalProps>
         </div>
     )

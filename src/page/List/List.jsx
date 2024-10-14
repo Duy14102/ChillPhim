@@ -39,7 +39,7 @@ function List() {
     return (
         <div className="list">
             <div className="topList">
-                <h3><span style={{ color: "rgba(211,211,211,0.8)" }}>{orderString}:</span> {params.Order === "Directors" || params.Order === "Stars" ? `${params.Calling} (${params.Type})` : params.Calling}</h3>
+                <h3><span style={{ color: "rgba(211,211,211,0.8)" }}>{orderString}:</span> {params.Order === "Directors" || params.Order === "Stars" || params.Order === "Search" ? `${params.Calling} (${params.Type})` : params.Calling}</h3>
                 <select defaultValue={params.Sort} onChange={(e) => window.location.href = `/List/${params.Order}/${params.Type}/${params.Calling}/${e.target.value}`}>
                     <option hidden value={""}>Lọc phim...</option>
                     <option value={"MV"}>Xem nhiều nhất</option>

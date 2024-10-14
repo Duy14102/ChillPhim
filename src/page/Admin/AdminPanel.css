@@ -8,7 +8,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 150px;
+    padding: 15px;
     background: #25272c;
 }
 
@@ -194,7 +194,7 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     gap: 15px;
 }
 
-.bodyPanel .midBody .coverAddFilm .titleAdd .chooseTypeFilm button{
+.bodyPanel .midBody .coverAddFilm .titleAdd .chooseTypeFilm button {
     padding: 10px 20px;
     color: #94b1f2;
     background: #202124;
@@ -389,7 +389,7 @@ header .options .collapseOptions .collapseOptionsChild:hover {
 
 .coverAddFilm .filmChild img {
     width: 100px;
-    height: 100%;
+    height: auto;
     object-fit: cover;
 }
 
@@ -577,78 +577,32 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     fill: rgba(148, 177, 242, 0.8);
 }
 
-@media (max-width:991px) {
-    header {
-        padding: 15px 0;
-    }
+.coverSideChild2 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+}
 
-    .bodyPanel .upperBody {
-        flex-direction: column;
-        gap: 15px;
-    }
 
+@media (max-width:1300px) {
     .bodyPanel .bottomBody .bottomBodyChild {
         width: 100%;
-        flex-direction: column;
     }
+}
 
-    .bodyPanel .bottomBody .bottomBodyChild img {
-        width: 100%;
-    }
-
-    .bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildIn4 {
-        width: 100%;
-        gap: 5px;
-    }
-
-    .bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide {
-        width: 100%;
-        flex-direction: row;
-        flex-wrap: wrap;
-        row-gap: 5px;
-    }
-
-    .bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide .sideChild {
-        width: calc(100%/3);
-        justify-content: center;
-    }
-
-    .bodyPanel .upperBody input {
-        width: 100%;
-    }
-
-    .coverAddFilm .titleAdd .autoCompleteFilm {
-        flex-direction: column;
-        flex-wrap: nowrap;
-    }
-
-    .coverAddFilm .autoCompleteFilm .filmChild {
-        width: 100%;
-        flex-direction: column;
-        flex-wrap: nowrap !important;
-    }
-
-    .coverAddFilm .filmChild img {
-        width: 100%;
-    }
-
-    .coverAddFilm .filmChild .filmChildIn4 {
-        width: 100%;
-        gap: 5px;
-    }
-
-    .bodyPanel .midBody .coverAddFilm .coverAddFilmChild {
-        flex-direction: column;
-        gap: 5px;
-    }
-
+@media (max-width:991px) {
     .coverAddFilm .filmChild {
         width: 100%;
-        flex-wrap: wrap;
     }
 
     .coverAddFilm .formMovieExists {
         width: 100%;
+    }
+
+    .bodyPanel .midBody .coverAddFilm .coverAddFilmChild {
+        flex-direction: column;
+        gap: 15px;
     }
 
     .coverAddFilm .underAddFilmChild {
@@ -666,12 +620,70 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     }
 
     .coverAddFilm .filmChild .deleteFilm {
-        top: 90%;
-        right: 5px;
-        transform: none;
+        top: 85%;
+        right: 10px;
     }
 
-    .coverAddFilm .addEps{
+    .coverAddFilm .addEps {
         width: 100% !important;
+    }
+}
+
+@media (max-width:700px) {
+    .coverAddFilm .filmChild {
+        flex-direction: column;
+    }
+
+    .coverAddFilm .filmChild img {
+        width: 100%;
+        height: 250px;
+    }
+
+    .coverAddFilm .filmChild .filmChildIn4{
+        width: 95%;
+        gap: 5px;
+    }
+
+    .coverAddFilm .filmChild .deleteFilm {
+        top: 95%;
+        right: 10px;
+    }
+
+    .bodyPanel .upperBody {
+        flex-direction: column-reverse;
+        gap: 15px;
+    }
+
+    .bodyPanel .upperBody input {
+        width: 100%;
+    }
+
+    .bodyPanel .bottomBody .bottomBodyChild {
+        flex-direction: column;
+    }
+
+    .bodyPanel .bottomBody .bottomBodyChild img {
+        width: 100%;
+        height: 250px;
+    }
+
+    .bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildIn4 {
+        width: 100%;
+        gap: 8px;
+    }
+
+    .bodyPanel .bottomBody .bottomBodyChild .bottomBodyChildSide {
+        width: 100%;
+        gap: 8px;
+    }
+
+    .coverSideChild2 {
+        flex-direction: row;
+        gap: 0;
+        justify-content: space-between;
+    }
+
+    .coverSideChild2 .sideChild {
+        width: 49% !important;
     }
 }

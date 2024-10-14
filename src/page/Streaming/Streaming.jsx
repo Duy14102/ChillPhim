@@ -3,7 +3,9 @@ import './Streaming.css'
 import NoReview from '../../component/no-review/NoReview';
 import LandingMovie from '../../component/landing-movie/LandingMovie';
 import { useParams } from 'react-router-dom';
+import ToastSuccess from '../../component/Toastify/ToastSuccess'
 import axios from 'axios';
+import HaveReview from '../../component/have-review/HaveReview';
 
 function Streaming() {
     const videoDiv = useRef();
@@ -15,8 +17,13 @@ function Streaming() {
         similarMovies: null,
         light: false,
         servers: 0,
-        wantChangeServer: false
+        wantChangeServer: true
     })
+
+    useEffect(() => {
+        videoDiv.current.scrollIntoView({ behavior: "smooth" })
+        getMoviesIn4()
+    }, [])
 
     const shuffle = (arr) => {
         return arr ? arr.sort(() => Math.random() - 0.5) : []
@@ -35,8 +42,7 @@ function Streaming() {
         })
     }
 
-    useEffect(() => {
-        videoDiv.current.scrollIntoView({ behavior: "smooth" })
+    function getMoviesIn4() {
         const configuration = {
             method: "get",
             url: "http://localhost:3000/api/v1/getMoviesIn4",
@@ -75,18 +81,6 @@ function Streaming() {
                 }
             }
         })
-    }, [])
-
-    function prevEps() {
-        if (params.Ep.includes("Full")) {
-            return params.Ep
-        } else {
-            if (parseInt(params.Ep.match(/\d/g).join("")) === 1) {
-                return params.Ep
-            } else {
-                return `Tập ${parseInt(params.Ep.match(/\d/g).join("")) - 1}`
-            }
-        }
     }
 
     function nextEps() {
@@ -100,27 +94,40 @@ function Streaming() {
             }
         }
     }
+
+    function changeServer(index) {
+        setState({ servers: index })
+        videoDiv.current.scrollIntoView({ behavior: "smooth" })
+        ToastSuccess({ message: "Đổi server thành công!" })
+    }
     return (
         <div style={{ background: state.light ? "black" : null }} className='streaming'>
+            <div className='titleStreaming'>
+                <a href={`/Information/${state.movies?.subtitle}`} className='titleLinkStreaming'>{state.movies?.title}</a>
+                <div className='botStreaming'>
+                    <p>{params.Ep}</p>
+                    <a href={`/Information/${state.movies?.subtitle}`} className='in4LinkStreaming'>ℹ️</a>
+                </div>
+            </div>
             <div ref={videoDiv} className='videoStreaming'>
                 <iframe id='myFrame' allowFullScreen src={state.movies?.filmSources.filter((item) => item.title === params.Ep)[0].servers[state.servers]}></iframe>
-            </div>
-            <div style={{ background: state.light ? "black" : null }} className='buttonStreaming'>
-                <a className='buttonDefault buttonPrevNext buttonIn4' href={`/Information/${params.Name}`}>ℹ️</a>
-                <a style={{ pointerEvents: prevEps() === params.Ep ? "none" : null }} href={`/Streaming/${params.Name}/${prevEps()}`} className='buttonDefault buttonPrevNext' type='button'>◄ Tập trước</a>
-                <a style={{ pointerEvents: nextEps() === params.Ep ? "none" : null }} href={`/Streaming/${params.Name}/${nextEps()}`} className='buttonDefault buttonPrevNext' type='button'>Tập tiếp ►</a>
-                <button onClick={() => setState({ wantChangeServer: state.wantChangeServer ? false : true })} style={{ position: "relative", borderRadius: state.wantChangeServer ? "99px 99px 0 0" : 99 }} className='buttonDefault buttonPrevNext' type='button'>Đổi server
+                <button onClick={() => setState({ wantChangeServer: state.wantChangeServer ? false : true })} type='button' className='chooseServers'>
+                    <svg style={state.wantChangeServer ? { rotate: "90deg" } : null} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" /></svg>
                     {state.wantChangeServer ? (
                         <div className='serverDropdown'>
                             {state.movies?.filmSources.filter((item) => item.title === params.Ep)[0].servers.map((s, indexS) => {
                                 return (
-                                    <button key={indexS} onClick={() => setState({ servers: indexS })} type='button' className='serverButton'>Server {indexS + 1}</button>
+                                    <div style={state.servers === indexS ? { background: "#94b1f2" } : null} key={indexS} onClick={() => changeServer(indexS)} type='button' className='serverButton'>Server {indexS + 1}</div>
                                 )
                             })}
                         </div>
                     ) : null}
                 </button>
+            </div>
+            <div style={{ background: state.light ? "black" : null }} className='buttonStreaming'>
+                <button className='buttonDefault buttonIn4' href={`/Information/${params.Name}`}>⚠️</button>
                 <button onClick={() => setState({ light: state.light ? false : true })} className='buttonDefault buttonLight' type='button'>{state.light ? "Bật đèn" : "Tắt đèn"}</button>
+                <a style={{ pointerEvents: nextEps() === params.Ep ? "none" : null }} href={`/Streaming/${params.Name}/${nextEps()}`} className='buttonDefault buttonPrevNext' type='button'>Tập tiếp ►</a>
             </div>
             <div style={{ opacity: state.light ? 0 : null }} className='episodeStreaming'>
                 <h2>Danh sách tập</h2>
@@ -135,11 +142,15 @@ function Streaming() {
             <div style={{ opacity: state.light ? 0 : null }} className='rateStreaming'>
                 <h2>💬 Bình luận <span style={{ color: "#fff" }}>({state.movies?.comments.length})</span></h2>
                 <div className='rateCover'>
-                    <NoReview comments={state.movies?.comments} name={state.movies?.movieSeason && state.movies?.movieSeason !== "" ? `${state.movies?.title} (Phần ${state.movies?.movieSeason})` : state.movies?.title} />
+                    {state.movies?.comments.length < 1 ? (
+                        <NoReview movies={state.movies} axios={axios} callBack={getMoviesIn4} />
+                    ) : (
+                        <HaveReview movies={state.movies} axios={axios} callBack={getMoviesIn4} />
+                    )}
                 </div>
             </div>
             <div style={{ opacity: state.light ? 0 : null }}>
-                <LandingMovie Title={"Phim tương tự"} MarginTop={100} movie={shuffle(state?.similarMovies)} />
+                <LandingMovie Title={"Phim tương tự"} MarginTop={window.innerWidth <= 991 ? 50 : 100} movie={shuffle(state?.similarMovies)} />
             </div>
         </div>
     )

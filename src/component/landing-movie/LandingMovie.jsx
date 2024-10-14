@@ -24,17 +24,17 @@ function LandingMovie({ Title, MarginTop, movie }) {
                         0: {
                             slidesPerView: 2
                         },
-                        991: {
+                        700: {
                             slidesPerView: 3
                         },
-                        1300: {
+                        991: {
                             slidesPerView: 4
                         },
-                        1600: {
+                        1550: {
                             slidesPerView: 5
                         }
                     }}
-                    spaceBetween={30}
+                    spaceBetween={15}
                     modules={[Navigation]}
                     className="swiperLandingMovie">
                     {movie.map((i) => {

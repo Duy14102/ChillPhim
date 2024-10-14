@@ -55,10 +55,37 @@ header .headerBrand .headerBrandSlogan span {
 }
 
 header .headerGate {
+    position: relative;
     display: flex;
-    align-items: center;
+}
+
+header .headerGate .headerBarsButton {
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all .3s;
+    border-radius: 50%;
+}
+
+header .headerGate .headerBarsButton:hover {
+    background: rgba(128, 128, 128, 0.2);
+}
+
+header .headerGate .headerBarsButton svg {
+    width: 100%;
+    height: 100%;
+    fill: #fff;
+}
+
+header .headerGate .headerGateChildCover {
+    display: flex;
     gap: 35px;
+    align-items: center;
     flex-wrap: wrap;
+    transition: all .3s;
 }
 
 header .headerGate .headerGateChild {
@@ -100,16 +127,14 @@ header .headerGate .nationGate {
     color: #fff;
     width: calc(100%/3);
     text-align: center;
-    transition: color .3s;
-    border: 1px solid rgba(128, 128, 128, 0.2);
     padding: 10px 20px;
     text-wrap: nowrap;
+    transition: color .3s;
 }
 
 .genresGate .genresGateChild a:hover,
 .nationGate .nationGateChild a:hover {
     color: #94b1f2;
-    border-color: #94b1f2;
 }
 
 .genresGate:hover .genresGateChild,
@@ -130,73 +155,7 @@ header .headerSearch {
     position: relative;
 }
 
-header .headerSearch .autoCompleteHeader {
-    position: absolute;
-    top: 105%;
-    left: 0;
-    width: 100%;
-    height: auto;
-    max-height: 250px;
-    padding: 15px;
-    background: #2a2e37;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    border-radius: 10px;
-    overflow-y: auto;
-    box-shadow: 0 2px 6px 1px rgba(0, 0, 0, 0.24);
-}
-
-header .headerSearch .autoCompleteHeader .autoCompleteChild {
-    background: #202124;
-    padding: 15px;
-    border-radius: 10px;
-    width: 100%;
-    display: flex;
-    gap: 15px;
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: all .3s;
-    user-select: none;
-    text-decoration: none;
-}
-
-header .headerSearch .autoCompleteHeader .autoCompleteChild:active {
-    scale: 0.95;
-}
-
-header .headerSearch .autoCompleteHeader .autoCompleteChild:hover {
-    border: 1px solid #94b1f2;
-}
-
-header .headerSearch .autoCompleteHeader .autoCompleteChild img {
-    width: 50px;
-    height: 100%;
-    object-fit: cover;
-}
-
-header .headerSearch .autoCompleteHeader .autoCompleteChild .autoCompleteChildIn4 {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.autoCompleteHeader .autoCompleteChild .autoCompleteChildIn4 h3 {
-    color: rgba(211, 211, 211, 0.8);
-    font-size: 20px;
-}
-
-.autoCompleteHeader .autoCompleteChild .autoCompleteChildIn4 span {
-    color: rgba(211, 211, 211, 0.8);
-    font-size: 18px;
-}
-
-.autoCompleteHeader .autoCompleteChild .autoCompleteChildIn4 p {
-    color: gray;
-    font-size: 16px;
-}
-
-header .headerSearch .headerButtonSearch {
+header .headerButtonSearch {
     width: 22px;
     height: 22px;
     border: none;
@@ -204,22 +163,108 @@ header .headerSearch .headerButtonSearch {
     cursor: pointer;
 }
 
-header .headerSearch .headerButtonSearch svg {
+.headerButtonSearch span {
+    display: none;
+}
+
+header .headerButtonSearch svg {
     width: 100%;
     height: 100%;
     fill: #fff;
     transition: fill .3s;
 }
 
-header .headerSearch .headerButtonSearch:hover svg {
+header .headerButtonSearch:hover svg {
     fill: #94b1f2;
 }
 
-header .headerSearch input {
-    height: 22px;
-    width: 250px;
-    font-size: 16px;
-    border: none;
-    background: none;
-    color: #fff;
+.responsiveClass {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@media(max-width:1550px) {
+    .responsiveClass {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .headerGateChildCover {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #2a2e37;
+        width: 200px;
+        flex-direction: column;
+        gap: 0 !important;
+        border-radius: 10px;
+    }
+
+    .headerGateChildCover .headerGateChild {
+        width: 100%;
+        padding: 15px 0;
+        text-align: center;
+        border-right: 3px solid transparent;
+    }
+
+    .genresGateChild,
+    .nationGateChild {
+        top: 0 !important;
+        right: 100% !important;
+        border-radius: 10px;
+    }
+
+    .genresGateChild a,
+    .nationGateChild a {
+        border-right: 3px solid transparent;
+    }
+
+
+    .headerGateChildCover .headerGateChild:hover {
+        border-right-color: #94b1f2;
+        color: #fff;
+        background: linear-gradient(90deg, rgba(148, 177, 242, 0) 0%, rgba(148, 177, 242, 0.2) 25%, rgba(148, 177, 242, 0.3) 50%, rgba(148, 177, 242, 0.4) 75%, rgba(148, 177, 242, 0.5) 100%);
+    }
+
+    .genresGate .genresGateChild a:hover,
+    .nationGate .nationGateChild a:hover {
+        border-right-color: #94b1f2;
+        color: #fff;
+        background: linear-gradient(90deg, rgba(148, 177, 242, 0) 0%, rgba(148, 177, 242, 0.2) 25%, rgba(148, 177, 242, 0.3) 50%, rgba(148, 177, 242, 0.4) 75%, rgba(148, 177, 242, 0.5) 100%);
+    }
+
+    .headerButtonSearch {
+        height: auto !important;
+    }
+
+    .headerButtonSearch svg {
+        display: none;
+    }
+
+    .headerButtonSearch span {
+        display: block;
+    }
+}
+
+@media (max-width:1300px) {
+    header {
+        padding: 10px;
+    }
+}
+
+@media (max-width:991px) {
+    .genresGateChild,
+    .nationGateChild {
+        flex-direction: column;
+        width: 100% !important;
+        flex-wrap: nowrap !important;
+        max-height: 60vh;
+        overflow-y: scroll;
+    }
+
+    .genresGateChild a,
+    .nationGateChild a {
+        padding: 10px !important;
+        width: 100% !important;
+    }
 }

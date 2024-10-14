@@ -27,7 +27,7 @@
 
 .information .movieIn4 .coverTextIn4 .movieName {
     color: #fff;
-    font-size: 2.5vw;
+    font-size: 50px;
     letter-spacing: 1px;
     word-break: break-all;
 }
@@ -319,4 +319,95 @@
 .noteIn4 p {
     color: gray;
     font-size: 18px;
+}
+
+.crewIn4Responsive {
+    display: none;
+}
+
+@media (max-width:1550px) {
+    .crewIn4Responsive {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .movieSideIn4 {
+        margin-top: 35px !important;
+    }
+
+    .movieSideIn4 .leftSideIn4 {
+        gap: 25px !important;
+        width: 100% !important;
+    }
+
+    .movieSideIn4 .rightSideIn4 {
+        display: none;
+    }
+
+    .crewIn4ResponsiveChild {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .crewIn4ResponsiveChild svg {
+        width: 25px;
+        height: 25px;
+        fill: #94b1f2;
+    }
+
+    .crewIn4ResponsiveChild a,
+    .crewIn4ResponsiveChild p {
+        text-decoration: none;
+        font-size: 18px;
+        color: rgba(211, 211, 211, 0.8);
+        transition: color .3s;
+    }
+
+    .crewIn4ResponsiveChild a:hover {
+        color: #fff;
+    }
+}
+
+@media (max-width:1300px) {
+    .information {
+        padding: 100px 15px 15px 15px;
+    }
+}
+
+@media (max-width:991px) {
+    .information .movieIn4 .coverTextIn4 {
+        width: 60%;
+    }
+
+    .information .movieIn4 img {
+        width: 35%;
+        height: 500px;
+    }
+
+    .information .movieIn4 .coverTextIn4 .movieName {
+        font-size: 30px;
+    }
+
+    .information .movieIn4 .coverTextIn4 .contentIn4 {
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
+    }
+}
+
+@media (max-width:700px) {
+    .information .movieIn4 {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .information .movieIn4 img{
+        width: 100%;
+        height: 400px;
+    }
+
+    .information .movieIn4 .coverTextIn4{
+        width: 100%;
+    }
 }

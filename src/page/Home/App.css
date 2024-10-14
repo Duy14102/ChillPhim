@@ -1,6 +1,6 @@
 .heroBanner {
     width: 100%;
-    height: 85vh;
+    height: 80vh;
     background: #202124;
     display: grid;
     place-items: center;
@@ -15,9 +15,9 @@
 
 .swiperHeroBanner .swiper-slide {
     position: relative;
-    width: 85% !important;
     overflow: hidden;
     border-radius: 15px;
+    width: 85% !important;
 }
 
 .swiperHeroBanner .swiper-slide .imgSwiper {
@@ -48,6 +48,7 @@
     position: absolute;
     top: 30%;
     left: 3%;
+    transform: translate(0, -30%);
     width: 50%;
     height: auto;
     display: flex;
@@ -57,7 +58,7 @@
 
 .swiperHeroBanner .swiper-slide .in4Swiper h1 {
     color: #fff;
-    font-size: 2.5vw;
+    font-size: 50px;
     letter-spacing: 1px;
     word-break: break-all;
 }
@@ -215,8 +216,39 @@
     background: #202124;
 }
 
-@media (max-width:991px) {
+.plusCategoryIn4 {
+    color: rgba(211, 211, 211, 0.8);
+    cursor: pointer;
+}
+
+.plusCategoryIn4:hover {
+    color: #fff;
+}
+
+@media (max-width:1300px) {
     .landingMovie {
         padding: 75px 15px;
+    }
+}
+
+@media (max-width:991px) {
+    .swiperHeroBanner .swiper-slide .in4Swiper {
+        width: 100%;
+        left: 0;
+        padding: 15px;
+    }
+
+    .swiperHeroBanner .swiper-slide .in4Swiper h1 {
+        font-size: 30px;
+    }
+
+    .swiperHeroBanner .swiper-slide {
+        width: 100% !important;
+    }
+}
+
+@media (max-height:500px) {
+    .heroBanner {
+        height: 100% !important;
     }
 }

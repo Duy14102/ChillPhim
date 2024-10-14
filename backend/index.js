@@ -302,20 +302,26 @@ app.post("/api/v1/deleteMovies", (req, res) => {
     })
 })
 
-app.post("/api/v1/updateMovies", (req, res) => {
-    Movies.updateOne({ title: req.body.update.title }, {
-        trailerSource: req.body.update.trailerSource,
-        filmSources: req.body.update.filmSources,
-        totalEps: req.body.update.totalEps,
-        ageRate: req.body.update.ageRate,
-        note: req.body.update.note,
-        category: req.body.update.category,
-        movieSeason: req.body.update.movieSeason,
-        mainGenres: req.body.update.mainGenres
-    }).then(() => {
-        res.status(201).send({ message: "Cập nhật phim thành công!" })
-    }).catch(() => {
-        res.status(500).send({ message: "Cập nhật phim thất bại!" })
+app.post("/api/v1/updateMovies", async (req, res) => {
+    await Movies.findOne({ subtitle: req.body.update.subtitle }).then((res1) => {
+        if (res1 && req.body.update.movieSeason === res1.movieSeason) {
+            res.status(500).send({ message: "Cập nhật phim thất bại!" })
+        } else {
+            Movies.updateOne({ _id: req.body.update._id }, {
+                trailerSource: req.body.update.trailerSource,
+                filmSources: req.body.update.filmSources,
+                totalEps: req.body.update.totalEps,
+                ageRate: req.body.update.ageRate,
+                note: req.body.update.note,
+                category: req.body.update.category,
+                movieSeason: req.body.update.movieSeason,
+                mainGenres: req.body.update.mainGenres
+            }).then(() => {
+                res.status(201).send({ message: "Cập nhật phim thành công!" })
+            }).catch(() => {
+                res.status(500).send({ message: "Cập nhật phim thất bại!" })
+            })
+        }
     })
 })
 
@@ -344,6 +350,10 @@ app.get("/api/v1/getMoviesList", async (req, res) => {
             break;
         case "Stars":
             findChild = { "crew.stars.name": req.query.type }
+            break;
+        case "Search":
+            const searchRegexp = new RegExp(req.query.type, 'i')
+            findChild = { $or: [{ title: searchRegexp }, { subtitle: searchRegexp }] }
             break;
         default:
             findChild = {}
@@ -385,7 +395,19 @@ app.get("/api/v1/getMoviesSeen", async (req, res) => {
 
 app.get("/api/v1/headerAutoComplete", async (req, res) => {
     const regExpSearch = new RegExp(req.query.search, 'i')
-    await Movies.find({ $or: [{ title: regExpSearch }, { subtitle: regExpSearch }] }).then((res1) => {
+    await Movies.find({ $or: [{ title: regExpSearch }, { subtitle: regExpSearch }] }).limit(5).then((res1) => {
         res.status(201).send(res1)
+    })
+})
+
+app.post("/api/v1newComments", (req, res) => {
+    Movies.updateOne({ _id: req.body.id }, {
+        $push: {
+            comments: req.body.data
+        }
+    }).then(() => {
+        res.status(201).send({ message: "Gửi bình luận thành công!" })
+    }).catch(() => {
+        res.status(500).send({ message: "Gửi bình luận thất bại!" })
     })
 })

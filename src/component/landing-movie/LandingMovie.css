@@ -138,3 +138,9 @@
 .swiperLandingMovie .swiper-button-prev:hover {
     background: #94b1f2;
 }
+
+@media (max-width:991px) {
+    .swiperLandingMovie .swiper-slide .imgSwiper {
+        height: 300px;
+    }
+}
