@@ -72,7 +72,7 @@ const MovieSchema = new mongoose.Schema({
 
     crew: {
         directors: {
-            type: String
+            type: Array
         },
         stars: {
             type: Array

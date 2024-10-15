@@ -2,6 +2,7 @@ import "../no-review/NoReview.css"
 import { useReducer, useRef } from "react"
 import { toast } from "react-toastify"
 import ToastUpdate from "../../component/Toastify/ToastUpdate"
+import Skeleton from "react-loading-skeleton"
 
 function HaveReview({ movies, axios, callBack }) {
     const toastNow = useRef(null)
@@ -90,7 +91,7 @@ function HaveReview({ movies, axios, callBack }) {
                 </form>
             ) : null}
             <div className="listReviewCover">
-                {movies?.comments.slice(0, 6 * state.countComments).map((c, indexC) => {
+                {movies?.comments ? movies?.comments.slice(0, 6 * state.countComments).map((c, indexC) => {
                     return (
                         <div key={indexC} className="listReview">
                             <div className="nameReview">{c.name}</div>
@@ -98,7 +99,16 @@ function HaveReview({ movies, axios, callBack }) {
                             <div className="contentReview">{c.content}</div>
                         </div>
                     )
-                })}
+                }) : (
+                    window.innerWidth <= 991 ? (
+                        <Skeleton containerClassName="listReview" count={3} />
+                    ) : (
+                        <>
+                            <Skeleton containerClassName="listReview" count={3} />
+                            <Skeleton containerClassName="listReview" count={3} />
+                        </>
+                    )
+                )}
                 {movies?.comments.length > 6 ? (
                     <button onClick={() => setState({ countComments: state.countComments + 6 })} type="button" className="plusMoreComment">Xem thêm đánh giá</button>
                 ) : null}

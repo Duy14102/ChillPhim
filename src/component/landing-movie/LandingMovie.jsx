@@ -8,16 +8,17 @@ import 'swiper/css/navigation';
 
 // import required modules
 import { Navigation } from 'swiper/modules';
+import Skeleton from "react-loading-skeleton";
 function LandingMovie({ Title, MarginTop, movie }) {
     return (
-        movie && movie.length > 0 ? (
-            <div style={{ marginTop: MarginTop }} className="landingMovieChild">
-                <div className="landingMovieChildTop">
-                    <p className="landingMovieChildTitle">{Title}</p>
-                    {Title !== "Phim tương tự" ? (
-                        <a href={`/List/All/All/${Title}/${Title === "Phim xem nhiều" ? "MV" : "NF"}`} className="landingMovieChildViewAll">Xem tất cả</a>
-                    ) : null}
-                </div>
+        <div style={{ marginTop: MarginTop }} className="landingMovieChild">
+            <div className="landingMovieChildTop">
+                <p className="landingMovieChildTitle">{Title}</p>
+                {Title !== "Phim tương tự" ? (
+                    <a href={`/List/All/All/${Title}/${Title === "Phim xem nhiều" ? "MV" : "NF"}`} className="landingMovieChildViewAll">Xem tất cả</a>
+                ) : null}
+            </div>
+            {movie && movie.length > 0 ? (
                 <Swiper
                     navigation={true}
                     breakpoints={{
@@ -52,8 +53,8 @@ function LandingMovie({ Title, MarginTop, movie }) {
                         )
                     })}
                 </Swiper>
-            </div>
-        ) : null
+            ) : <Skeleton containerClassName="swiperLandingMovie" />}
+        </div>
     )
 }
 export default LandingMovie

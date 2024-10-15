@@ -8,6 +8,7 @@ import 'swiper/css/navigation';
 
 // import required modules
 import { Navigation } from 'swiper/modules';
+import Skeleton from "react-loading-skeleton";
 function SeenMovies({ Title, MarginTop, useState, useEffect, axios }) {
     const [movie, setMovie] = useState()
     const movieStorage = JSON.parse(localStorage.getItem("MovieStorage"))
@@ -24,11 +25,11 @@ function SeenMovies({ Title, MarginTop, useState, useEffect, axios }) {
         })
     }, [])
     return (
-        movieStorage && movieStorage.length > 0 ? (
-            <div style={{ marginTop: MarginTop }} className="landingMovieChild">
-                <div className="landingMovieChildTop">
-                    <p className="landingMovieChildTitle">{Title}</p>
-                </div>
+        <div style={{ marginTop: MarginTop }} className="landingMovieChild">
+            <div className="landingMovieChildTop">
+                <p className="landingMovieChildTitle">{Title}</p>
+            </div>
+            {movieStorage && movieStorage.length > 0 && movie ? (
                 <Swiper
                     navigation={true}
                     breakpoints={{
@@ -64,8 +65,8 @@ function SeenMovies({ Title, MarginTop, useState, useEffect, axios }) {
                         )
                     })}
                 </Swiper>
-            </div>
-        ) : null
+            ) : <Skeleton containerClassName="swiperLandingMovie" />}
+        </div>
     )
 }
 export default SeenMovies

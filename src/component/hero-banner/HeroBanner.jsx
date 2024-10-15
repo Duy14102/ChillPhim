@@ -9,6 +9,7 @@ import 'swiper/css/navigation';
 import { EffectCoverflow, Navigation, Autoplay } from 'swiper/modules';
 import ModalProps from '../modal/ModalProps';
 import { useReducer } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 function HeroBanner({ movie }) {
     const [state, setState] = useReducer((prev, next) => ({
@@ -34,11 +35,11 @@ function HeroBanner({ movie }) {
                 <Swiper
                     effect={'coverflow'}
                     grabCursor={true}
-                    // autoplay={{
-                    //     delay: 3000,
-                    //     disableOnInteraction: true,
-                    //     pauseOnMouseEnter: true
-                    // }}
+                    autoplay={{
+                        delay: 3000,
+                        disableOnInteraction: true,
+                        pauseOnMouseEnter: true
+                    }}
                     loop={true}
                     navigation={true}
                     centeredSlides={true}
@@ -94,7 +95,7 @@ function HeroBanner({ movie }) {
                         )
                     })}
                 </Swiper>
-            ) : null}
+            ) : <Skeleton containerClassName='swiperHeroBanner' height={"100%"} />}
             <ModalProps state={state} setState={setState}>
                 <iframe style={{ marginTop: 25 }} allowFullScreen src={state.trailerData}></iframe>
             </ModalProps>

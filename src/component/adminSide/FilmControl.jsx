@@ -1,3 +1,4 @@
+import Skeleton from "react-loading-skeleton";
 import Pagination from "../paginate/Pagination";
 
 function FilmControl({ currentPage1, state, setState, callMovies, useEffect }) {
@@ -28,9 +29,9 @@ function FilmControl({ currentPage1, state, setState, callMovies, useEffect }) {
 
     return (
         <div style={state.wantAddFilm ? { pointerEvents: "none" } : null} className="bottomBody">
-            {state.listMovies.length > 0 ? (
+            {state.listMovies ? (
                 <>
-                    {state.listMovies.map((i, indexI) => {
+                    {state.listMovies.length > 0 ? state.listMovies.map((i, indexI) => {
                         return (
                             <div key={i._id} className="bottomBodyChild">
                                 <img loading="lazy" alt={i.title} src={window.innerWidth <= 700 ? i.banner.horizontal : i.banner.vertical} />
@@ -81,11 +82,22 @@ function FilmControl({ currentPage1, state, setState, callMovies, useEffect }) {
                                 </div>
                             </div>
                         )
-                    })}
-                    <Pagination searchEnale={state.searchMain} state={state} currentPage={currentPage1} pageCount={state.pageCount1} callBack={callMovies} />
+                    }) : (
+                        <p style={{ color: "#fff", fontSize: 22 }} align="center">Hiện chưa có phim nào!</p>
+                    )}
+                    {state.listMovies && state.listMovies.length > 0 ? (
+                        <Pagination searchEnale={state.searchMain} state={state} currentPage={currentPage1} pageCount={state.pageCount1} callBack={callMovies} />
+                    ) : null}
                 </>
             ) : (
-                <p style={{ color: "#fff", fontSize: 22 }} align="center">Hiện chưa có phim nào!</p>
+                window.innerWidth <= 991 ? (
+                    <Skeleton containerClassName="bottomBodyChild" />
+                ) : (
+                    <>
+                        <Skeleton containerClassName="bottomBodyChild" />
+                        <Skeleton containerClassName="bottomBodyChild" />
+                    </>
+                )
             )}
         </div>
     )

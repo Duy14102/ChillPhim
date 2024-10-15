@@ -30,9 +30,7 @@ function App() {
 
         <LandingMovie Title={"Anime"} MarginTop={100} movie={movie?.animeFilm} />
 
-        <LandingMovie Title={"TV Show"} MarginTop={100} movie={movie?.tvShowFilm} />
-
-        <LandingMovie Title={"Phim sắp chiếu"} MarginTop={100} movie={movie?.upcomingFilm} />
+        {/* <LandingMovie Title={"Phim sắp chiếu"} MarginTop={100} movie={movie?.upcomingFilm} /> */}
       </div>
     </>
   )

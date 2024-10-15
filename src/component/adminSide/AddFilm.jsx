@@ -41,6 +41,10 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.searchFilm])
 
+    const checkDuplicateCrew = (arr) => {
+        return arr.filter((v, i, a) => a.findIndex(v2 => (v.name === v2.name)) === i)
+    }
+
     function getFilmDetail(id) {
         toastNow.current = toast.loading("Chờ một chút...")
         const filmConfiguration = {
@@ -62,12 +66,13 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
             }
             axios(creditConfiguration).then((res2) => {
                 const dataFetch = res2.data.crew ? {
-                    director: res2.data.crew.filter((a) => a.job === "Director" || a.known_for_department === "Directing")[0].name,
-                    stars: res2.data.cast.slice(0, 3),
-                    screenWriters: res2.data.crew.filter((a) => a.known_for_department === "Writing" && a.job === "Screenplay")
+                    directors: checkDuplicateCrew(res2.data.crew.filter((a) => (a.job === "Director" && a.known_for_department === "Directing") || (a.job === "Producer" && a.known_for_department === "Directing")).slice(0, 3)),
+                    stars: checkDuplicateCrew(res2.data.cast.slice(0, 5)),
+                    screenWriters: checkDuplicateCrew(res2.data.crew.filter((a) => a.known_for_department === "Writing" && a.job === "Screenplay").slice(0, 3))
                 } : {
-                    director: "", stars: [], screenWriters: []
+                    directors: [], stars: [], screenWriters: []
                 }
+                console.log(dataFetch)
                 setState({ listCrew: dataFetch, movieData: res.data })
                 ToastUpdate({ type: 1, message: `Đã chọn ${res.data.title ? res.data.title : res.data.name}`, refCur: toastNow.current })
             })
@@ -199,7 +204,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
                                             <p>{state.chooseTypeMovies === 1 ? i.original_title : i.original_name}</p>
                                             <p className="contentFilmChildIn4">{i.overview}</p>
                                             <div className="sideIn4">
-                                                Năm sản xuất: <span style={{ color: "#fff" }}>{i.release_date ? i.release_date?.slice(0, 4) : i.first_air_date?.slice(0, 4)}</span> - Rating: <span style={{ color: "#fff" }}>{i.vote_average.toFixed(1)}</span>/10
+                                                Năm sản xuất: <span style={{ color: "#fff" }}>{i.release_date ? i.release_date?.slice(0, 4) : i.first_air_date?.slice(0, 4)}</span> - Rating: <span style={{ color: "#fff" }}>{i.vote_average?.toFixed(1)}</span>/10
                                             </div>
                                         </div>
                                     </div>

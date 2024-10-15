@@ -230,7 +230,7 @@ app.post("/api/v1/addMovies", async (req, res) => {
                 imdbScore: req.body.movie.vote_average.toFixed(1),
                 time: req.body.movie.runtime ? req.body.movie.runtime : req.body.movie.last_episode_to_air.runtime,
                 timeProduce: req.body.movie.release_date ? req.body.movie.release_date : req.body.movie.first_air_date,
-                "crew.directors": req.body.crew.director,
+                "crew.directors": req.body.crew.directors,
                 "crew.stars": req.body.crew.stars,
                 "crew.screenWriters": req.body.crew.screenWriters,
                 trailerSource: req.body.trailerSource,
@@ -244,7 +244,8 @@ app.post("/api/v1/addMovies", async (req, res) => {
             })
             newMovies.save().then(() => {
                 res.status(201).send({ message: "Thêm phim thành công!" })
-            }).catch(() => {
+            }).catch((err) => {
+                console.log(err)
                 res.status(500).send({ message: "Thêm phim thất bại!" })
             })
         }
@@ -340,7 +341,7 @@ app.get("/api/v1/getMoviesList", async (req, res) => {
             findChild = { category: req.query.type }
             break;
         case "National":
-            findChild = { "national.iso_3166_1": req.query.type === "All" ? { $nin: ["US", "UK", "TH", "VN", "FR", "IN", "KR", "CN"] } : { $in: req.query.type.match(/(\b[^\s]+\b)/g) } }
+            findChild = { "national.iso_3166_1": req.query.type === "All" ? { $nin: ["US", "GB", "TH", "VN", "FR", "IN", "KR", "CN"] } : { $in: req.query.type.match(/(\b[^\s]+\b)/g) } }
             break;
         case "Type":
             findChild = { mainGenres: req.query.type === "Series" ? "Phim bộ" : "Phim lẻ" }

@@ -3,13 +3,14 @@ import { useEffect, useReducer, useRef } from "react"
 import { useParams } from "react-router-dom"
 import axios from "axios"
 import Pagination from "../../component/paginate/Pagination"
+import Skeleton from "react-loading-skeleton"
 
 function List() {
     const params = useParams()
     const [state, setState] = useReducer((prev, next) => ({
         ...prev, ...next
     }), {
-        listMovie: [],
+        listMovie: null,
         pageCount: 6
     })
     const limit = window.innerWidth <= 991 ? 14 : 15
@@ -48,29 +49,29 @@ function List() {
                     <option value={"AZ"}>Tên A-Z</option>
                 </select>
             </div>
-            <div className="midList">
-                {state.listMovie?.length > 0 ? (
-                    <>
-                        {state.listMovie?.map((i) => {
-                            return (
-                                <div className="coverList" key={i._id}>
-                                    <a href={`/Information/${i.subtitle}`}>
-                                        <div className='imgSwiper'>
-                                            <img loading="lazy" alt={i.title} src={i.banner.vertical} />
-                                        </div>
-                                        <p className="titleSwiper"><span>{i.title}</span></p>
-                                        <span className="playButtonSwiper">▶</span>
-                                    </a>
-                                    <div className="filmTotal">{!i.totalEps ? `${i.filmSources.length}/??` : i.totalEps === 1 ? "Tập Full" : `${i.filmSources.length}/${i.totalEps}`}</div>
-                                </div>
-                            )
-                        })}
+            {state.listMovie ? (
+                <div className="midList">
+                    {state.listMovie?.length > 0 ? state.listMovie?.map((i) => {
+                        return (
+                            <div className="coverList" key={i._id}>
+                                <a href={`/Information/${i.subtitle}`}>
+                                    <div className='imgSwiper'>
+                                        <img loading="lazy" alt={i.title} src={i.banner.vertical} />
+                                    </div>
+                                    <p className="titleSwiper"><span>{i.title}</span></p>
+                                    <span className="playButtonSwiper">▶</span>
+                                </a>
+                                <div className="filmTotal">{!i.totalEps ? `${i.filmSources.length}/??` : i.totalEps === 1 ? "Tập Full" : `${i.filmSources.length}/${i.totalEps}`}</div>
+                            </div>
+                        )
+                    }) : (
+                        <div className="noFilmAnnounce">Không có kết quả!</div>
+                    )}
+                    {state.listMovie.length > 0 ? (
                         <Pagination currentPage={currentPage} pageCount={state.pageCount} callBack={callMovieList} searchEnale={""} />
-                    </>
-                ) : (
-                    <div className="noFilmAnnounce">Không có kết quả!</div>
-                )}
-            </div>
+                    ) : null}
+                </div>
+            ) : <Skeleton count={3} containerClassName="midList" width={"100%"} />}
         </div>
     )
 }
