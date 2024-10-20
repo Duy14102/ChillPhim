@@ -154,6 +154,18 @@
     text-wrap: nowrap;
 }
 
+.information .movieIn4 .coverTextIn4 .playButton svg {
+    width: 15px;
+    height: 15px;
+    fill: #202124;
+    margin-left: 10px;
+    transition: fill .3s;
+}
+
+.information .movieIn4 .coverTextIn4 .playButton:hover svg {
+    fill: #fff;
+}
+
 .information .movieIn4 .coverTextIn4 .playButton:hover,
 .toolsBar .rateAndReview form .noReviewButton:hover {
     color: #fff;
