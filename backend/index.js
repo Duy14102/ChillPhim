@@ -45,17 +45,17 @@ setInterval(() => {
 }, 600000);
 
 // Create first admin account
-Accounts.findOne({ username: "admin" }).then(async (res1) => {
-    if (!res1) {
-        const hashPassword = await argon2.hash(process.env.REACT_APP_firstAdminPassword);
-        const firstAdmin = new Accounts({
-            username: "admin",
-            password: hashPassword,
-            role: 1
-        })
-        firstAdmin.save()
-    }
-}).catch((err) => console.log(err))
+// Accounts.findOne({ username: "admin" }).then(async (res1) => {
+//     if (!res1) {
+//         const hashPassword = await argon2.hash(process.env.REACT_APP_firstAdminPassword);
+//         const firstAdmin = new Accounts({
+//             username: "admin",
+//             password: hashPassword,
+//             role: 1
+//         })
+//         firstAdmin.save()
+//     }
+// }).catch((err) => console.log(err))
 
 // Api
 // Accounts Api
