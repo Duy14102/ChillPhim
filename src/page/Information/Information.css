@@ -349,6 +349,7 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        flex-wrap: wrap;
     }
 
     .crewIn4ResponsiveChild svg {
@@ -402,12 +403,12 @@
         gap: 15px;
     }
 
-    .information .movieIn4 img{
+    .information .movieIn4 img {
         width: 100%;
         height: 400px;
     }
 
-    .information .movieIn4 .coverTextIn4{
+    .information .movieIn4 .coverTextIn4 {
         width: 100%;
     }
 }
