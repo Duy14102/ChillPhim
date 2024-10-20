@@ -103,10 +103,10 @@ function Streaming() {
     return (
         <div style={{ background: state.light ? "black" : null }} className='streaming'>
             <div className='titleStreaming'>
-                <a href={`/ChillPhim/Information/${state.movies?.subtitle}`} className='titleLinkStreaming'>{state.movies?.title}</a>
+                <a href={`/Information/${state.movies?.subtitle}`} className='titleLinkStreaming'>{state.movies?.title}</a>
                 <div className='botStreaming'>
                     <p>{params.Ep}</p>
-                    <a href={`/ChillPhim/Information/${state.movies?.subtitle}`} className='in4LinkStreaming'>ℹ️</a>
+                    <a href={`/Information/${state.movies?.subtitle}`} className='in4LinkStreaming'>ℹ️</a>
                 </div>
             </div>
             <div ref={videoDiv} className='videoStreaming'>
@@ -125,16 +125,16 @@ function Streaming() {
                 </button>
             </div>
             <div style={{ background: state.light ? "black" : null }} className='buttonStreaming'>
-                <button className='buttonDefault buttonIn4' href={`/ChillPhim/Information/${params.Name}`}>⚠️</button>
+                <button className='buttonDefault buttonIn4' href={`/Information/${params.Name}`}>⚠️</button>
                 <button onClick={() => setState({ light: state.light ? false : true })} className='buttonDefault buttonLight' type='button'>{state.light ? "Bật đèn" : "Tắt đèn"}</button>
-                <a style={{ pointerEvents: nextEps() === params.Ep ? "none" : null }} href={`/ChillPhim/Streaming/${params.Name}/${nextEps()}`} className='buttonDefault buttonPrevNext' type='button'>Tập tiếp ►</a>
+                <a style={{ pointerEvents: nextEps() === params.Ep ? "none" : null }} href={`/Streaming/${params.Name}/${nextEps()}`} className='buttonDefault buttonPrevNext' type='button'>Tập tiếp ►</a>
             </div>
             <div style={{ opacity: state.light ? 0 : null }} className='episodeStreaming'>
                 <h2>Danh sách tập</h2>
                 <div className='episodeCover'>
                     {state.movies?.filmSources.map((e) => {
                         return (
-                            <a style={e.title === params.Ep ? { color: "#fff", background: "#94b1f2" } : null} key={e.title} href={`/ChillPhim/Streaming/${params.Name}/${e.title}`} className='buttonEp'>{e.title}</a>
+                            <a style={e.title === params.Ep ? { color: "#fff", background: "#94b1f2" } : null} key={e.title} href={`/Streaming/${params.Name}/${e.title}`} className='buttonEp'>{e.title}</a>
                         )
                     })}
                 </div>

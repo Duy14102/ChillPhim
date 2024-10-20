@@ -53,7 +53,7 @@ function SeenMovies({ Title, MarginTop, useState, useEffect, axios }) {
                         const compareEqual = movie?.filter((item) => item.subtitle === i.title)[0]
                         return (
                             <SwiperSlide key={i.title}>
-                                <a href={`/ChillPhim/Streaming/${i.title}/${i.eps}`}>
+                                <a href={`/Streaming/${i.title}/${i.eps}`}>
                                     <div style={{ height: 200 }} className='imgSwiper'>
                                         <img loading="lazy" alt={i.title} src={compareEqual?.banner.horizontal} />
                                     </div>

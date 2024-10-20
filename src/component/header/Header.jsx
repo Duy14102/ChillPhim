@@ -71,27 +71,27 @@ function Header() {
                         <div className="genresGateChild">
                             {state.categories?.filter((item) => item.title !== "Anime" && item.title !== "TV Show").map((i) => {
                                 return (
-                                    <a key={i.title} href={`/ChillPhim/List/Genres/${i.title}/${i.title}/NF`}>{i.title}</a>
+                                    <a key={i.title} href={`/List/Genres/${i.title}/${i.title}/NF`}>{i.title}</a>
                                 )
                             })}
                         </div>
                     </div>
                     <div className="headerGateChild nationGate">Quốc gia ▼
                         <div className="nationGateChild">
-                            <a href="/ChillPhim/List/National/VN/Việt Nam/NF">Việt Nam</a>
-                            <a href="/ChillPhim/List/National/US UK/Âu - Mỹ/NF">Âu - Mỹ</a>
-                            <a href="/ChillPhim/List/National/TH/Thái Lan/NF">Thái Lan</a>
-                            <a href="/ChillPhim/List/National/CN/Trung Quốc/NF">Trung Quốc</a>
-                            <a href="/ChillPhim/List/National/KR/Hàn Quốc/NF">Hàn Quốc</a>
-                            <a href="/ChillPhim/List/National/JP/Nhật Bản/NF">Nhật Bản</a>
-                            <a href="/ChillPhim/List/National/IN/Ấn Độ/NF">Ấn Độ</a>
-                            <a href="/ChillPhim/List/National/FR/Pháp/NF">Pháp</a>
-                            <a href="/ChillPhim/List/National/All/Khác/NF">Khác</a>
+                            <a href="/List/National/VN/Việt Nam/NF">Việt Nam</a>
+                            <a href="/List/National/US UK/Âu - Mỹ/NF">Âu - Mỹ</a>
+                            <a href="/List/National/TH/Thái Lan/NF">Thái Lan</a>
+                            <a href="/List/National/CN/Trung Quốc/NF">Trung Quốc</a>
+                            <a href="/List/National/KR/Hàn Quốc/NF">Hàn Quốc</a>
+                            <a href="/List/National/JP/Nhật Bản/NF">Nhật Bản</a>
+                            <a href="/List/National/IN/Ấn Độ/NF">Ấn Độ</a>
+                            <a href="/List/National/FR/Pháp/NF">Pháp</a>
+                            <a href="/List/National/All/Khác/NF">Khác</a>
                         </div>
                     </div>
-                    <a href="/ChillPhim/List/Type/Series/Phim Bộ/NF" className="headerGateChild aloneGate">Phim bộ</a>
-                    <a href="/ChillPhim/List/Type/Single/Phim lẻ/NF" className="headerGateChild aloneGate">Phim lẻ</a>
-                    <a href="/ChillPhim/List/Genres/Anime/Anime/NF" className="headerGateChild aloneGate">Anime</a>
+                    <a href="/List/Type/Series/Phim Bộ/NF" className="headerGateChild aloneGate">Phim bộ</a>
+                    <a href="/List/Type/Single/Phim lẻ/NF" className="headerGateChild aloneGate">Phim lẻ</a>
+                    <a href="/List/Genres/Anime/Anime/NF" className="headerGateChild aloneGate">Anime</a>
                 </div>
             </div>
             <ModalProps state={state} setState={setState}>
@@ -100,7 +100,7 @@ function Header() {
                     <div className="autoCompleteHeader">
                         {state.searchResults.map((i) => {
                             return (
-                                <a href={`/ChillPhim/Information/${i.subtitle}`} key={i._id} className="autoCompleteChild">
+                                <a href={`/Information/${i.subtitle}`} key={i._id} className="autoCompleteChild">
                                     <img alt={i.title} src={i.banner.vertical} />
                                     <div className="autoCompleteChildIn4">
                                         <h3>{i.title}</h3>
@@ -110,7 +110,7 @@ function Header() {
                                 </a>
                             )
                         })}
-                        <a href={`/ChillPhim/List/Search/${state.search}/Tìm kiếm/NF`} className='toAllSearch'>Xem tất cả</a>
+                        <a href={`/List/Search/${state.search}/Tìm kiếm/NF`} className='toAllSearch'>Xem tất cả</a>
                     </div>
                 ) : null}
             </ModalProps>

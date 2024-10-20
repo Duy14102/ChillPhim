@@ -64,7 +64,7 @@ function HeroBanner({ movie }) {
                                     <div className='categoryIn4'>
                                         {i.category.slice(0, state.viewMoreCate && state.viewMoreCateIndex === indexI ? i.category.length : 5).map((c, indexC) => {
                                             return (
-                                                <a key={indexC} href={`/ChillPhim/List/Genres/${c}/${c}/NF`} className='mainCategory'>{c}</a>
+                                                <a key={indexC} href={`/List/Genres/${c}/${c}/NF`} className='mainCategory'>{c}</a>
                                             )
                                         })}
                                         {i.category.length > 5 ? (
@@ -87,7 +87,7 @@ function HeroBanner({ movie }) {
                                     </div>
                                     <div className='contentIn4'>{i.content}</div>
                                     <div className='buttonIn4'>
-                                        <a href={`/ChillPhim/Streaming/${i.subtitle}/${i.filmSources[0].title}`} className='playButton'>Xem ngay <span style={{ marginLeft: 10 }}>▶</span></a>
+                                        <a href={`/Streaming/${i.subtitle}/${i.filmSources[0].title}`} className='playButton'>Xem ngay <span style={{ marginLeft: 10 }}>▶</span></a>
                                         <button type='button' onClick={() => setState({ modalState: true, trailerData: i.trailerSource })} className='trailerButton'>Xem trailer</button>
                                     </div>
                                 </div>
