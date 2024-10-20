@@ -47,7 +47,7 @@ Accounts.findOne({ username: "admin" }).then(async (res1) => {
         })
         firstAdmin.save()
     }
-})
+}).catch()
 
 // Api
 // Accounts Api
