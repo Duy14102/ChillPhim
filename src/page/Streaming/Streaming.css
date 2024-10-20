@@ -35,17 +35,15 @@
 }
 
 .streaming .titleStreaming .botStreaming .in4LinkStreaming {
-    font-size: 20px;
-    color: #202124;
-    background: #94b1f2;
-    border-radius: 6px;
     text-decoration: none;
-    padding: 4px 12px;
-    transition: color .3s;
+    width: 25px;
+    height: 25px;
 }
 
-.streaming .titleStreaming .botStreaming .in4LinkStreaming:hover {
-    color: #fff;
+.streaming .titleStreaming .botStreaming .in4LinkStreaming svg {
+    width: 100%;
+    height: 100%;
+    fill: #94b1f2;
 }
 
 .streaming .videoStreaming {
@@ -245,7 +243,7 @@
         padding-right: 5px;
     }
 
-    .streaming .titleStreaming .botStreaming{
+    .streaming .titleStreaming .botStreaming {
         gap: 5px;
     }
 }
