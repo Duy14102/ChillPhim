@@ -6,7 +6,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
     useEffect(() => {
         const configuration = {
             method: "get",
-            url: "${process.env.REACT_APP_BACKENDAPI}/api/v1/getAllCategories"
+            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/getAllCategories`
         }
         axios(configuration).then((res) => {
             setState({ listAllCate: res.data })
