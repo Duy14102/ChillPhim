@@ -54,7 +54,7 @@ function List() {
                     {state.listMovie?.length > 0 ? state.listMovie?.map((i) => {
                         return (
                             <div className="coverList" key={i._id}>
-                                <a href={`/Information/${i.subtitle}`}>
+                                <a href={`/ChillPhim/Information/${i.subtitle}`}>
                                     <div className='imgSwiper'>
                                         <img loading="lazy" alt={i.title} src={i.banner.vertical} />
                                     </div>

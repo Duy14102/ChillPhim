@@ -21,16 +21,16 @@ function CheckRoutes() {
             <BrowserRouter>
                 <Routes>
                     {cookies ? (
-                        <Route index element={<AdminPanel />} />
+                        <Route index path='/ChillPhim' element={<AdminPanel />} />
                     ) : (
-                        <Route path="/" element={<Layout />}>
+                        <Route path="/ChillPhim" element={<Layout />}>
                             <Route index element={<Home />} />
-                            <Route path='/List/:Order/:Type/:Calling/:Sort' element={<List />} />
-                            <Route path='/Information/:Name' element={<Information />} />
-                            <Route path='/Streaming/:Name/:Ep' element={<Streaming />} />
+                            <Route path='/ChillPhim/List/:Order/:Type/:Calling/:Sort' element={<List />} />
+                            <Route path='/ChillPhim/Information/:Name' element={<Information />} />
+                            <Route path='/ChillPhim/Streaming/:Name/:Ep' element={<Streaming />} />
+                            <Route path='/ChillPhim/Administrator' element={<Administrator />} />
                         </Route>
                     )}
-                    <Route path='/Administrator' element={<Administrator />} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>
                 <ToastContainer />

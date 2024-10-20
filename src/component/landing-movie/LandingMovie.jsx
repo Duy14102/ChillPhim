@@ -15,7 +15,7 @@ function LandingMovie({ Title, MarginTop, movie }) {
             <div className="landingMovieChildTop">
                 <p className="landingMovieChildTitle">{Title}</p>
                 {Title !== "Phim tương tự" ? (
-                    <a href={`/List/All/All/${Title}/${Title === "Phim xem nhiều" ? "MV" : "NF"}`} className="landingMovieChildViewAll">Xem tất cả</a>
+                    <a href={`/ChillPhim/List/All/All/${Title}/${Title === "Phim xem nhiều" ? "MV" : "NF"}`} className="landingMovieChildViewAll">Xem tất cả</a>
                 ) : null}
             </div>
             {movie && movie.length > 0 ? (
@@ -41,7 +41,7 @@ function LandingMovie({ Title, MarginTop, movie }) {
                     {movie.map((i) => {
                         return (
                             <SwiperSlide key={i._id}>
-                                <a href={`/Information/${i.subtitle}`}>
+                                <a href={`/ChillPhim/Information/${i.subtitle}`}>
                                     <div className='imgSwiper'>
                                         <img loading="lazy" alt={i.title} src={i.banner.vertical} />
                                     </div>
