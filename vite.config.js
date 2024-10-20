@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
     define: {
       'process.env': env
     },
-    plugins: [react()]
+    plugins: [react()],
+    base: '/ChillPhim/'
   }
 })
