@@ -1,0 +1,1 @@
+import{B as o,X as t}from"./index-DPkhUvXD.js";function i({type:e,message:r,refCur:s}){o.update(s,{render:r,type:e===1?"success":"error",isLoading:!1,position:"top-right",autoClose:5e3,hideProgressBar:!1,closeOnClick:!0,pauseOnHover:!1,draggable:!0,progress:void 0,theme:"dark",transition:t})}export{i as T};
