@@ -9,7 +9,7 @@ function AdminControl({ SearchMainFilm, currentPage3, state, setState, axios, to
     function callAccount(s) {
         const configuration = {
             method: "get",
-            url: `${process.env.REACT_APP_backendAPI}/api/v1/getAccounts`,
+            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/getAccounts`,
             params: {
                 search: s,
                 page: currentPage3.current,
@@ -30,7 +30,7 @@ function AdminControl({ SearchMainFilm, currentPage3, state, setState, axios, to
         toastNow.current = toast.loading("Chờ một chút...")
         const configuration = {
             method: "post",
-            url: `${process.env.REACT_APP_backendAPI}/api/v1/addAccount`,
+            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/addAccount`,
             data: {
                 username: state.newAdminUsername,
                 password: state.newAdminPassword
@@ -49,7 +49,7 @@ function AdminControl({ SearchMainFilm, currentPage3, state, setState, axios, to
         toastNow.current = toast.loading("Chờ một chút...")
         const configuration = {
             method: "post",
-            url: `${process.env.REACT_APP_backendAPI}/api/v1/deleteAccount`,
+            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/deleteAccount`,
             data: {
                 username: username
             }

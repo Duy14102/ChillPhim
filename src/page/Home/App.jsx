@@ -10,7 +10,7 @@ function App() {
   useEffect(() => {
     const configuration = {
       method: "get",
-      url: `${process.env.REACT_APP_backendAPI}/api/v1/getMoviesHomepage`
+      url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/getMoviesHomepage`
     }
     axios(configuration).then((res) => {
       setMovie(res.data)

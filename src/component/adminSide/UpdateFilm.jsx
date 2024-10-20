@@ -5,7 +5,7 @@ function UpdateFilm({ state, setState, axios, callMovies, AddEps, UpdateEps, toa
     useEffect(() => {
         const configuration = {
             method: "get",
-            url: `${process.env.REACT_APP_backendAPI}/api/v1/getAllCategories`
+            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/getAllCategories`
         }
         axios(configuration).then((res) => {
             setState({ listAllCate: res.data })
@@ -31,7 +31,7 @@ function UpdateFilm({ state, setState, axios, callMovies, AddEps, UpdateEps, toa
         }
         const configuration = {
             method: "post",
-            url: `${process.env.REACT_APP_backendAPI}/api/v1/updateMovies`,
+            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/updateMovies`,
             data: {
                 update: state.movieKeysUpdate
             }

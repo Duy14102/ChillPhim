@@ -20,7 +20,7 @@ function List() {
     function callMovieList() {
         const configuration = {
             method: "get",
-            url: `${process.env.REACT_APP_backendAPI}/api/v1/getMoviesList`,
+            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/getMoviesList`,
             params: {
                 order: params.Order,
                 type: params.Type,

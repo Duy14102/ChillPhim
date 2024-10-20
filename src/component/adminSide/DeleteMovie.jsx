@@ -5,7 +5,7 @@ function DeleteMovie({ state, setState, axios, callMovies, toast, ToastUpdate, u
         toastNow.current = toast.loading("Chờ một chút...")
         const configuration = {
             method: "post",
-            url: `${process.env.REACT_APP_backendAPI}/api/v1/deleteMovies`,
+            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/deleteMovies`,
             data: {
                 id: state.deleteMovieId
             }

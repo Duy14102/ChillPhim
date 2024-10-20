@@ -19,7 +19,7 @@ function Header() {
             header.style.background = window.scrollY > 200 ? '#25272C' : '#202124';
             header.style.position = window.scrollY > 200 ? 'fixed' : "absolute";
         });
-        fetch(`${process.env.REACT_APP_backendAPI}/api/v1/getAllCategories`).then((resa) => resa.json().then((res) => {
+        fetch(`${process.env.REACT_APP_BACKENDAPI}/api/v1/getAllCategories`).then((resa) => resa.json().then((res) => {
             setState({ categories: res })
         })).catch(() => console.log("Categories empty!"))
     }, [])
@@ -40,7 +40,7 @@ function Header() {
     function autoCompleteSearch(e) {
         const configuration = {
             method: "get",
-            url: `${process.env.REACT_APP_backendAPI}/api/v1/headerAutoComplete`,
+            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/headerAutoComplete`,
             params: {
                 search: e
             }

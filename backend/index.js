@@ -39,7 +39,7 @@ const Categories = require("./models/Categories");                          // C
 
 // Refresh server
 setInterval(() => {
-    https.get(process.env.REACT_APP_backendAPI, () => {
+    https.get(process.env.REACT_APP_BACKENDAPI, () => {
         console.log("Refresh");
     })
 }, 600000);

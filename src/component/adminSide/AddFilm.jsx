@@ -6,7 +6,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
     useEffect(() => {
         const configuration = {
             method: "get",
-            url: "${process.env.REACT_APP_backendAPI}/api/v1/getAllCategories"
+            url: "${process.env.REACT_APP_BACKENDAPI}/api/v1/getAllCategories"
         }
         axios(configuration).then((res) => {
             setState({ listAllCate: res.data })
@@ -19,7 +19,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
             url: `https://api.themoviedb.org/3/search/${state.chooseTypeMovies === 1 ? "movie" : "tv"}?query=${e}&include_adult=true&language=vi-VN&page=${currentPage4.current}`,
             headers: {
                 accept: 'application/json',
-                Authorization: `Bearer ${process.env.REACT_APP_themoviedbApikey}`
+                Authorization: `Bearer ${process.env.REACT_APP_THEMOVIEDBAPIKEY}`
             }
         }
         axios(configuration).then((res) => {
@@ -52,7 +52,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
             url: `https://api.themoviedb.org/3/${state.chooseTypeMovies === 1 ? "movie" : "tv"}/${id}?language=vi-VN`,
             headers: {
                 accept: 'application/json',
-                Authorization: `Bearer ${process.env.REACT_APP_themoviedbApikey}`
+                Authorization: `Bearer ${process.env.REACT_APP_THEMOVIEDBAPIKEY}`
             }
         }
         axios(filmConfiguration).then((res) => {
@@ -61,7 +61,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
                 url: `https://api.themoviedb.org/3/${state.chooseTypeMovies === 1 ? "movie" : "tv"}/${id}/credits?language=vi-VN`,
                 headers: {
                     accept: 'application/json',
-                    Authorization: `Bearer ${process.env.REACT_APP_themoviedbApikey}`
+                    Authorization: `Bearer ${process.env.REACT_APP_THEMOVIEDBAPIKEY}`
                 }
             }
             axios(creditConfiguration).then((res2) => {
@@ -100,7 +100,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
         }
         const configuration = {
             method: "post",
-            url: `${process.env.REACT_APP_backendAPI}/api/v1/addMovies`,
+            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/addMovies`,
             data: {
                 movie: state.movieData,
                 crew: state.listCrew,

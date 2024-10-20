@@ -32,7 +32,7 @@ function Streaming() {
     function countView() {
         const configuration = {
             method: "post",
-            url: `${process.env.REACT_APP_backendAPI}/api/v1/countMoviesView`,
+            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/countMoviesView`,
             data: {
                 subtitle: params.Name
             }
@@ -45,7 +45,7 @@ function Streaming() {
     function getMoviesIn4() {
         const configuration = {
             method: "get",
-            url: `${process.env.REACT_APP_backendAPI}/api/v1/getMoviesIn4`,
+            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/getMoviesIn4`,
             params: {
                 subtitle: params.Name,
                 eps: params.Ep

@@ -15,7 +15,7 @@ function SeenMovies({ Title, MarginTop, useState, useEffect, axios }) {
     useEffect(() => {
         const configuration = {
             method: "get",
-            url: `${process.env.REACT_APP_backendAPI}/api/v1/getMoviesSeen`,
+            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/getMoviesSeen`,
             params: {
                 movies: movieStorage
             }
