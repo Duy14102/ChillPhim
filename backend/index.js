@@ -288,12 +288,10 @@ app.get("/api/v1/getMovies", async (req, res) => {
 })
 
 app.get("/api/v1/getMoviesHomepage", async (req, res) => {
-    const heroBanner = await Movies.find({}).sort({ _id: -1 }).limit(6)
+    const heroBanner = await Movies.find({}).sort({ createdAt: -1 }).limit(6)
     const newFilm = await Movies.find({}).sort({ createdAt: -1 }).limit(10)
     const mostViewFilm = await Movies.find({}).sort({ view: -1 }).limit(10)
-    const animeFilm = await Movies.find({ category: "Anime" }).limit(10)
-    const tvShowFilm = await Movies.find({ category: "TV Show" }).limit(10)
-    const upcomingFilm = await Movies.find({ category: "Upcoming" }).limit(10)
+    const animeFilm = await Movies.find({ category: "Anime" }).sort({ createdAt: -1 }).limit(10)
     res.status(201).send({ heroBanner, newFilm, mostViewFilm, animeFilm, tvShowFilm, upcomingFilm })
 })
 
