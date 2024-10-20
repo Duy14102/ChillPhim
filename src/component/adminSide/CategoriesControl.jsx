@@ -12,7 +12,7 @@ function CategoriesControl({ currentPage2, SearchMainFilm, state, setState, axio
         toastNow.current = toast.loading("Chờ một chút...")
         const configuration = {
             method: "post",
-            url: "http://localhost:3000/api/v1/addCategories",
+            url: `${process.env.REACT_APP_backendAPI}/api/v1/addCategories`,
             data: {
                 title: state.newCateTitle,
                 content: state.newCateContent
@@ -31,7 +31,7 @@ function CategoriesControl({ currentPage2, SearchMainFilm, state, setState, axio
         toastNow.current = toast.loading("Chờ một chút...")
         const configuration = {
             method: "post",
-            url: "http://localhost:3000/api/v1/deleteCategories",
+            url: `${process.env.REACT_APP_backendAPI}/api/v1/deleteCategories`,
             data: {
                 title: title
             }

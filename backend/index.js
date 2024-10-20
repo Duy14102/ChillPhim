@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require("http");
+const https = require("https")
 const app = express();
 const server = http.createServer(app);
 const argon2 = require('argon2');
@@ -35,6 +36,13 @@ server.listen(3000);
 const Movies = require("./models/Movies");                                  // Movies
 const Accounts = require("./models/Accounts");                              // Accounts
 const Categories = require("./models/Categories");                          // Categories
+
+// Refresh server
+setInterval(() => {
+    https.get(process.env.REACT_APP_backendAPI, () => {
+        console.log("Refresh");
+    })
+}, 600000);
 
 // Create first admin account
 Accounts.findOne({ username: "admin" }).then(async (res1) => {

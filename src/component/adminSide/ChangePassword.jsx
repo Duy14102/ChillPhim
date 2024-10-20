@@ -7,7 +7,7 @@ function ChangePassword({ state, setState, decode, axios, toast, ToastUpdate, us
         toastNow.current = toast.loading("Chờ một chút...")
         const configuration = {
             method: "post",
-            url: "http://localhost:3000/api/v1/changePassword",
+            url: `${process.env.REACT_APP_backendAPI}/api/v1/changePassword`,
             data: {
                 username: decode.username,
                 oldPassword: state.oldPassword,

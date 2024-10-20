@@ -18,7 +18,7 @@ function NoReview({ movies, axios, callBack }) {
         toastNow.current = toast.loading("Chờ một chút...")
         const configuration = {
             method: "post",
-            url: "http://localhost:3000/api/v1newComments",
+            url: `${process.env.REACT_APP_backendAPI}/api/v1newComments`,
             data: {
                 id: movies._id,
                 data: {

@@ -29,7 +29,7 @@ function Information() {
     function getMoviesIn4() {
         const configuration = {
             method: "get",
-            url: "http://localhost:3000/api/v1/getMoviesIn4",
+            url: `${process.env.REACT_APP_backendAPI}/api/v1/getMoviesIn4`,
             params: {
                 subtitle: params.Name
             }

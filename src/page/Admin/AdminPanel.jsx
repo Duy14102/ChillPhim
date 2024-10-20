@@ -50,7 +50,7 @@ function AdminPanel() {
     function callCategories(s) {
         const configuration = {
             method: "get",
-            url: "http://localhost:3000/api/v1/getCategories",
+            url: `${process.env.REACT_APP_backendAPI}/api/v1/getCategories`,
             params: {
                 search: s,
                 page: currentPage2.current,
@@ -65,7 +65,7 @@ function AdminPanel() {
     function callMovies(s) {
         const configuration = {
             method: "get",
-            url: "http://localhost:3000/api/v1/getMovies",
+            url: `${process.env.REACT_APP_backendAPI}/api/v1/getMovies`,
             params: {
                 search: s,
                 page: currentPage1.current,
