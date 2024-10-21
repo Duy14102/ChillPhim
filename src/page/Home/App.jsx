@@ -22,10 +22,10 @@ function App() {
       <HeroBanner movie={movie?.heroBanner} />
       <div className="landingMovie">
         {localStorage.getItem("MovieStorage") ? (
-          <SeenMovies Title={"Phim vừa xem"} MarginTop={0} useEffect={useEffect} useState={useState} axios={axios} />
+          <SeenMovies Title={"Phim vừa xem"} MarginTop={50} useEffect={useEffect} useState={useState} axios={axios} />
         ) : null}
 
-        <LandingMovie Title={"Phim mới"} MarginTop={localStorage.getItem("MovieStorage") ? 100 : 0} movie={movie?.newFilm} />
+        <LandingMovie Title={"Phim mới"} MarginTop={localStorage.getItem("MovieStorage") ? 100 : 50} movie={movie?.newFilm} />
 
         <LandingMovie Title={"Phim xem nhiều"} MarginTop={100} movie={movie?.mostViewFilm} />
 
