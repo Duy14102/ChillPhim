@@ -1,6 +1,7 @@
 import './NotFound.css'
 
 function NotFound() {
+    document.title = "ChillPhim | 404 - Không tìm thấy trang"
     return (
         <div className="notFound">
             <div className="rail">

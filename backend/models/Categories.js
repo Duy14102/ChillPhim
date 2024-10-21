@@ -8,6 +8,11 @@ const CategorySchema = new mongoose.Schema({
 
     content: {
         type: String
+    },
+
+    count: {
+        type: Number,
+        default: 0
     }
 }, { timestamps: { createdAt: true, updatedAt: false } })
 

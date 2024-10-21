@@ -6,6 +6,7 @@ import ToastUpdate from "../../component/Toastify/ToastUpdate"
 import { toast } from "react-toastify"
 
 function Administrator() {
+    document.title = "ChillPhim - Đăng nhập admin"
     const cookies = new Cookies();
     if (cookies.get("TOKEN")) {
         return window.location.href = '/404'

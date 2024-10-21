@@ -6,6 +6,7 @@ import axios from 'axios';
 import SeenMovies from '../../component/seenMovies/SeenMovies';
 
 function App() {
+  document.title = "ChillPhim | Trang chủ"
   const [movie, setMovie] = useState()
   useEffect(() => {
     const configuration = {

@@ -7,6 +7,8 @@ import Skeleton from "react-loading-skeleton"
 
 function List() {
     const params = useParams()
+    const orderString = params.Order === "National" ? "Quốc gia" : params.Order === "Search" ? "Tìm kiếm: " : "Thể loại"
+    document.title = `ChillPhim | ${orderString} ${params.Calling}`
     const [state, setState] = useReducer((prev, next) => ({
         ...prev, ...next
     }), {
@@ -15,7 +17,6 @@ function List() {
     })
     const limit = window.innerWidth <= 991 ? 14 : 15
     const currentPage = useRef(1)
-    const orderString = params.Order === "National" ? "Quốc gia" : "Thể loại"
 
     function callMovieList() {
         const configuration = {

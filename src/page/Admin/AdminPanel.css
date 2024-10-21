@@ -119,6 +119,24 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     padding: 15px;
 }
 
+.chartPanel {
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.chartPanel .chartChild {
+    width: 49%;
+    height: 100%;
+}
+
+.chartPanel .chartChild canvas {
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 4/2;
+}
+
 .bodyPanel .upperBody {
     display: flex;
     align-items: center;
@@ -589,6 +607,14 @@ header .options .collapseOptions .collapseOptionsChild:hover {
     .bodyPanel .bottomBody .bottomBodyChild {
         width: 100%;
     }
+
+    .chartPanel .chartChild {
+        width: 100%;
+    }
+
+    .chartPanel .chartChild:last-child {
+        margin-top: 15px;
+    }
 }
 
 @media (max-width:991px) {
@@ -639,7 +665,7 @@ header .options .collapseOptions .collapseOptionsChild:hover {
         height: 250px;
     }
 
-    .coverAddFilm .filmChild .filmChildIn4{
+    .coverAddFilm .filmChild .filmChildIn4 {
         width: 95%;
         gap: 5px;
     }

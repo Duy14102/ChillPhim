@@ -9,26 +9,19 @@ const jwt = require("jsonwebtoken");
 const mongoose = require('mongoose');
 require('dotenv').config({ path: "../.env" })
 mongoose.connect(process.env.REACT_APP_mongoAtlas).then(() => console.log('Connected To MongoDB')).catch((err) => { console.error(err); });
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "https://chill-phim.netlify.app");
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-    );
-    next();
-});
 
 const cors = require('cors');
+const corsOptions = {
+    origin: 'https://chill-phim.netlify.app/',
+    optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
+
 const bodyParser = require('body-parser');
 app.use(bodyParser.json({ limit: '50mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 app.use(bodyParser.text({ limit: '200mb' }));
 app.use(express.json());
-app.use(cors());
 
 server.listen(3000);
 
@@ -211,8 +204,6 @@ app.post("/api/v1/deleteCategories", (req, res) => {
     })
 })
 
-
-
 // Movies Api
 app.post("/api/v1/addMovies", async (req, res) => {
     await Movies.findOne({ subtitle: req.body.movie.original_title ? req.body.movie.original_title : req.body.movie.original_name }).then((res1) => {
@@ -251,6 +242,7 @@ app.post("/api/v1/addMovies", async (req, res) => {
                 movieSeason: req.body.season
             })
             newMovies.save().then(() => {
+                Categories.updateMany({ title: { $in: req.body.category } }, { $inc: { count: 1 } }).exec()
                 res.status(201).send({ message: "Thêm phim thành công!" })
             }).catch((err) => {
                 console.log(err)
@@ -310,10 +302,12 @@ app.post("/api/v1/deleteMovies", (req, res) => {
 })
 
 app.post("/api/v1/updateMovies", async (req, res) => {
-    await Movies.findOne({ subtitle: req.body.update.subtitle }).then((res1) => {
-        if (res1 && req.body.update.movieSeason === res1.movieSeason) {
+    await Movies.findOne({ _id: req.body.update._id }).then((res1) => {
+        if (res1 && req.body.update.movieSeason !== "" && res1.movieSeason !== "" && req.body.update.movieSeason === res1.movieSeason) {
             res.status(500).send({ message: "Cập nhật phim thất bại!" })
         } else {
+            const findOldCate = res1.category.filter(element => !req.body.update.category.includes(element));
+            const findNewCate = req.body.update.category.filter(element => !res1.category.includes(element));
             Movies.updateOne({ _id: req.body.update._id }, {
                 trailerSource: req.body.update.trailerSource,
                 filmSources: req.body.update.filmSources,
@@ -324,6 +318,11 @@ app.post("/api/v1/updateMovies", async (req, res) => {
                 movieSeason: req.body.update.movieSeason,
                 mainGenres: req.body.update.mainGenres
             }).then(() => {
+                if (findOldCate.length > 0) {
+                    Categories.updateMany({ title: { $in: findOldCate } }, { $inc: { count: -1 } }).exec()
+                } else if (findNewCate.length > 0) {
+                    Categories.updateMany({ title: { $in: findNewCate } }, { $inc: { count: 1 } }).exec()
+                }
                 res.status(201).send({ message: "Cập nhật phim thành công!" })
             }).catch(() => {
                 res.status(500).send({ message: "Cập nhật phim thất bại!" })
@@ -407,7 +406,7 @@ app.get("/api/v1/headerAutoComplete", async (req, res) => {
     })
 })
 
-app.post("/api/v1newComments", (req, res) => {
+app.post("/api/v1/newComments", (req, res) => {
     Movies.updateOne({ _id: req.body.id }, {
         $push: {
             comments: req.body.data
@@ -417,4 +416,20 @@ app.post("/api/v1newComments", (req, res) => {
     }).catch(() => {
         res.status(500).send({ message: "Gửi bình luận thất bại!" })
     })
+})
+
+app.get("/api/v1/getChart", async (req, res) => {
+    try {
+        const resMovies = await Movies.find({})
+        const resCategories = await Categories.find({})
+        const cateLabel = []
+        const cateData = []
+        const monthFilmLabel = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+        const monthFilmData = new Array(12).fill(0);
+        resMovies.forEach((date) => monthFilmData[new Date(date.createdAt).getMonth()] += 1);
+        resCategories.forEach((data) => { data.count > 0 ? cateLabel.push(data.title) : null, data.count > 0 ? cateData.push(data.count) : null })
+        res.status(201).send({ movieLabel: monthFilmLabel, movieData: monthFilmData, cateLabel: cateLabel, cateData: cateData })
+    } catch (err) {
+        res.status(400).send(err)
+    }
 })

@@ -52,6 +52,7 @@ function Streaming() {
             }
         }
         axios(configuration).then((res) => {
+            document.title = `ChillPhim | ${res.data.movies.title} | ${params.Ep}`
             setState({ movies: res.data.movies, similarMovies: res.data.similarMovies })
             const checkMoviesPass = JSON.parse(localStorage.getItem("MovieStorage"))
             if (!checkMoviesPass) {

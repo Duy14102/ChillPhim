@@ -35,6 +35,7 @@ function Information() {
             }
         }
         axios(configuration).then((res) => {
+            document.title = `ChillPhim | ${res.data.movies.title}`
             setState({ movies: res.data.movies, similarMovies: res.data.similarMovies })
         })
     }

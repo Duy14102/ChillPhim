@@ -21,7 +21,7 @@ function HaveReview({ movies, axios, callBack }) {
         toastNow.current = toast.loading("Chờ một chút...")
         const configuration = {
             method: "post",
-            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1newComments`,
+            url: `${process.env.REACT_APP_BACKENDAPI}/api/v1/newComments`,
             data: {
                 id: movies._id,
                 data: {

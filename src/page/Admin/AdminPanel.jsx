@@ -5,6 +5,8 @@ import { lazy, useReducer, useRef, useEffect } from "react"
 import { toast } from "react-toastify"
 import { jwtDecode } from "jwt-decode"
 import ToastUpdate from "../../component/Toastify/ToastUpdate"
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 const ModalProps = lazy(() => import('../../component/modal/ModalProps'))
 const ChangePassword = lazy(() => import('../../component/adminSide/ChangePassword'))
 const AdminControl = lazy(() => import('../../component/adminSide/AdminControl'))
@@ -16,8 +18,11 @@ import FilmControl from "../../component/adminSide/FilmControl"
 import DeleteMovie from "../../component/adminSide/DeleteMovie"
 import UpdateFilm from "../../component/adminSide/UpdateFilm"
 import SearchMainFilm from "../../component/adminSide/SearchMainFilm"
+import BarChart from "../../component/adminSide/Chart/BarChart"
+import DoughnutChart from "../../component/adminSide/Chart/DoughnutChart"
 
 function AdminPanel() {
+    document.title = "ChillPhim | Quản trị admin"
     const cookies = new Cookies()
     const decode = jwtDecode(cookies.get("TOKEN"))
     const [state, setState] = useReducer((prev, next) => ({
@@ -37,15 +42,28 @@ function AdminPanel() {
         // Film control state
         listMovies: null, viewMoreCate: false, indexMovie: null, deleteMovieId: null, movieKeysUpdate: null, wantUpdatePrevEps: false, wantUpdateOldEps: false, totalEps: null, movieSeason: "",
         // Paginate
-        pageCount1: 6, pageCount2: 6, pageCount3: 6, pageCount4: 6
+        pageCount1: 6, pageCount2: 6, pageCount3: 6, pageCount4: 6,
+        // Chart
+        chartData: null
     })
     const limit = 10
-    const currentPage1 = useRef(1)
-    const currentPage2 = useRef(1)
-    const currentPage3 = useRef(1)
-    const currentPage4 = useRef(1)
+    let currentPage1 = useRef(1), currentPage2 = useRef(1), currentPage3 = useRef(1), currentPage4 = useRef(1)
     const dateNow = new Date().getHours('vi-VN')
     const welcomeTime = dateNow >= 4 && dateNow < 11 ? "☀️ Chào buổi sáng" : dateNow >= 11 && dateNow < 13 ? "🌤️ Chào buổi trưa" : dateNow >= 13 && dateNow < 18 ? "🌅 Chào buổi chiều" : dateNow >= 18 && dateNow < 22 ? "🌙 Chào buổi tối" : "💤 Chào buổi đêm"
+
+    useEffect(() => {
+        callChart()
+    }, [])
+
+    function callChart() {
+        const configuration = {
+            method: "get",
+            url: `http://localhost:3000/api/v1/getChart`,
+        }
+        axios(configuration).then((res) => {
+            setState({ chartData: res.data })
+        })
+    }
 
     function callCategories(s) {
         const configuration = {
@@ -107,6 +125,15 @@ function AdminPanel() {
                     </div>
                 </div>
             </header>
+            <div className="chartPanel">
+                <div className="chartChild">
+                    <BarChart titleLabel={"Phim mới mỗi tháng"} data={state.chartData} />
+                </div>
+                <div className="chartChild">
+                    <DoughnutChart data={state.chartData} />
+                </div>
+            </div>
+            <hr className="hrClassGray" style={{ marginTop: 15, marginBottom: 15 }} />
             <div className="bodyPanel">
                 <div className="upperBody">
                     <SearchMainFilm type={1} search={state.searchMain} setState={setState} callBacks={callMovies} useEffect={useEffect} />
