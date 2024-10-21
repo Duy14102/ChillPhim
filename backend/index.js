@@ -24,15 +24,15 @@ const apiLimiter = rateLimit({
 });
 
 // Refresh server
-// setInterval(() => {
-//     https.get(process.env.REACT_APP_BACKENDAPI, () => {
-//         console.log("Refresh");
-//     })
-// }, 600000);
+setInterval(() => {
+    https.get(process.env.REACT_APP_BACKENDAPI, () => {
+        console.log("Refresh");
+    })
+}, 600000);
 
 const cors = require('cors');
 const corsOptions = {
-    origin: '*',
+    origin: 'https://chill-phim.netlify.app',
     optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
