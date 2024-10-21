@@ -2,6 +2,7 @@ import './Streaming.css'
 import { useEffect, useRef, useReducer, lazy } from 'react'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
 const LandingMovie = lazy(() => import('../../component/landing-movie/LandingMovie'))
 const ToastSuccess = lazy(() => import('../../component/Toastify/ToastSuccess'))
 const NoReview = lazy(() => import('../../component/no-review/NoReview'))
@@ -52,7 +53,6 @@ function Streaming() {
             }
         }
         axios(configuration).then((res) => {
-            document.title = `ChillPhim | ${res.data.movies.title} | ${params.Ep}`
             setState({ movies: res.data.movies, similarMovies: res.data.similarMovies })
             const checkMoviesPass = JSON.parse(localStorage.getItem("MovieStorage"))
             if (!checkMoviesPass) {
@@ -103,6 +103,14 @@ function Streaming() {
     }
     return (
         <div style={{ background: state.light ? "black" : null }} className='streaming'>
+            <Helmet>
+                <title>{`ChillPhim | ${state.movies?.title} - ${params.Ep}`}</title>
+                <meta name="description" content={`ChillPhim | ${state.movies?.title} - ${params.Ep} | ${state.movies?.content}`} />
+                <meta property="og:url" content={`https://chill-phim.netlify.app/Streaming/${params.Name}/${params.Ep}`} />
+                <meta property="og:site_name" content="ChillPhim" />
+                <meta property="og:locale" content="vi_VN" />
+                <meta property="og:type" content="website" />
+            </Helmet>
             <div className='titleStreaming'>
                 <a href={`/Information/${state.movies?.subtitle}`} className='titleLinkStreaming'>{state.movies?.title}</a>
                 <div className='botStreaming'>

@@ -102,7 +102,7 @@ function Header() {
                         {state.searchResults.map((i) => {
                             return (
                                 <a href={`/Information/${i.subtitle}`} key={i._id} className="autoCompleteChild">
-                                    <LazyLoadImage alt={i.title} src={i.banner.vertical} />
+                                    <LazyLoadImage alt="Image" src={i.banner.vertical} />
                                     <div className="autoCompleteChildIn4">
                                         <h3>{i.title}</h3>
                                         <p>{i.subtitle}</p>

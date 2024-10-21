@@ -35,7 +35,7 @@ function FilmControl({ currentPage1, state, setState, callMovies, useEffect }) {
                     {state.listMovies.length > 0 ? state.listMovies.map((i, indexI) => {
                         return (
                             <div key={i._id} className="bottomBodyChild">
-                                <LazyLoadImage alt={i.title} src={window.innerWidth <= 700 ? i.banner.horizontal : i.banner.vertical} />
+                                <LazyLoadImage alt="Image" src={window.innerWidth <= 700 ? i.banner.horizontal : i.banner.vertical} />
                                 <div className="bottomBodyChildIn4">
                                     <h3 className="movieTitle">{i.movieSeason && i.movieSeason !== "" ? `${i.title} (Phần ${i.movieSeason})` : i.title}</h3>
                                     <span className="movieSubtitle">{i.subtitle}</span>

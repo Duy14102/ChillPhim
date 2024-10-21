@@ -2,6 +2,7 @@ import './Information.css'
 import { useReducer, useEffect, lazy } from 'react'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
 const LandingMovie = lazy(() => import('../../component/landing-movie/LandingMovie'))
 const SkeletonLayout = lazy(() => import('../../component/skeleton/SkeletonLayout'))
 const HaveReview = lazy(() => import('../../component/have-review/HaveReview'))
@@ -35,7 +36,6 @@ function Information() {
             }
         }
         axios(configuration).then((res) => {
-            document.title = `ChillPhim | ${res.data.movies.title}`
             setState({ movies: res.data.movies, similarMovies: res.data.similarMovies })
         }).catch((err) => console.log(err.response.data.message))
     }
@@ -68,10 +68,19 @@ function Information() {
         const item = lookup.findLast(item => num >= item.value);
         return item ? (num / item.value).toFixed(digits).replace(regexp, "").concat(item.symbol) : "0";
     }
+
     return (
         <div className='information'>
+            <Helmet>
+                <title>{`ChillPhim | ${state.movies?.title}`}</title>
+                <meta name="description" content={`ChillPhim | ${state.movies?.title} | ${state.movies?.filmSources[state.movies?.filmSources.length - 1].title} | ${state.movies?.content}`} />
+                <meta property="og:url" content={`https://chill-phim.netlify.app/Information/${params.Name}`} />
+                <meta property="og:site_name" content="ChillPhim" />
+                <meta property="og:locale" content="vi_VN" />
+                <meta property="og:type" content="website" />
+            </Helmet>
             <div className='movieIn4'>
-                <img loading='lazy' alt={state.movies?.title} src={window.innerWidth <= 991 ? state.movies?.banner.horizontal : state.movies?.banner.vertical} />
+                <img loading='lazy' alt="Image" src={window.innerWidth <= 991 ? state.movies?.banner.horizontal : state.movies?.banner.vertical} />
                 <div className='coverTextIn4'>
                     <SkeletonLayout count={1} state={state.movies}>
                         <h1 className='movieName'>{state.movies?.movieSeason && state.movies?.movieSeason !== "" ? `${state.movies?.title} (Phần ${state.movies?.movieSeason})` : state.movies?.title}</h1>

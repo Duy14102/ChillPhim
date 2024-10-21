@@ -45,7 +45,7 @@ function LandingMovie({ Title, MarginTop, movie }) {
                             <SwiperSlide key={i._id}>
                                 <a href={`/Information/${i.subtitle}`}>
                                     <div className='imgSwiper'>
-                                        <LazyLoadImage alt={i.title} src={i.banner.vertical} />
+                                        <LazyLoadImage alt="Image" src={i.banner.vertical} />
                                     </div>
                                     <p className="titleSwiper"><span>{i.movieSeason && i.movieSeason !== "" ? `${i.title} (Phần ${i.movieSeason})` : i.title}</span></p>
                                     <div className="playButtonSwiper">

@@ -1,12 +1,12 @@
 import './App.css'
 import { lazy, useEffect, useState } from 'react';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
 const HeroBanner = lazy(() => import('../../component/hero-banner/HeroBanner'))
 const LandingMovie = lazy(() => import('../../component/landing-movie/LandingMovie'))
 const SeenMovies = lazy(() => import('../../component/seenMovies/SeenMovies'))
 
 function App() {
-  document.title = "ChillPhim | Trang chủ"
   const [movie, setMovie] = useState()
   useEffect(() => {
     const configuration = {
@@ -19,6 +19,14 @@ function App() {
   }, [])
   return (
     <>
+      <Helmet>
+        <title>ChillPhim | Trang chủ</title>
+        <meta name="description" content="ChillPhim | Phim hay | Phim mới | Xem phim online | Luôn sẵn có tựa phim nóng nhất, hay nhất trên màn ảnh." /> 
+        <meta property="og:url" content="https://chill-phim.netlify.app" />
+        <meta property="og:site_name" content="ChillPhim" />
+        <meta property="og:locale" content="vi_VN" />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <HeroBanner movie={movie?.heroBanner} />
       <div className="landingMovie">
         {localStorage.getItem("MovieStorage") ? (

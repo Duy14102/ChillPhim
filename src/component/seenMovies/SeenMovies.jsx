@@ -57,7 +57,7 @@ function SeenMovies({ Title, MarginTop, useState, useEffect, axios }) {
                             <SwiperSlide key={i.title}>
                                 <a href={`/Streaming/${i.title}/${i.eps}`}>
                                     <div style={{ height: 200 }} className='imgSwiper'>
-                                        <LazyLoadImage alt={i.title} src={compareEqual?.banner.horizontal} />
+                                        <LazyLoadImage alt="Image" src={compareEqual?.banner.horizontal} />
                                     </div>
                                     <p className="titleSwiper"><span>{compareEqual?.movieSeason && compareEqual?.movieSeason !== "" ? `${compareEqual?.title} (Phần ${compareEqual?.movieSeason})` : compareEqual?.title}</span></p>
                                     <div className="playButtonSwiper">

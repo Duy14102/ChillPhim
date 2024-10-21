@@ -57,7 +57,7 @@ function HeroBanner({ movie }) {
                         return (
                             <SwiperSlide key={i._id}>
                                 <div className='imgSwiper'>
-                                    <img loading='lazy' alt={i.title} src={i.banner.horizontal} />
+                                    <img loading='lazy' alt="Image" src={i.banner.horizontal} />
                                 </div>
                                 <div className='in4Swiper'>
                                     <h1>{i.movieSeason && i.movieSeason !== "" ? `${i.title} (Phần ${i.movieSeason})` : i.title}</h1>

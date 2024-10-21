@@ -4,12 +4,12 @@ import { useParams } from "react-router-dom"
 import axios from "axios"
 import Skeleton from "react-loading-skeleton"
 import { LazyLoadImage } from "react-lazy-load-image-component"
+import { Helmet } from "react-helmet"
 const Pagination = lazy(() => import('../../component/paginate/Pagination'))
 
 function List() {
     const params = useParams()
     const orderString = params.Order === "National" ? "Quốc gia" : params.Order === "Search" ? "Tìm kiếm: " : "Thể loại"
-    document.title = `ChillPhim | ${orderString} ${params.Calling}`
     const [state, setState] = useReducer((prev, next) => ({
         ...prev, ...next
     }), {
@@ -41,6 +41,14 @@ function List() {
     }, [])
     return (
         <div className="list">
+            <Helmet>
+                <title>{`ChillPhim | ${orderString} ${params.Calling}`}</title>
+                <meta name="description" content={`ChillPhim | ${orderString} ${params.Calling} | Phim hay | Phim mới | Xem phim online | Luôn sẵn có tựa phim nóng nhất, hay nhất trên màn ảnh.`} />
+                <meta property="og:url" content={`https://chill-phim.netlify.app/List/${params.Order}/${params.Type}/${params.Calling}/${params.Sort}`} />
+                <meta property="og:site_name" content="ChillPhim" />
+                <meta property="og:locale" content="vi_VN" />
+                <meta property="og:type" content="website" />
+            </Helmet>
             <div className="topList">
                 <h3><span style={{ color: "rgba(211,211,211,0.8)" }}>{orderString}:</span> {params.Order === "Directors" || params.Order === "Stars" || params.Order === "Search" ? `${params.Calling} (${params.Type})` : params.Calling}</h3>
                 <select defaultValue={params.Sort} onChange={(e) => window.location.href = `/List/${params.Order}/${params.Type}/${params.Calling}/${e.target.value}`}>
@@ -57,7 +65,7 @@ function List() {
                             <div className="coverList" key={i._id}>
                                 <a href={`/Information/${i.subtitle}`}>
                                     <div className='imgSwiper'>
-                                        <LazyLoadImage alt={i.title} src={i.banner.vertical} />
+                                        <LazyLoadImage alt="Image" src={i.banner.vertical} />
                                     </div>
                                     <p className="titleSwiper"><span>{i.title}</span></p>
                                     <div className="playButtonSwiper">
