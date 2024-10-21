@@ -12,7 +12,7 @@ mongoose.connect(process.env.REACT_APP_mongoAtlas).then(() => console.log('Conne
 
 const cors = require('cors');
 const corsOptions = {
-    origin: 'https://chill-phim.netlify.app/',
+    origin: 'https://chill-phim.netlify.app',
     optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
