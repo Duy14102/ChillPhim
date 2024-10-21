@@ -18,7 +18,7 @@ function AdminControl({ SearchMainFilm, currentPage3, state, setState, axios, to
         }
         axios(configuration).then((res) => {
             setState({ listAccounts: res.data.results.result, pageCount3: res.data.results.pageCount })
-        })
+        }).catch((err) => console.log(err.response.data.message))
     }
 
     useEffect(() => {

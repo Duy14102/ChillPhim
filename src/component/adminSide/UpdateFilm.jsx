@@ -9,7 +9,7 @@ function UpdateFilm({ state, setState, axios, callMovies, AddEps, UpdateEps, toa
         }
         axios(configuration).then((res) => {
             setState({ listAllCate: res.data })
-        })
+        }).catch((err) => console.log(err.response.data.message))
     }, [])
 
     function checkCateExists(item) {

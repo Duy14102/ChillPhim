@@ -47,7 +47,7 @@ function Header() {
         }
         axios(configuration).then((res) => {
             setState({ searchResults: res.data })
-        })
+        }).catch((err) => console.log(err.response.data.message))
     }
     return (
         <header>

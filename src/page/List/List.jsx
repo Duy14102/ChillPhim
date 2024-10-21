@@ -32,7 +32,7 @@ function List() {
         }
         axios(configuration).then((res) => {
             setState({ listMovie: res.data.results.result, pageCount: res.data.results.pageCount })
-        })
+        }).catch((err) => console.log(err.response.data.message))
     }
 
     useEffect(() => {

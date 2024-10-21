@@ -15,6 +15,8 @@ function App() {
     }
     axios(configuration).then((res) => {
       setMovie(res.data)
+    }).catch((err) => {
+      console.log(err.response.data.message)
     })
   }, [])
   return (

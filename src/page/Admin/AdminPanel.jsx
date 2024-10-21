@@ -62,7 +62,7 @@ function AdminPanel() {
         }
         axios(configuration).then((res) => {
             setState({ chartData: res.data })
-        })
+        }).catch((err) => console.log(err.response.data.message))
     }
 
     function callCategories(s) {
@@ -77,7 +77,7 @@ function AdminPanel() {
         }
         axios(configuration).then((res) => {
             setState({ listCategories: res.data.results.result, pageCount2: res.data.results.pageCount })
-        })
+        }).catch((err) => console.log(err.response.data.message))
     }
 
     function callMovies(s) {
@@ -92,7 +92,7 @@ function AdminPanel() {
         }
         axios(configuration).then((res) => {
             setState({ listMovies: res.data.results.result, pageCount1: res.data.results.pageCount })
-        })
+        }).catch((err) => console.log(err.response.data.message))
     }
 
     function logout() {

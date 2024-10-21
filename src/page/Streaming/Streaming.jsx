@@ -39,7 +39,7 @@ function Streaming() {
         }
         axios(configuration).then((res) => {
             console.log(res.data.message)
-        })
+        }).catch((err) => console.log(err.response.data.message))
     }
 
     function getMoviesIn4() {
@@ -81,7 +81,7 @@ function Streaming() {
                     })
                 }
             }
-        })
+        }).catch((err) => console.log(err.response.data.message))
     }
 
     function nextEps() {

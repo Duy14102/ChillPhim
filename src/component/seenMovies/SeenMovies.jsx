@@ -22,7 +22,7 @@ function SeenMovies({ Title, MarginTop, useState, useEffect, axios }) {
         }
         axios(configuration).then((res) => {
             setMovie(res.data)
-        })
+        }).catch((err) => console.log(err.response.data.message))
     }, [])
     return (
         <div style={{ marginTop: MarginTop }} className="landingMovieChild">

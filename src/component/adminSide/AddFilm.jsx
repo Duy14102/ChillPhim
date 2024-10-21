@@ -10,7 +10,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
         }
         axios(configuration).then((res) => {
             setState({ listAllCate: res.data })
-        })
+        }).catch((err) => console.log(err.response.data.message))
     }, [])
 
     function autoCompleteSearch(e) {
@@ -24,7 +24,7 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
         }
         axios(configuration).then((res) => {
             setState({ listAutoComplete: res.data.results, pageCount4: res.data.total_pages })
-        })
+        }).catch((err) => console.log(err.response))
     }
 
     useEffect(() => {
@@ -72,11 +72,10 @@ function AddFilm({ currentPage4, state, setState, axios, callMovies, toast, Toas
                 } : {
                     directors: [], stars: [], screenWriters: []
                 }
-                console.log(dataFetch)
                 setState({ listCrew: dataFetch, movieData: res.data })
                 ToastUpdate({ type: 1, message: `Đã chọn ${res.data.title ? res.data.title : res.data.name}`, refCur: toastNow.current })
-            })
-        })
+            }).catch((err) => console.log(err.response))
+        }).catch((err) => console.log(err.response))
     }
 
     function updateCate(title) {
