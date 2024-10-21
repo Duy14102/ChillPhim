@@ -9,7 +9,9 @@ import 'swiper/css/navigation';
 // import required modules
 import { Navigation } from 'swiper/modules';
 import Skeleton from "react-loading-skeleton";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 function LandingMovie({ Title, MarginTop, movie }) {
+
     return (
         <div style={{ marginTop: MarginTop }} className="landingMovieChild">
             <div className="landingMovieChildTop">
@@ -43,7 +45,7 @@ function LandingMovie({ Title, MarginTop, movie }) {
                             <SwiperSlide key={i._id}>
                                 <a href={`/Information/${i.subtitle}`}>
                                     <div className='imgSwiper'>
-                                        <img loading="lazy" alt={i.title} src={i.banner.vertical} />
+                                        <LazyLoadImage alt={i.title} src={i.banner.vertical} />
                                     </div>
                                     <p className="titleSwiper"><span>{i.movieSeason && i.movieSeason !== "" ? `${i.title} (Phần ${i.movieSeason})` : i.title}</span></p>
                                     <div className="playButtonSwiper">

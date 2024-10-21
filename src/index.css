@@ -30,3 +30,16 @@ textarea {
 body::-webkit-scrollbar {
     background: #202124;
 }
+
+.loadingSkeleton {
+    overflow: hidden;
+    background: #202124;
+    display: grid;
+    place-items: center;
+}
+
+.loadingSkeleton img{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}

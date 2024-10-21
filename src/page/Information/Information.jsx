@@ -1,11 +1,11 @@
-import { useReducer, useEffect } from 'react'
 import './Information.css'
-import LandingMovie from '../../component/landing-movie/LandingMovie';
-import NoReview from '../../component/no-review/NoReview';
-import axios from 'axios';
+import { useReducer, useEffect, lazy } from 'react'
 import { useParams } from 'react-router-dom';
-import HaveReview from '../../component/have-review/HaveReview';
-import SkeletonLayout from '../../component/skeleton/SkeletonLayout'
+import axios from 'axios';
+const LandingMovie = lazy(() => import('../../component/landing-movie/LandingMovie'))
+const SkeletonLayout = lazy(() => import('../../component/skeleton/SkeletonLayout'))
+const HaveReview = lazy(() => import('../../component/have-review/HaveReview'))
+const NoReview = lazy(() => import('../../component/no-review/NoReview'))
 
 function Information() {
     const params = useParams()

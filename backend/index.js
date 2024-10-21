@@ -23,10 +23,12 @@ const apiLimiter = rateLimit({
     }
 });
 
-// Connect to MongoDB
-const mongoose = require('mongoose');
-require('dotenv').config({ path: "../.env" })
-mongoose.connect(process.env.REACT_APP_mongoAtlas).then(() => console.log('Connected To MongoDB')).catch((err) => { console.error(err); });
+// Refresh server
+setInterval(() => {
+    https.get(process.env.REACT_APP_BACKENDAPI, () => {
+        console.log("Refresh");
+    })
+}, 600000);
 
 const cors = require('cors');
 const corsOptions = {
@@ -34,6 +36,11 @@ const corsOptions = {
     optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
+
+// Connect to MongoDB
+const mongoose = require('mongoose');
+require('dotenv').config({ path: "../.env" })
+mongoose.connect(process.env.REACT_APP_mongoAtlas).then(() => console.log('Connected To MongoDB')).catch((err) => { console.error(err); });
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json({ limit: '50mb', extended: true }));
@@ -47,13 +54,6 @@ server.listen(3000);
 const Movies = require("./models/Movies");                                  // Movies
 const Accounts = require("./models/Accounts");                              // Accounts
 const Categories = require("./models/Categories");                          // Categories
-
-// Refresh server
-setInterval(() => {
-    https.get(process.env.REACT_APP_BACKENDAPI, () => {
-        console.log("Refresh");
-    })
-}, 600000);
 
 // Create first admin account
 Accounts.findOne({ username: "admin" }).then(async (res1) => {

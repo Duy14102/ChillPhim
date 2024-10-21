@@ -1,9 +1,9 @@
 import './App.css'
-import HeroBanner from '../../component/hero-banner/HeroBanner'
-import LandingMovie from '../../component/landing-movie/LandingMovie';
-import { useEffect, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import axios from 'axios';
-import SeenMovies from '../../component/seenMovies/SeenMovies';
+const HeroBanner = lazy(() => import('../../component/hero-banner/HeroBanner'))
+const LandingMovie = lazy(() => import('../../component/landing-movie/LandingMovie'))
+const SeenMovies = lazy(() => import('../../component/seenMovies/SeenMovies'))
 
 function App() {
   document.title = "ChillPhim | Trang chủ"
@@ -15,9 +15,7 @@ function App() {
     }
     axios(configuration).then((res) => {
       setMovie(res.data)
-    }).catch((err) => {
-      console.log(err.response.data.message)
-    })
+    }).catch((err) => console.log(err.response.data.message))
   }, [])
   return (
     <>

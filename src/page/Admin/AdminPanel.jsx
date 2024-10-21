@@ -1,25 +1,25 @@
 import "./AdminPanel.css"
 import Cookies from "universal-cookie"
 import axios from "axios"
-import { lazy, useReducer, useRef, useEffect } from "react"
+import { lazy, useReducer, useRef, useEffect, Suspense } from "react"
 import { toast } from "react-toastify"
 import { jwtDecode } from "jwt-decode"
 import ToastUpdate from "../../component/Toastify/ToastUpdate"
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
+const LoadingSkeleton = lazy(() => import('../../component/skeleton/LoadingSkeleton'))
 const ModalProps = lazy(() => import('../../component/modal/ModalProps'))
 const ChangePassword = lazy(() => import('../../component/adminSide/ChangePassword'))
 const AdminControl = lazy(() => import('../../component/adminSide/AdminControl'))
 const CategoriesControl = lazy(() => import('../../component/adminSide/CategoriesControl'))
-import AddFilm from '../../component/adminSide/AddFilm'
-import AddEps from '../../component/adminSide/AddEps'
-import UpdateEps from '../../component/adminSide/UpdateEps'
-import FilmControl from "../../component/adminSide/FilmControl"
-import DeleteMovie from "../../component/adminSide/DeleteMovie"
-import UpdateFilm from "../../component/adminSide/UpdateFilm"
-import SearchMainFilm from "../../component/adminSide/SearchMainFilm"
-import BarChart from "../../component/adminSide/Chart/BarChart"
-import DoughnutChart from "../../component/adminSide/Chart/DoughnutChart"
+const AddFilm = lazy(() => import('../../component/adminSide/AddFilm'))
+const UpdateFilm = lazy(() => import('../../component/adminSide/UpdateFilm'))
+const AddEps = lazy(() => import('../../component/adminSide/AddEps'))
+const UpdateEps = lazy(() => import('../../component/adminSide/UpdateEps'))
+const FilmControl = lazy(() => import('../../component/adminSide/FilmControl'))
+const SearchMainFilm = lazy(() => import('../../component/adminSide/SearchMainFilm'))
+const BarChart = lazy(() => import('../../component/adminSide/Chart/BarChart'))
+const DoughnutChart = lazy(() => import('../../component/adminSide/Chart/DoughnutChart'))
 
 function AdminPanel() {
     document.title = "ChillPhim | Quản trị admin"
@@ -126,52 +126,58 @@ function AdminPanel() {
                 </div>
             </header>
             <div className="chartPanel">
-                <div className="chartChild">
-                    <BarChart titleLabel={"Phim mới mỗi tháng"} data={state.chartData} />
-                </div>
-                <div className="chartChild">
-                    <DoughnutChart data={state.chartData} />
-                </div>
+                <Suspense fallback={<LoadingSkeleton type={2} />}>
+                    <div className="chartChild">
+                        <BarChart titleLabel={"Phim mới mỗi tháng"} data={state.chartData} />
+                    </div>
+                    <div className="chartChild">
+                        <DoughnutChart data={state.chartData} />
+                    </div>
+                </Suspense>
             </div>
             <hr className="hrClassGray" style={{ marginTop: 15, marginBottom: 15 }} />
             <div className="bodyPanel">
-                <div className="upperBody">
-                    <SearchMainFilm type={1} search={state.searchMain} setState={setState} callBacks={callMovies} useEffect={useEffect} />
-                    <div className="insideUpperBody">
-                        {state.wantAddFilm ? (
-                            <>
-                                <button onClick={() => setState({ wantAddFilm: true })} type="submit" form="formMovieExists">✔</button>
-                                <button onClick={() => setState({ wantAddFilm: false })} type="button">X</button>
-                            </>
-                        ) : (
-                            <button onClick={() => setState({ wantAddFilm: true })} type="button">Thêm phim</button>
-                        )}
-                        <button onClick={() => setState({ modalState: true, modalStateOptions: 3 })} type="button">Quản lý danh mục</button>
+                <Suspense fallback={<LoadingSkeleton type={2} />}>
+                    <div className="upperBody">
+                        <SearchMainFilm type={1} search={state.searchMain} setState={setState} callBacks={callMovies} useEffect={useEffect} />
+                        <div className="insideUpperBody">
+                            {state.wantAddFilm ? (
+                                <>
+                                    <button onClick={() => setState({ wantAddFilm: true })} type="submit" form="formMovieExists">✔</button>
+                                    <button onClick={() => setState({ wantAddFilm: false })} type="button">X</button>
+                                </>
+                            ) : (
+                                <button onClick={() => setState({ wantAddFilm: true })} type="button">Thêm phim</button>
+                            )}
+                            <button onClick={() => setState({ modalState: true, modalStateOptions: 3 })} type="button">Quản lý danh mục</button>
+                        </div>
                     </div>
-                </div>
-                {state.wantAddFilm ? (
-                    <div className="midBody">
-                        <AddFilm currentPage4={currentPage4} useEffect={useEffect} state={state} setState={setState} axios={axios} callMovies={callMovies} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
-                    </div>
-                ) : null}
-                <FilmControl currentPage1={currentPage1} useEffect={useEffect} state={state} setState={setState} callMovies={callMovies} />
+                    {state.wantAddFilm ? (
+                        <div className="midBody">
+                            <AddFilm currentPage4={currentPage4} useEffect={useEffect} state={state} setState={setState} axios={axios} callMovies={callMovies} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
+                        </div>
+                    ) : null}
+                    <FilmControl currentPage1={currentPage1} useEffect={useEffect} state={state} setState={setState} callMovies={callMovies} />
+                </Suspense>
             </div>
             <ModalProps state={state} setState={setState}>
-                {state?.modalStateOptions === 1 ? (
-                    <AdminControl SearchMainFilm={SearchMainFilm} currentPage3={currentPage3} state={state} setState={setState} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} useEffect={useEffect} />
-                ) : state?.modalStateOptions === 2 ? (
-                    <ChangePassword state={state} setState={setState} decode={decode} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
-                ) : state?.modalStateOptions === 3 ? (
-                    <CategoriesControl currentPage2={currentPage2} SearchMainFilm={SearchMainFilm} state={state} setState={setState} toast={toast} axios={axios} ToastUpdate={ToastUpdate} useRef={useRef} callCategories={callCategories} useEffect={useEffect} />
-                ) : state?.modalStateOptions === 4 ? (
-                    <AddEps state={state} setState={setState} />
-                ) : state?.modalStateOptions === 5 ? (
-                    <UpdateEps state={state} setState={setState} />
-                ) : state?.modalStateOptions === 6 ? (
-                    <DeleteMovie state={state} setState={setState} axios={axios} callMovies={callMovies} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
-                ) : (
-                    <UpdateFilm useEffect={useEffect} state={state} setState={setState} callMovies={callMovies} AddEps={AddEps} UpdateEps={UpdateEps} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
-                )}
+                <Suspense fallback={<LoadingSkeleton type={2} />}>
+                    {state?.modalStateOptions === 1 ? (
+                        <AdminControl SearchMainFilm={SearchMainFilm} currentPage3={currentPage3} state={state} setState={setState} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} useEffect={useEffect} />
+                    ) : state?.modalStateOptions === 2 ? (
+                        <ChangePassword state={state} setState={setState} decode={decode} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
+                    ) : state?.modalStateOptions === 3 ? (
+                        <CategoriesControl currentPage2={currentPage2} SearchMainFilm={SearchMainFilm} state={state} setState={setState} toast={toast} axios={axios} ToastUpdate={ToastUpdate} useRef={useRef} callCategories={callCategories} useEffect={useEffect} />
+                    ) : state?.modalStateOptions === 4 ? (
+                        <AddEps state={state} setState={setState} />
+                    ) : state?.modalStateOptions === 5 ? (
+                        <UpdateEps state={state} setState={setState} />
+                    ) : state?.modalStateOptions === 6 ? (
+                        <DeleteMovie state={state} setState={setState} axios={axios} callMovies={callMovies} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
+                    ) : (
+                        <UpdateFilm useEffect={useEffect} state={state} setState={setState} callMovies={callMovies} AddEps={AddEps} UpdateEps={UpdateEps} axios={axios} toast={toast} ToastUpdate={ToastUpdate} useRef={useRef} />
+                    )}
+                </Suspense>
             </ModalProps>
         </div>
     )

@@ -1,11 +1,11 @@
-import { useEffect, useRef, useReducer } from 'react'
 import './Streaming.css'
-import NoReview from '../../component/no-review/NoReview';
-import LandingMovie from '../../component/landing-movie/LandingMovie';
+import { useEffect, useRef, useReducer, lazy } from 'react'
 import { useParams } from 'react-router-dom';
-import ToastSuccess from '../../component/Toastify/ToastSuccess'
 import axios from 'axios';
-import HaveReview from '../../component/have-review/HaveReview';
+const LandingMovie = lazy(() => import('../../component/landing-movie/LandingMovie'))
+const ToastSuccess = lazy(() => import('../../component/Toastify/ToastSuccess'))
+const NoReview = lazy(() => import('../../component/no-review/NoReview'))
+const HaveReview = lazy(() => import('../../component/have-review/HaveReview'))
 
 function Streaming() {
     const videoDiv = useRef();

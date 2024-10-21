@@ -1,9 +1,10 @@
 import "./List.css"
-import { useEffect, useReducer, useRef } from "react"
+import { lazy, useEffect, useReducer, useRef } from "react"
 import { useParams } from "react-router-dom"
 import axios from "axios"
-import Pagination from "../../component/paginate/Pagination"
 import Skeleton from "react-loading-skeleton"
+import { LazyLoadImage } from "react-lazy-load-image-component"
+const Pagination = lazy(() => import('../../component/paginate/Pagination'))
 
 function List() {
     const params = useParams()
@@ -56,7 +57,7 @@ function List() {
                             <div className="coverList" key={i._id}>
                                 <a href={`/Information/${i.subtitle}`}>
                                     <div className='imgSwiper'>
-                                        <img loading="lazy" alt={i.title} src={i.banner.vertical} />
+                                        <LazyLoadImage alt={i.title} src={i.banner.vertical} />
                                     </div>
                                     <p className="titleSwiper"><span>{i.title}</span></p>
                                     <div className="playButtonSwiper">

@@ -7,9 +7,9 @@ import 'swiper/css/navigation';
 
 // import required modules
 import { EffectCoverflow, Navigation, Autoplay } from 'swiper/modules';
-import ModalProps from '../modal/ModalProps';
-import { useReducer } from 'react';
+import { lazy, useReducer } from 'react';
 import Skeleton from 'react-loading-skeleton';
+const ModalProps = lazy(() => import('../modal/ModalProps'))
 
 function HeroBanner({ movie }) {
     const [state, setState] = useReducer((prev, next) => ({

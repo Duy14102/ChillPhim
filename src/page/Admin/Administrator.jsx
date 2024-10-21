@@ -1,9 +1,9 @@
-import { useReducer, useRef } from "react"
 import "./Administrator.css"
+import { useReducer, useRef } from "react"
+import { toast } from "react-toastify"
 import axios from "axios"
 import Cookies from "universal-cookie"
 import ToastUpdate from "../../component/Toastify/ToastUpdate"
-import { toast } from "react-toastify"
 
 function Administrator() {
     document.title = "ChillPhim - Đăng nhập admin"
@@ -30,7 +30,6 @@ function Administrator() {
             }
         }
         axios(configuration).then((res) => {
-            ToastUpdate({ type: 1, message: res.data.message, refCur: toastNow.current })
             cookies.set("TOKEN", res.data.token, {
                 path: "/",
             });
