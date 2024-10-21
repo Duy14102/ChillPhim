@@ -1,10 +1,28 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const http = require("http");
 const https = require("https")
 const app = express();
 const server = http.createServer(app);
 const argon2 = require('argon2');
 const jwt = require("jsonwebtoken");
+
+const apiLimiter = rateLimit({
+    windowMs: 1000, // 1 second
+    max: 10,
+    handler: function (req, res) {
+        res.status(429).send({
+            status: 500,
+            message: 'Truy vấn thất bại!',
+        });
+    },
+    skip: (req, res) => {
+        if (req.ip === '::ffff:127.0.0.1')
+            return true;
+        return false;
+    }
+});
+
 // Connect to MongoDB
 const mongoose = require('mongoose');
 require('dotenv').config({ path: "../.env" })
@@ -52,7 +70,7 @@ Accounts.findOne({ username: "admin" }).then(async (res1) => {
 
 // Api
 // Accounts Api
-app.post("/api/v1/adminLogin", (req, res) => {
+app.post("/api/v1/adminLogin", apiLimiter, (req, res) => {
     Accounts.findOne({ username: req.body.username }).then(async (res1) => {
         const verifyPassword = await argon2.verify(res1.password, req.body.password)
         if (verifyPassword) {
@@ -76,7 +94,7 @@ app.post("/api/v1/adminLogin", (req, res) => {
     })
 })
 
-app.post("/api/v1/changePassword", (req, res) => {
+app.post("/api/v1/changePassword", apiLimiter, (req, res) => {
     Accounts.findOne({ username: req.body.username }).then(async (res1) => {
         const verifyPassword = await argon2.verify(res1.password, req.body.oldPassword)
         if (verifyPassword) {
@@ -91,7 +109,7 @@ app.post("/api/v1/changePassword", (req, res) => {
     })
 })
 
-app.post("/api/v1/addAccount", (req, res) => {
+app.post("/api/v1/addAccount", apiLimiter, (req, res) => {
     Accounts.findOne({ username: req.body.username }).then(async (res1) => {
         if (res1) {
             res.status(500).send({ message: "Tài khoản đã tồn tại!" })
@@ -109,7 +127,7 @@ app.post("/api/v1/addAccount", (req, res) => {
     })
 })
 
-app.post("/api/v1/deleteAccount", (req, res) => {
+app.post("/api/v1/deleteAccount", apiLimiter, (req, res) => {
     Accounts.deleteOne({ username: req.body.username }).then(() => {
         res.status(201).send({ message: "Xóa tài khoản thành công!" })
     }).catch(() => {
@@ -117,7 +135,7 @@ app.post("/api/v1/deleteAccount", (req, res) => {
     })
 })
 
-app.get("/api/v1/getAccounts", async (req, res) => {
+app.get("/api/v1/getAccounts", apiLimiter, async (req, res) => {
     const res1 = await Accounts.find(req.query.search && req.query.search !== "" ? { username: { $in: new RegExp(req.query.search, 'i') } } : {}).sort({ createdAt: -1 })
     const page = parseInt(req.query.page)
     const limit = parseInt(req.query.limit)
@@ -147,7 +165,7 @@ app.get("/api/v1/getAccounts", async (req, res) => {
 
 
 // Categories Api
-app.get("/api/v1/getCategories", async (req, res) => {
+app.get("/api/v1/getCategories", apiLimiter, async (req, res) => {
     const res1 = await Categories.find(req.query.search && req.query.search !== "" ? { title: new RegExp(req.query.search, 'i') } : {}).sort({ createdAt: -1 })
     const page = parseInt(req.query.page)
     const limit = parseInt(req.query.limit)
@@ -174,13 +192,13 @@ app.get("/api/v1/getCategories", async (req, res) => {
     res.status(201).send({ results });
 })
 
-app.get("/api/v1/getAllCategories", async (req, res) => {
+app.get("/api/v1/getAllCategories", apiLimiter, async (req, res) => {
     await Categories.find({}).then((res1) => {
         res.status(201).send(res1)
     })
 })
 
-app.post("/api/v1/addCategories", (req, res) => {
+app.post("/api/v1/addCategories", apiLimiter, (req, res) => {
     Categories.findOne({ title: req.body.title }).then(async (res1) => {
         if (res1) {
             res.status(500).send({ message: "Danh mục đã tồn tại!" })
@@ -196,7 +214,7 @@ app.post("/api/v1/addCategories", (req, res) => {
     })
 })
 
-app.post("/api/v1/deleteCategories", (req, res) => {
+app.post("/api/v1/deleteCategories", apiLimiter, (req, res) => {
     Categories.deleteOne({ title: req.body.title }).then(() => {
         res.status(201).send({ message: "Xóa danh mục thành công!" })
     }).catch(() => {
@@ -205,7 +223,7 @@ app.post("/api/v1/deleteCategories", (req, res) => {
 })
 
 // Movies Api
-app.post("/api/v1/addMovies", async (req, res) => {
+app.post("/api/v1/addMovies", apiLimiter, async (req, res) => {
     await Movies.findOne({ subtitle: req.body.movie.original_title ? req.body.movie.original_title : req.body.movie.original_name }).then((res1) => {
         if (res1 && res1.movieSeason && res1.movieSeason !== "" && req.body.season && req.body.season !== "") {
             if (res1.movieSeason === req.body.season) {
@@ -252,7 +270,7 @@ app.post("/api/v1/addMovies", async (req, res) => {
     })
 })
 
-app.get("/api/v1/getMovies", async (req, res) => {
+app.get("/api/v1/getMovies", apiLimiter, async (req, res) => {
     const res1 = await Movies.find(req.query.search && req.query.search !== "" ? { title: new RegExp(req.query.search, 'i') } : {}).sort({ createdAt: -1 })
     const page = parseInt(req.query.page)
     const limit = parseInt(req.query.limit)
@@ -279,7 +297,7 @@ app.get("/api/v1/getMovies", async (req, res) => {
     res.status(201).send({ results });
 })
 
-app.get("/api/v1/getMoviesHomepage", async (req, res) => {
+app.get("/api/v1/getMoviesHomepage", apiLimiter, async (req, res) => {
     const heroBanner = await Movies.find({}).sort({ createdAt: -1 }).limit(6)
     const newFilm = await Movies.find({}).sort({ createdAt: -1 }).limit(10)
     const mostViewFilm = await Movies.find({}).sort({ view: -1 }).limit(10)
@@ -287,13 +305,13 @@ app.get("/api/v1/getMoviesHomepage", async (req, res) => {
     res.status(201).send({ heroBanner, newFilm, mostViewFilm, animeFilm })
 })
 
-app.get("/api/v1/getMoviesIn4", async (req, res) => {
+app.get("/api/v1/getMoviesIn4", apiLimiter, async (req, res) => {
     const movies = await Movies.findOne({ subtitle: req.query.subtitle })
     const similarMovies = await Movies.find({ category: { $in: movies.category }, subtitle: { $ne: req.query.subtitle }, mainGenres: movies.mainGenres }).limit(10)
     res.status(201).send({ movies, similarMovies })
 })
 
-app.post("/api/v1/deleteMovies", (req, res) => {
+app.post("/api/v1/deleteMovies", apiLimiter, (req, res) => {
     Movies.deleteOne({ _id: req.body.id }).then(() => {
         res.status(201).send({ message: "Xóa phim thành công!" })
     }).catch(() => {
@@ -301,7 +319,7 @@ app.post("/api/v1/deleteMovies", (req, res) => {
     })
 })
 
-app.post("/api/v1/updateMovies", async (req, res) => {
+app.post("/api/v1/updateMovies", apiLimiter, async (req, res) => {
     await Movies.findOne({ _id: req.body.update._id }).then((res1) => {
         if (res1 && req.body.update.movieSeason !== "" && res1.movieSeason !== "" && req.body.update.movieSeason === res1.movieSeason) {
             res.status(500).send({ message: "Cập nhật phim thất bại!" })
@@ -331,7 +349,7 @@ app.post("/api/v1/updateMovies", async (req, res) => {
     })
 })
 
-app.post("/api/v1/countMoviesView", (req, res) => {
+app.post("/api/v1/countMoviesView", apiLimiter, (req, res) => {
     Movies.updateOne({ subtitle: req.body.subtitle }, {
         $inc: { view: 1 }
     }).then(() => {
@@ -339,7 +357,7 @@ app.post("/api/v1/countMoviesView", (req, res) => {
     })
 })
 
-app.get("/api/v1/getMoviesList", async (req, res) => {
+app.get("/api/v1/getMoviesList", apiLimiter, async (req, res) => {
     var findChild = null
     switch (req.query.order) {
         case "Genres":
@@ -391,7 +409,7 @@ app.get("/api/v1/getMoviesList", async (req, res) => {
     res.status(201).send({ results });
 })
 
-app.get("/api/v1/getMoviesSeen", async (req, res) => {
+app.get("/api/v1/getMoviesSeen", apiLimiter, async (req, res) => {
     const dataFind = []
     req.query.movies.reduce((acc, curr) => { dataFind.push(curr.title) }, 0)
     await Movies.find({ subtitle: { $in: dataFind } }).then((res1) => {
@@ -399,14 +417,14 @@ app.get("/api/v1/getMoviesSeen", async (req, res) => {
     })
 })
 
-app.get("/api/v1/headerAutoComplete", async (req, res) => {
+app.get("/api/v1/headerAutoComplete", apiLimiter, async (req, res) => {
     const regExpSearch = new RegExp(req.query.search, 'i')
     await Movies.find({ $or: [{ title: regExpSearch }, { subtitle: regExpSearch }] }).limit(5).then((res1) => {
         res.status(201).send(res1)
     })
 })
 
-app.post("/api/v1/newComments", (req, res) => {
+app.post("/api/v1/newComments", apiLimiter, (req, res) => {
     Movies.updateOne({ _id: req.body.id }, {
         $push: {
             comments: req.body.data
@@ -418,7 +436,7 @@ app.post("/api/v1/newComments", (req, res) => {
     })
 })
 
-app.get("/api/v1/getChart", async (req, res) => {
+app.get("/api/v1/getChart", apiLimiter, async (req, res) => {
     try {
         const resMovies = await Movies.find({})
         const resCategories = await Categories.find({})
